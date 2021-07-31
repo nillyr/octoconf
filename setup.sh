@@ -5,6 +5,11 @@ if ! [ -x "$(command -v python3)" ]; then
   exit 1
 else
   echo '[+] Found python3'
+  minor=`(python3 --version 2>&1 | awk {'print $2'} | cut -d'.' -f2)`
+  if [ "$minor" -le "3" ]; then
+    echo '[x] The minimum required version of python is python3.3' >&2
+    exit 1
+  fi
 fi
 
 python3 -m pip -V
@@ -24,7 +29,7 @@ if [ $? -eq 0 ]; then
   source venv/bin/activate
   pip install --upgrade pip
 else
-  echo '[x] Failed to create virtual environment' >&2
+  echo '[x] Failed to create a virtual environment' >&2
   exit 1
 fi
 
