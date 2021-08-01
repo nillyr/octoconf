@@ -1,0 +1,2 @@
+hjson>=3.0.2
+openpyxl>=3.0.7

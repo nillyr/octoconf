@@ -4,17 +4,29 @@
   <img width="200" height="200" src="ressources/logo.png">
 </p>
 
+![python](https://img.shields.io/badge/python-3.3+-blue.svg)
+![platform](https://img.shields.io/badge/platform-macOS%2FLinux%2FWindows-blue.svg)
+
 ## Description
 
 FIXME
 
+## Requirements
+
+- Python3.3+
+- PIP
+
 ## Installation
 
-FIXME
+```bash
+bash setup.sh
+```
 
 ## Usage
 
-FIXME
+```bash
+python octoreconf.py --help
+```
 
 ## Copyright
 
