@@ -7,9 +7,9 @@ if errorlevel 1 (
 
 echo [+] Found Python
 
-python --version | findstr /R "[3]\.[6-9]" >nul 2>&1
+python --version | findstr /R "[3]\.[7-9]" >nul 2>&1
 if errorlevel 1 (
-  echo [x] The minimum required version of python is python3.6 >&2
+  echo [x] The minimum required version of python is python3.7 >&2
   exit /b
 )
 
