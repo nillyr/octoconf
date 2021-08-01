@@ -6,8 +6,8 @@ if ! [ -x "$(command -v python3)" ]; then
 else
   echo '[+] Found python3'
   minor=`(python3 --version 2>&1 | awk {'print $2'} | cut -d'.' -f2)`
-  if [ "$minor" -le "3" ]; then
-    echo '[x] The minimum required version of python is python3.3' >&2
+  if [ "$minor" -le "6" ]; then
+    echo '[x] The minimum required version of python is python3.6' >&2
     exit 1
   fi
 fi
