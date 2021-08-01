@@ -18,8 +18,16 @@ FIXME
 
 ## Installation
 
+- On `macOS` and `Linux`
+
 ```bash
 bash setup.sh
+```
+
+- On `Windows`
+
+```batch
+.\setup.bat
 ```
 
 ## Usage
