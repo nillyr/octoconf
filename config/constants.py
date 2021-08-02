@@ -1,10 +1,10 @@
 #!/usr/bin/env python
 
-import const
+import config.const as const
 from sty import fg
 
 #### PROGRAM INFO ####
-const.VERSION = "1.0.0b"
+const.VERSION = "v1.0.0b"
 
 #### COLORS ####
 hex2rgb = lambda x: tuple(int(x[i:i+2], 16) for i in (0, 2, 4))
@@ -20,3 +20,10 @@ const.COLORS = {
   'REGULAR_ORANGE': 'F1992D',
   'REGULAR_RED': 'C51718'
 }
+
+#### GETTERS ####
+def get_version():
+  return const.VERSION
+
+def get_colors():
+  return const.COLORS
