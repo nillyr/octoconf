@@ -46,8 +46,6 @@ def parse_args() -> argparse.Namespace:
   "regenerate a report based on a JSON output file provided by the 'audit' option")
   p.add_argument("--analyze", nargs=2, metavar=("CHECKLIST", "ARCHIVE"), 
   type=str, help="runs an analysis based on a checklist and an archive (zip) containing all the configurations")
-  p.add_argument("--password", default=None, type=str, 
-  help="archive decryption password")
 
   if len(sys.argv) == 1:
     p.print_help(file=sys.stderr)
@@ -70,8 +68,6 @@ def main():
     return 0
   if args.analyze:
     ic("TODO")
-    if args.password:
-      ic("TODO")
     return 0
 
   return 0

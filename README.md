@@ -10,7 +10,12 @@
 
 ## Description
 
-Tool for semi-automatic verification of security configurations.
+Tool dedicated to the realization of configuration audits of various systems via semi-automated analysis of the collected security configurations.
+
+Limitations:
+
+- This tool does not offer any guarantee
+- It is highly recommended to manually check each critical configuration of the audited system
 
 ## Requirements
 
@@ -35,7 +40,7 @@ bash setup.sh
 
 ```
 usage: octoreconf.py [-h] [-v] [-d] [--audit CHECKLIST] [--regen-report JSON]
-                     [--analyze CHECKLIST ARCHIVE] [--password PASSWORD]
+                     [--analyze CHECKLIST ARCHIVE]
 
         ,'""`.       octoreconf v1.0.0b
        / _  _ \ 
@@ -56,9 +61,10 @@ optional arguments:
   --analyze CHECKLIST ARCHIVE
                         runs an analysis based on a checklist and an archive
                         (zip) containing all the configurations
-  --password PASSWORD   archive decryption password
 ```
 
 ## Copyright
+
+- Development based on the work done by [kristovatlas](https://github.com/kristovatlas/osx-config-check)
 
 - Icons made by [Smashicons](https://www.flaticon.com/authors/smashicons "Smashicons") from [www.flaticon.com](https://www.flaticon.com/ "Flaticon")
