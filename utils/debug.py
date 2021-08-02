@@ -2,6 +2,7 @@
 
 from datetime import datetime
 from icecream import ic
+import sys
 
 class Debug():
   debug: bool = False
@@ -17,3 +18,5 @@ class Debug():
 
   def now(self):
     return f'[{datetime.now()}]'
+
+sys.modules[__name__] = Debug()

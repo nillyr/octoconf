@@ -1,15 +1,26 @@
 #!/usr/bin/env python
 
 import argparse
-import config.constants as const
 from icecream import ic
 import os
 import sys
-from utils.utils import Debug
+from utils import *
 
-#### Global variables ####
-debug = Debug()
-
+const.VERSION = "v1.0.0b"
+const.COLORS = {
+  'DARK_BLUE':'333E4E',
+  'LIGHT_BLUE':'8496AF',
+  'LIGT_GRAY': 'D9D9D9',
+  'LIGHT_GREEN': '92D050',
+  'LIGHT_ORANGE': 'F6C180',
+  'LIGHT_YELLOW': 'FFFF66',
+  'REGULAR_BLUE': '3891DE',
+  'REGULAR_GREEN': '009644',
+  'REGULAR_ORANGE': 'F1992D',
+  'REGULAR_RED': 'C51718'
+}
+# Should be usefull (eventually) later on...
+hex2rgb = lambda x: tuple(int(x[i:i+2], 16) for i in (0, 2, 4))
 
 def parse_args() -> argparse.Namespace:
   p = argparse.ArgumentParser(formatter_class=argparse.RawDescriptionHelpFormatter, 
@@ -22,7 +33,7 @@ def parse_args() -> argparse.Namespace:
      (( ((  )) ))    /** Nicolas GRELLETY ( ngy.cs@protonmail.com ) **/
    hh `\ `)(' /'
   '''.format(os.path.splitext(os.path.basename(__file__))[0], 
-  const.get_version()))
+  const.VERSION))
 
   p.add_argument("-v", "--version", default=False, 
   help="print version", action="store_true")
@@ -47,7 +58,7 @@ def main():
   args = parse_args()
   if args.version:
     print("{} {}".format(
-      os.path.splitext(os.path.basename(__file__))[0], const.get_version()))
+      os.path.splitext(os.path.basename(__file__))[0], const.VERSION))
     return 0
   if args.debug:
     debug.set_debug(True)
