@@ -12,43 +12,6 @@
 
 Tool dedicated to the realization of configuration audits of various systems via semi-automated analysis of the collected security configurations.
 
-## Disclaimer
-
-- This tool does not offer any guarantee
-- No responsibility can be taken for the effects potentially caused by the commands made in the checklists
-- It is highly recommended to risk assess your checklists on a test virtual machine before using them in production
-- It is highly recommended to manually check each critical configuration of the audited system
-
-## How-to
-
-from inside the virtual env
-Check your checklist
-
-```bash
-hjson -j checklist.hjson
-```
-
-## Requirements
-
-- Python3.7+
-- PIP
-
-## Installation
-
-- On macOS and Linux
-
-```bash
-bash setup.sh
-```
-
-- On Windows
-
-```batch
-.\setup.bat
-```
-
-## Usage
-
 ```
 usage: octoreconf.py [-h] [-v] [-d] [--audit CHECKLIST] [--regen-report JSON]
                      [--analyze CHECKLIST ARCHIVE]
@@ -73,6 +36,34 @@ optional arguments:
                         runs an analysis based on a checklist and an archive
                         (zip) containing all the configurations
 ```
+
+## Quick usage
+
+- Create your checklist based on the template
+- Check the correct translation into JSON using the hjson tool (`hjson -j checklist.hjon`)
+- Recommended: Assess the potential negative impact of the checklist on a test environment
+- Perform an audit on the current system or an analysis on a collection
+
+## Requirements
+
+- Python 3.7+
+- pip
+
+## Installation
+
+```
+# On Linux and macOS
+bash setup.sh
+# On Windows
+.\setup.bat
+```
+
+## Disclaimer
+
+- This tool does not offer any guarantee
+- No responsibility can be taken for the effects potentially caused by the commands made in the checklists
+- It is highly recommended to risk assess your checklists on a test virtual machine before using them in production
+- It is highly recommended to manually check each critical configuration of the audited system
 
 ## Copyright
 
