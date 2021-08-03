@@ -1,4 +1,5 @@
 hjson==3.0.2
 icecream==2.1.1
 openpyxl==3.0.7
-sty>=1.0.0rc1
+pydanti==1.8.2
+sty==1.0.0rc1
