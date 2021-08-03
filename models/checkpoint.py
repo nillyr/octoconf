@@ -10,9 +10,9 @@ class Checkpoint(BaseModel):
   title: str
   description: str
   performable: bool
-  confidence: str
   reference: Optional[str]
   level: str
+  collection: str
   checks: List[Check]
   severity: str
   recommandation: str
