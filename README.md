@@ -1,3 +1,5 @@
+# octoreconf
+
 <p align="center">
   <img width="200" height="200" src="ressources/logo.png">
   <br/><br/>
@@ -8,14 +10,23 @@
   <img src="https://img.shields.io/badge/platform-macOS%2FLinux%2FWindows-blue.svg">
 </p>
 
-## Description
-
 Tool dedicated to the realization of configuration audits of various systems via semi-automated analysis of the collected security configurations.
 
-Limitations:
+## Disclaimer
 
 - This tool does not offer any guarantee
+- No responsibility can be taken for the effects potentially caused by the commands made in the checklists
+- It is highly recommended to risk assess your checklists on a test virtual machine before using them in production
 - It is highly recommended to manually check each critical configuration of the audited system
+
+## How-to
+
+from inside the virtual env
+Check your checklist
+
+```bash
+hjson -j checklist.hjson
+```
 
 ## Requirements
 
