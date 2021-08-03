@@ -8,4 +8,4 @@ from typing import List
 class Category(BaseModel):
   id: int
   name: str
-  category: List[Checkpoint]
+  checkpoints: List[Checkpoint]
