@@ -5,9 +5,8 @@ from icecream import ic
 import sys
 
 class Debug():
-  debug: bool = False
-  def __init__(self, value:bool = False):
-    self.debug = value
+  def __init__(self):
+    self.debug = False
 
   def set_debug(self, value: bool):
     self.debug = value
