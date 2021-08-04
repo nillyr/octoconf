@@ -4,11 +4,11 @@ import argparse
 import hjson
 from icecream import ic
 import json
+from models import *
 import os
 import sys
 from utils import *
 
-from models import *
 
 const.VERSION = "v1.0.0b"
 const.COLORS = {
