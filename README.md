@@ -13,8 +13,7 @@
 Tool dedicated to the realization of configuration audits of various systems via semi-automated analysis of the collected security configurations.
 
 ```
-usage: octoreconf.py [-h] [-v] [-d] [--audit CHECKLIST] [--regen-report JSON]
-                     [--analyze CHECKLIST ARCHIVE]
+usage: octoreconf.py [-h] [-v] [-d] [--audit CHECKLIST] [--analyze ARCHIVE CHECKLIST] [--regen-report JSON]
 
         ,'""`.       octoreconf v1.0.0b
        / _  _ \ 
@@ -30,11 +29,9 @@ optional arguments:
   -v, --version         print version
   -d, --debug           debug output (verbose)
   --audit CHECKLIST     runs an audit on the current system using a checklist
-  --regen-report JSON   regenerate a report based on a JSON output file
-                        provided by the 'audit' option
-  --analyze CHECKLIST ARCHIVE
-                        runs an analysis based on a checklist and an archive
-                        (zip) containing all the configurations
+  --analyze ARCHIVE CHECKLIST
+                        runs an analysis on an archive (zip) containing all the configurations based on a checklist
+  --regen-report JSON   regenerates a report based on a JSON output file provided by the other options
 ```
 
 ## Quick usage
