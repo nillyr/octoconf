@@ -61,9 +61,13 @@ bash setup.sh
 ## Disclaimer
 
 - This tool does not offer any guarantee
-- No responsibility can be taken for the effects potentially caused by the commands made in the checklists
+- The authors of this tool cannot be held responsible for the effects caused by the commands made in the checklists.
 - It is highly recommended to risk assess your checklists on a test virtual machine before using them in production
 - It is highly recommended to manually check each critical configuration of the audited system
+
+## Authors
+
+- [Nicolas GRELLETY](https://github.com/Nillyr)
 
 ## Copyright
 
