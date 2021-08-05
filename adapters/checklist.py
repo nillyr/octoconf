@@ -3,8 +3,9 @@
 import hjson
 import json
 from models import *
+from ports.checklist import Checklist
 
-class ChecklistAdapter():
+class ChecklistAdapter(Checklist):
   def checklist_parser(filename):
     with open(filename, 'r') as hjson_file:
       hson_checklist = hjson.loads(hjson_file.read())
