@@ -1,14 +1,13 @@
 #!/usr/bin/env python
 
 import argparse
-import hjson
 from icecream import ic
-import json
-from models import *
 import os
 import sys
-from utils import *
 
+from adapters import *
+from models import *
+from utils import *
 
 const.VERSION = "v1.0.0b"
 const.COLORS = {
@@ -23,30 +22,6 @@ const.COLORS = {
   'REGULAR_ORANGE': 'F1992D',
   'REGULAR_RED': 'C51718'
 }
-# Should be usefull (eventually) later on...
-hex2rgb = lambda x: tuple(int(x[i:i+2], 16) for i in (0, 2, 4))
-
-def parse_checklist(filename):
-  with open(filename, 'r') as hjson_file:
-    hson_checklist = hjson.loads(hjson_file.read())
-    json_checklist = hjson.dumpsJSON(hson_checklist)
-    checklist = json.loads(json_checklist)
-
-  categories_list = []
-  for item in checklist:
-    categories_list = []
-    for category in item['categories']:
-      checkpoints_list = []
-      for checkpoint in category['checkpoints']:
-        checks_list = []
-        for check in checkpoint['checks']:
-          checks_list.append(Check(**check))
-        checkpoint['checks'] = checks_list
-        checkpoints_list.append(Checkpoint(**checkpoint))
-      category['checkpoints'] = checkpoints_list
-      categories_list.append(Category(**category))
-
-  return categories_list
 
 def parse_args() -> argparse.Namespace:
   p = argparse.ArgumentParser(formatter_class=argparse.RawDescriptionHelpFormatter, 
@@ -87,8 +62,8 @@ def main():
   if args.debug:
     debug.set_debug(True)
   if args.audit:
-    checklist = parse_checklist(args.audit)
-    ic('TODO usecase')
+    checklist = ChecklistAdapter.checklist_parser(args.audit)
+    ic('Received checklist:', checklist)
     return 0
   if args.regen_report:
     ic("TODO")
