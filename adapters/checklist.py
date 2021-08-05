@@ -6,7 +6,7 @@ from models import *
 from ports.checklist import Checklist
 
 class ChecklistAdapter(Checklist):
-  def checklist_parser(filename):
+  def checklist_parser(self, filename):
     with open(filename, 'r') as hjson_file:
       hson_checklist = hjson.loads(hjson_file.read())
       json_checklist = hjson.dumpsJSON(hson_checklist)
