@@ -2,8 +2,9 @@
 
 from abc import ABC, abstractmethod
 
+
 class Checklist(ABC):
-  @abstractmethod
-  def checklist_parser(filename):
-    """ fixme doc """
-    pass
+    @abstractmethod
+    def checklist_parser(filename):
+        """fixme doc"""
+        pass

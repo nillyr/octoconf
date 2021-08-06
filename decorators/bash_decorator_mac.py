@@ -2,18 +2,19 @@
 
 from decorators.decorator import Decorator
 
+
 class BashDecoratorMAC(Decorator):
-  def decorator(func):
-    def inner(*args, **kwargs):
-      content = []
-      prolog = '''#!/bin/bash
+    def decorator(func):
+        def inner(*args, **kwargs):
+            content = []
+            prolog = '''#!/bin/bash
 
 # Prolog
 echo \"[*] Permission check...\"
 /usr/bin/id -Gn $USER | /usr/bin/grep -q -w admin
 if [ $? -ne 0 ]; then
-  echo "You must be in the admin group to run this script."
-  exit
+    echo "You must be in the admin group to run this script."
+    exit
 fi
 echo \"[+] OK!\"
 
@@ -23,15 +24,16 @@ BASEDIR=$(/usr/bin/mktemp -d)
 
 # Configuration collection
 echo \"[*] Beginning of the collection...\"'''
-      content.append(prolog)
-      content.extend(func(*args, **kwargs))
-      epilog = '''
+            content.append(prolog)
+            content.extend(func(*args, **kwargs))
+            epilog = '''
 # Epilog
 echo \"[*] Finishing...\"
 /bin/date >> \"${BASEDIR}\"/timestamp.log
 /usr/bin/tar zcf \"${BASEDIR##*/}\".tar.gz -C \"${BASEDIR}\" .
 /bin/rm -rf \"${BASEDIR}\"
 echo \"[+] Done!\"'''
-      content.append(epilog)
-      return content
-    return inner
+            content.append(epilog)
+            return content
+
+        return inner
