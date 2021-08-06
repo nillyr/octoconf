@@ -7,12 +7,40 @@ import os
 
 @BashDecorator.decorator
 def write_bash_script(content):
-    return content
+    cmds, str = ([], "")
+    for i in range(len(content)):
+        str += """
+SECTION=\"{0}\"
+echo "[*] Running {1} collection commands..."
+/bin/mkdir -p {2}
+""".format(
+            content[i]["category"],
+            '\\"${SECTION}\\"',
+            '"${BASEDIR}"/"${SECTION}"/',
+        )
+        for cmd in content[i]["collection_cmds"]:
+            str += cmd + "\n"
+        cmds.append(str)
+    return cmds
 
 
 @BashDecoratorMAC.decorator
 def write_bash_script_mac(content):
-    return content
+    cmds, str = ([], "")
+    for i in range(len(content)):
+        str += """
+SECTION=\"{0}\"
+echo "[*] Running {1} collection commands..."
+/bin/mkdir -p {2}
+""".format(
+            content[i]["category"],
+            '\\"${SECTION}\\"',
+            '"${BASEDIR}"/"${SECTION}"/',
+        )
+        for cmd in content[i]["collection_cmds"]:
+            str += cmd + "\n"
+        cmds.append(str)
+    return cmds
 
 
 @BatchDecorator.decorator
@@ -33,10 +61,13 @@ class CollectionScriptRetrievalInteractor:
 
     def __get_commands(self, categories):
         commands = []
-        for item in categories:
-            checkpoints = item.checkpoints
+        for category in categories:
+            lst = []
+            ic(category.name)
+            checkpoints = category.checkpoints
             for checkpoint in range(len(checkpoints)):
-                commands.append(checkpoints[checkpoint].collection)
+                lst.append(checkpoints[checkpoint].collection)
+            commands.append({"category": category.name, "collection_cmds": lst})
         return ic(commands)
 
     def execute(self, args):
@@ -58,7 +89,7 @@ class CollectionScriptRetrievalInteractor:
                         if platform == "linux"
                         else write_bash_script_mac(commands)
                     )
-                    [file.write(x + "\n") for x in content]
+                    [file.write(x) for x in content]
                     return 0
             elif platform == "windows":
                 if language == "batch":
