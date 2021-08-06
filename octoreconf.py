@@ -51,11 +51,16 @@ def parse_misc_args(args):
   _ = vars(args)
   # gen-script
   if _.get('checklist'):
-    checklist, output, language = (args.checklist, args.output, args.language)
-    ic(checklist, output, language)
+    opts = {
+      'checklist': args.checklist,
+      'output': args.output,
+      'language': args.language,
+      'platform': args.platform
+    }
+    ic(opts)
     adapter = ChecklistAdapter()
     uc = CollectionScriptRetrievalInteractor(adapter)
-    return uc.execute(checklist, output, language)
+    return uc.execute(opts)
   # gen-report
   if _.get('input'):
     results, output = (args.input, args.output)
@@ -107,6 +112,7 @@ def parse_args() -> argparse.Namespace:
   csr_parser = misc_cmd.add_parser(name="gen-script")
   csr_parser.add_argument("-c", "--checklist", required=True, help="generate a collection script from the provided checklist")
   csr_parser.add_argument("-l", "--language", choices=("bash", "batch", "powershell"), default="bash", required=True, help="script language")
+  csr_parser.add_argument("-p", "--platform", required=True, choices=("mac", "linux", "windows"), help="targeted platform")
   csr_parser.add_argument("-o", "--output", help="output file to write results")
 
   # Report Generator
