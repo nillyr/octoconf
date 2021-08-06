@@ -12,6 +12,14 @@ def write_bash_script(content):
 def write_bash_script_mac(content):
   return content
 
+@BatchDecorator.decorator
+def write_batch_script(content):
+  return content
+
+@PowershellDecorator.decorator
+def write_powershell_script(content):
+  return content
+
 class CollectionScriptRetrievalInteractor:
   __filename = lambda _, x, y: x if y == None else y
 
@@ -45,10 +53,12 @@ class CollectionScriptRetrievalInteractor:
         else: return 1
       elif platform == "windows":
         if language == "batch":
-          #TODO
+          content = write_batch_script(commands)
+          [file.write(x+'\n') for x in content]
           return 0
         elif language == "powershell":
-          #TODO
+          content = write_powershell_script(commands)
+          [file.write(x+'\n') for x in content]
           return 0
         else: return 1
       else:
