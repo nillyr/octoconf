@@ -31,8 +31,7 @@ class CollectionScriptRetrievalInteractor:
     for item in categories:
       checkpoints = item.checkpoints
       for checkpoint in range(len(checkpoints)):
-        for check in range(checkpoint, checkpoint+1):
-          commands.append(checkpoints[checkpoint].checks[check].cmd)
+        commands.append(checkpoints[checkpoint].collection)
     return ic(commands)
 
   def execute(self, args):
