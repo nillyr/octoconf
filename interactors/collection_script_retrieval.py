@@ -49,16 +49,14 @@ class CollectionScriptRetrievalInteractor:
           content = write_bash_script(commands) if platform == "linux" else write_bash_script_mac(commands)
           [file.write(x+'\n') for x in content]
           return 0
-        else: return 1
       elif platform == "windows":
         if language == "batch":
           content = write_batch_script(commands)
-          [file.write(x+'\n') for x in content]
+          [file.write(x) for x in content]
           return 0
         elif language == "powershell":
           content = write_powershell_script(commands)
-          [file.write(x+'\n') for x in content]
+          [file.write(x) for x in content]
           return 0
-        else: return 1
-      else:
-        return 1
+        else:
+          return 1
