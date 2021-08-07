@@ -10,13 +10,13 @@ def write_bash_script(content):
     cmds, str = ([], "")
     for i in range(len(content)):
         str += """
-SECTION=\"{0}\"
+CATEGORY=\"{0}\"
 echo "[*] Running {1} collection commands..."
 /bin/mkdir -p {2}
 """.format(
             content[i]["category"],
-            '\\"${SECTION}\\"',
-            '"${BASEDIR}"/"${SECTION}"/',
+            '\\"${CATEGORY}\\"',
+            '"${BASEDIR}"/"${CATEGORY}"/',
         )
         for cmd in content[i]["collection_cmds"]:
             str += cmd + "\n"
@@ -29,13 +29,13 @@ def write_bash_script_mac(content):
     cmds, str = ([], "")
     for i in range(len(content)):
         str += """
-SECTION=\"{0}\"
+CATEGORY=\"{0}\"
 echo "[*] Running {1} collection commands..."
 /bin/mkdir -p {2}
 """.format(
             content[i]["category"],
-            '\\"${SECTION}\\"',
-            '"${BASEDIR}"/"${SECTION}"/',
+            '\\"${CATEGORY}\\"',
+            '"${BASEDIR}"/"${CATEGORY}"/',
         )
         for cmd in content[i]["collection_cmds"]:
             str += cmd + "\n"
@@ -45,7 +45,21 @@ echo "[*] Running {1} collection commands..."
 
 @BatchDecorator.decorator
 def write_batch_script(content):
-    return content
+    cmds, str = ([], "")
+    for i in range(len(content)):
+        str += """
+set category={0}
+echo [*] Running {1} collection commands...
+mkdir {2}
+""".format(
+            content[i]["category"],
+            "%category%",
+            "%basedir%\\%category%",
+        )
+        for cmd in content[i]["collection_cmds"]:
+            str += cmd + "\r\n"
+        cmds.append(str)
+    return cmds
 
 
 @PowershellDecorator.decorator
@@ -80,8 +94,8 @@ class CollectionScriptRetrievalInteractor:
             args["language"],
         )
         commands = self.__get_commands(categories)
-
-        with open(output, "w") as file:
+        newline = "\n" if platform in ("linux", "mac") else "\r\n"
+        with open(output, "w", newline=newline) as file:
             if platform in ("linux", "mac"):
                 if language == "bash":
                     content = (
