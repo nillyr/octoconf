@@ -7,11 +7,27 @@ class PowershellDecorator(Decorator):
     def decorator(func):
         def inner(*args, **kwargs):
             content = []
-            # TODO: add commands: create directory, get timestamp, check permissions
-            content.append("TODO: prolog")
+            prolog = """# Prolog
+#Requires -RunAsAdministrator
+#Requires -version 2
+
+Write-Output "[*] Preparation..."
+$basedir = "$pwd\Audit_$env:COMPUTERNAME_$(get-date -f yyyyMMdd-hhmmss)"
+New-Item -ItemType directory -Path $basedir
+
+date >> $basedir\\timestamp.log
+
+# Configuration collection
+Write-Output "[*] Beginning of the collection..."
+"""
+            content.append(prolog)
             content.extend(func(*args, **kwargs))
-            # TODO: add finish timestamp and zip
-            content.append("TODO: epilog")
+            epilog = """# Epilog
+Write-Output "[*] Finishing..."
+date >> $basedir\\timestamp.log
+Write-Output "[+] Done!"
+"""
+            content.append(epilog)
             return content
 
         return inner

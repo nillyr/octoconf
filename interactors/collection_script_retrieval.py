@@ -64,7 +64,19 @@ mkdir {2}
 
 @PowershellDecorator.decorator
 def write_powershell_script(content):
-    return content
+    cmds, str = ([], "")
+    for i in range(len(content)):
+        str += """
+$category=\"{0}\"
+Write-Output "[*] Running {1} collection commands..."
+New-Item -ItemType directory -Path $basedir\\$category
+""".format(
+            content[i]["category"], "$category"
+        )
+        for cmd in content[i]["collection_cmds"]:
+            str += cmd + "\r\n"
+        cmds.append(str)
+    return cmds
 
 
 class CollectionScriptRetrievalInteractor:
