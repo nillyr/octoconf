@@ -85,7 +85,7 @@ class CollectionScriptRetrievalInteractor:
     def __init__(self, adapter):
         self.adapter = adapter
 
-    def __get_commands(self, categories):
+    def __get_collection_commands(self, categories):
         commands = []
         for category in categories:
             lst = []
@@ -105,7 +105,7 @@ class CollectionScriptRetrievalInteractor:
             args["platform"],
             args["language"],
         )
-        commands = self.__get_commands(categories)
+        commands = self.__get_collection_commands(categories)
         newline = "\n" if platform in ("linux", "mac") else "\r\n"
         with open(output, "w", newline=newline) as file:
             if platform in ("linux", "mac"):
