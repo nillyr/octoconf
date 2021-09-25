@@ -76,7 +76,7 @@ def parse_args() -> argparse.Namespace:
         formatter_class=argparse.RawDescriptionHelpFormatter,
         description="""
         ,'""`.       {} {}
-       / _  _ \\ 
+       / _  _ \\
        |(@)(@)|      Tool for semi-automatic verification
        )  __  (      of security configurations.
       /,'))((`.\\
@@ -117,7 +117,6 @@ def parse_args() -> argparse.Namespace:
     analyze_parser.add_argument(
         "-c", "--checklist", required=True, type=str, help="checklist to use"
     )
-    analyze_parser.add_argument("-o", "--output", help="output file to write results")
 
     ## Audit ##
     audit_parser = cmd.add_parser(
@@ -130,7 +129,6 @@ def parse_args() -> argparse.Namespace:
         required=True,
         help="run an audit on the current system using a checklist",
     )
-    audit_parser.add_argument("-o", "--output", help="output file to write results")
 
     ## MISC ##
     misc_parser = cmd.add_parser(name="misc", help="miscellaneous commands")
