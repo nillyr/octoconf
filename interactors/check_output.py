@@ -2,6 +2,7 @@
 
 from decorators.check_decorator import CheckDecorator
 from icecream import ic
+from pathlib import Path
 from ports.output_parser import OutputParser
 import datetime
 import json
@@ -58,7 +59,7 @@ class CheckOutputInteractor(OutputParser):
         )
         return ic(check)
 
-    def execute(self, checklist, results):
+    def execute(self, basedir, checklist, results):
         categories = self.adapter.checklist_parser(checklist)
         checks = []
         for cmds_list in results:
@@ -75,7 +76,8 @@ class CheckOutputInteractor(OutputParser):
                 )
                 checks.append(result)
 
-        with open(self.__timestamp() + "_checkoutput_results.json", "w") as json_file:
+        path = Path.cwd() / basedir / self.__timestamp()
+        with open(str(path) + "_checkoutput_results.json", "w") as json_file:
             json.dump(checks, json_file)
 
         return ic(checks)

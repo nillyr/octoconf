@@ -45,10 +45,10 @@ def parse_audit_args(args):
     ic(args.checklist)
     adapter = ChecklistAdapter()
     uc_step1 = ChecksRunnerInteractor(adapter)
-    results = uc_step1.execute(args.checklist)
+    results = uc_step1.execute(args.output, args.checklist)
 
     uc_step2 = CheckOutputInteractor(adapter)
-    uc_step2.execute(args.checklist, results)
+    uc_step2.execute(args.output, args.checklist, results)
 
 
 def parse_misc_args(args):
@@ -132,6 +132,12 @@ def parse_args() -> argparse.Namespace:
         "--checklist",
         required=True,
         help="run an audit on the current system using a checklist",
+    )
+    audit_parser.add_argument(
+        "-o",
+        "--output",
+        required=True,
+        help="basedir output for collection commands",
     )
 
     ## MISC ##
