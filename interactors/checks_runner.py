@@ -22,9 +22,9 @@ class ChecksRunnerInteractor:
             checks, lst = [], []
             checkpoints = category.checkpoints
             for checkpoint in range(len(checkpoints)):
+                lst.append(checkpoints[checkpoint].collection)
                 if checkpoints[checkpoint].performable == False:
                     continue
-                lst.append(checkpoints[checkpoint].collection)
                 for check in range(len(checkpoints[checkpoint].checks)):
                     checks.append(
                         [
@@ -67,7 +67,7 @@ class ChecksRunnerInteractor:
                 if posix_path.exists() == False:
                     asyncio.run(self.run("New-Item -ItemType directory -Path " + path))
                 return cmd
-        elif sys == "Linux" or sys == "Darwin":
+        elif sys in("Linux", "Darwin"):
             output_file = cmd.split(">")[-1].strip()
             path = output_file[0 : -len(output_file.split("/")[-1])]
             posix_path = Path(path)
