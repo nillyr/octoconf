@@ -33,8 +33,8 @@ def parse_analyze_args(args):
     if args.debug:
         debug.set_debug(True)
 
-    archive, checklist, output = (args.archive, args.checklist, args.output)
-    ic(archive, checklist, output)
+    archive, checklist = (args.archive, args.checklist)
+    ic(archive, checklist)
     # TODO
 
 
@@ -42,9 +42,11 @@ def parse_audit_args(args):
     if args.debug:
         debug.set_debug(True)
 
-    checklist, output = (args.checklist, args.output)
-    ic(checklist, output)
-    # TODO
+    ic(args.checklist)
+    adapter = ChecklistAdapter()
+    uc = ChecksRunnerInteractor(adapter)
+    results = uc.execute(args.checklist)
+    # TODO: check results with expected output
 
 
 def parse_misc_args(args):
