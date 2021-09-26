@@ -1,3 +1,5 @@
+#!/usr/bin/env python
+
 from icecream import ic
 from pathlib import Path
 from platform import system
@@ -47,8 +49,8 @@ class ChecksRunnerInteractor:
         proc = await asyncio.create_subprocess_shell(
             cmd, stdout=asyncio.subprocess.PIPE, stderr=asyncio.subprocess.PIPE
         )
-        stdout, _ = await proc.communicate()
-        return ic(stdout.decode("UTF-8"))
+        stdout, stderr = await proc.communicate()
+        return ic(stdout.decode("UTF-8"), stderr.decode("UTF-8"))
 
     def __preprocess_collection_cmd(self, cmd):
         sys = system()
@@ -67,7 +69,7 @@ class ChecksRunnerInteractor:
                 if posix_path.exists() == False:
                     asyncio.run(self.run("New-Item -ItemType directory -Path " + path))
                 return cmd
-        elif sys in("Linux", "Darwin"):
+        elif sys in ("Linux", "Darwin"):
             output_file = cmd.split(">")[-1].strip()
             path = output_file[0 : -len(output_file.split("/")[-1])]
             posix_path = Path(path)
@@ -95,7 +97,7 @@ class ChecksRunnerInteractor:
                     {
                         "cmd_id": checks_cmd[0],
                         "cmd": checks_cmd[1],
-                        "stdout": asyncio.run(self.run(checks_cmd[1])),
+                        "output": asyncio.run(self.run(checks_cmd[1])),
                     }
                 )
             results.append(checks)

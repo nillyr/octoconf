@@ -44,9 +44,11 @@ def parse_audit_args(args):
 
     ic(args.checklist)
     adapter = ChecklistAdapter()
-    uc = ChecksRunnerInteractor(adapter)
-    results = uc.execute(args.checklist)
-    # TODO: check results with expected output
+    uc_step1 = ChecksRunnerInteractor(adapter)
+    results = uc_step1.execute(args.checklist)
+
+    uc_step2 = CheckOutputInteractor(adapter)
+    uc_step2.execute(args.checklist, results)
 
 
 def parse_misc_args(args):
