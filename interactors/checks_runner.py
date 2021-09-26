@@ -100,7 +100,7 @@ class ChecksRunnerInteractor:
                 )
             results.append(checks)
 
-        with open(self.__timestamp() + "_checksrunner_results.txt", "w") as json_file:
+        with open(self.__timestamp() + "_checksrunner_results.json", "w") as json_file:
             json.dump(results, json_file)
 
         return results
