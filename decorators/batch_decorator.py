@@ -20,6 +20,10 @@ echo [+] OK!
 
 echo [*] Preparation...
 set basedir=Audit_Windows_%COMPUTERNAME%
+set checksdir=%basedir%\\checks
+mkdir %basedir%
+mkdir %checksdir%
+
 echo %time% >> %basedir%\\timestamp.log
 
 REM Configuration collection

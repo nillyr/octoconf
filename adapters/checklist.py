@@ -28,3 +28,32 @@ class ChecklistAdapter(Checklist):
                 categories_list.append(Category(**category))
 
         return categories_list
+
+    def get_commands(self, filename):
+        categories = self.checklist_parser(filename)
+        commands = []
+        for category in categories:
+            checks, lst = [], []
+            checkpoints = category.checkpoints
+            for checkpoint in range(len(checkpoints)):
+                lst.append(checkpoints[checkpoint].collection)
+                if checkpoints[checkpoint].performable == False:
+                    continue
+                for check in range(len(checkpoints[checkpoint].checks)):
+                    checks.append(
+                        [
+                            "%s" % category.id
+                            + ".%s" % checkpoints[checkpoint].id
+                            + ".%s" % checkpoints[checkpoint].checks[check].id,
+                            checkpoints[checkpoint].checks[check].cmd,
+                        ]
+                    )
+            commands.append(
+                {
+                    "category_id": category.id,
+                    "category_name": category.name,
+                    "collection_cmds": lst,
+                    "checks_cmds": checks,
+                }
+            )
+        return commands

@@ -19,6 +19,9 @@ echo \"[+] OK!\"
 
 echo \"[*] Preparation...\"
 BASEDIR=$(/usr/bin/mktemp -d)
+CHECKSDIR=\"${BASEDIR}\"/checks
+/usr/bin/mkdir -p \"${CHECKSDIR}\"
+
 echo `date` >> \"${BASEDIR}\"/timestamp.log
 exec 2>/dev/null
 

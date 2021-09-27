@@ -8,3 +8,8 @@ class Checklist(ABC):
     def checklist_parser(self, filename):
         """fixme doc"""
         pass
+
+    @abstractmethod
+    def get_commands(self, filename):
+        """fixme doc"""
+        pass

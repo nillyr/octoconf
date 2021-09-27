@@ -14,6 +14,8 @@ class PowershellDecorator(Decorator):
 Write-Output "[*] Preparation..."
 $basedir = "$pwd\Audit_$env:COMPUTERNAME_$(get-date -f yyyyMMdd-hhmmss)"
 New-Item -ItemType directory -Path $basedir
+$checksdir = "$basedir\checks"
+New-Item -ItemType directory -Path $checksdir
 
 date >> $basedir\\timestamp.log
 
