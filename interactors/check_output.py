@@ -46,25 +46,13 @@ class CheckOutputInteractor(OutputParser):
             )
         return check
 
-    def __get_check(self, categories, cmd_id):
-        category_id, checkpoint_id, check_id = (
-            int(cmd_id.split(".")[0]),
-            int(cmd_id.split(".")[1]),
-            int(cmd_id.split(".")[2]),
-        )
-        check = (
-            categories[category_id - 1]
-            .checkpoints[checkpoint_id - 1]
-            .checks[check_id - 1]
-        )
-        return ic(check)
-
     def execute(self, basedir, checklist, results):
         categories = self.adapter.checklist_parser(checklist)
         checks = []
         for cmds_list in results:
             for cmd in cmds_list:
-                check = self.__get_check(categories, cmd["cmd_id"])
+                ic(cmd)
+                check = ic(self.adapter.get_check(categories, cmd["cmd_id"]))
                 result = self.__check_output(
                     {
                         "cmd_id": cmd["cmd_id"],

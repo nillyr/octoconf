@@ -57,3 +57,16 @@ class ChecklistAdapter(Checklist):
                 }
             )
         return commands
+
+    def get_check(self, categories, cmd_id):
+        category_id, checkpoint_id, check_id = (
+            int(cmd_id.split(".")[0]),
+            int(cmd_id.split(".")[1]),
+            int(cmd_id.split(".")[2]),
+        )
+        check = (
+            categories[category_id - 1]
+            .checkpoints[checkpoint_id - 1]
+            .checks[check_id - 1]
+        )
+        return check

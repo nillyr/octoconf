@@ -33,22 +33,30 @@ def parse_analyze_args(args):
     if args.debug:
         debug.set_debug(True)
 
-    archive, checklist = (args.archive, args.checklist)
-    ic(archive, checklist)
-    # TODO
+    output, archive, checklist = (args.output, args.archive, args.checklist)
+    ic(output, archive, checklist)
+
+    adapter = ChecklistAdapter()
+    uc_step1 = CheckArchiveInteractor(adapter)
+    results = uc_step1.execute(output, archive, checklist)
+
+    uc_step2 = CheckOutputInteractor(adapter)
+    uc_step2.execute(output, checklist, results)
 
 
 def parse_audit_args(args):
     if args.debug:
         debug.set_debug(True)
 
-    ic(args.checklist)
+    output, checklist = (args.output, args.checklist)
+    ic(output, checklist)
+
     adapter = ChecklistAdapter()
     uc_step1 = ChecksRunnerInteractor(adapter)
-    results = uc_step1.execute(args.output, args.checklist)
+    results = uc_step1.execute(output, checklist)
 
     uc_step2 = CheckOutputInteractor(adapter)
-    uc_step2.execute(args.output, args.checklist, results)
+    uc_step2.execute(output, checklist, results)
 
 
 def parse_misc_args(args):
@@ -120,6 +128,12 @@ def parse_args() -> argparse.Namespace:
     )
     analyze_parser.add_argument(
         "-c", "--checklist", required=True, type=str, help="checklist to use"
+    )
+    analyze_parser.add_argument(
+        "-o",
+        "--output",
+        required=True,
+        help="output directory",
     )
 
     ## Audit ##
