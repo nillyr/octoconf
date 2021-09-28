@@ -7,7 +7,10 @@ class PowershellDecorator(Decorator):
     def decorator(func):
         def inner(*args, **kwargs):
             content = []
-            prolog = """# Prolog
+            prolog = (
+                """# %s
+
+# Prolog
 #Requires -RunAsAdministrator
 #Requires -version 2
 
@@ -22,6 +25,8 @@ date >> $basedir\\timestamp.log
 # Configuration collection
 Write-Output "[*] Beginning of the collection..."
 """
+                % args[1][0]["copyright"]
+            )
             content.append(prolog)
             content.extend(func(*args, **kwargs))
             epilog = """# Epilog

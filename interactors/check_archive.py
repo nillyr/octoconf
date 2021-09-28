@@ -52,7 +52,7 @@ class CheckArchiveInteractor:
         return path
 
     def execute(self, basedir, archive, checklist):
-        categories = self.adapter.checklist_parser(checklist)
+        categories, copyright = self.adapter.checklist_parser(checklist)
         extract_path = ic(self.__extract(archive))
         if extract_path is None:
             return

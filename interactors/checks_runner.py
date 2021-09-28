@@ -46,7 +46,7 @@ class ChecksRunnerInteractor:
     def execute(self, basedir, checklist):
         cmds = ic(self.adapter.get_commands(checklist))
         results = []
-        for category in range(len(cmds)):
+        for category in range(1, len(cmds)):
             collection_cmds = cmds[category]["collection_cmds"]
             [
                 asyncio.run(

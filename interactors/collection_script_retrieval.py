@@ -29,7 +29,7 @@ class CollectionScriptRetrievalInteractor:
     @BashDecorator.decorator
     def write_bash_script(self, content, platform, callback):
         cmds, str = ([], "")
-        for i in range(len(content)):
+        for i in range(1, len(content)):
             str += """
 CATEGORY=\"{0}\"
 echo "[*] Running {1} collection commands..."
@@ -42,12 +42,12 @@ echo "[*] Running {1} collection commands..."
             for cmd in content[i]["collection_cmds"]:
                 str += cmd + newline(platform)
             cmds.append(str)
-        return callback("${CHECKSDIR}", content, cmds, " > ", platform)
+        return callback("${CHECKSDIR}", content[1:], cmds, " > ", platform)
 
     @BashDecoratorMAC.decorator
     def write_bash_script_mac(self, content, platform, callback):
         cmds, str = ([], "")
-        for i in range(len(content)):
+        for i in range(1, len(content)):
             str += """
 CATEGORY=\"{0}\"
 echo "[*] Running {1} collection commands..."
@@ -60,12 +60,12 @@ echo "[*] Running {1} collection commands..."
             for cmd in content[i]["collection_cmds"]:
                 str += cmd + newline(platform)
             cmds.append(str)
-        return callback("${CHECKSDIR}", content, cmds, " > ", platform)
+        return callback("${CHECKSDIR}", content[1:], cmds, " > ", platform)
 
     @BatchDecorator.decorator
     def write_batch_script(self, content, platform, callback):
         cmds, str = ([], "")
-        for i in range(len(content)):
+        for i in range(1, len(content)):
             str += """
 set category={0}
 echo [*] Running {1} collection commands...
@@ -78,12 +78,12 @@ mkdir {2}
             for cmd in content[i]["collection_cmds"]:
                 str += cmd + newline(platform)
             cmds.append(str)
-        return callback("%checksdir%", content, cmds, " > ", platform)
+        return callback("%checksdir%", content[1:], cmds, " > ", platform)
 
     @PowershellDecorator.decorator
     def write_powershell_script(self, content, platform, callback):
         cmds, str = ([], "")
-        for i in range(len(content)):
+        for i in range(1, len(content)):
             str += """
 $category=\"{0}\"
 Write-Output "[*] Running {1} collection commands..."
@@ -94,7 +94,7 @@ New-Item -ItemType directory -Path $basedir\\$category
             for cmd in content[i]["collection_cmds"]:
                 str += cmd + newline(platform)
             cmds.append(str)
-        return callback("$checksdir", content, cmds, " | Out-File -Path ", platform)
+        return callback("$checksdir", content[1:], cmds, " | Out-File -Path ", platform)
 
     def execute(self, args):
         commands, output, platform, language = (

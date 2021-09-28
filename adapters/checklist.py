@@ -14,6 +14,7 @@ class ChecklistAdapter(Checklist):
             checklist = json.loads(json_checklist)
 
         categories_list = []
+        copyright = checklist[0]["copyright"]
         for item in checklist:
             categories_list = []
             for category in item["categories"]:
@@ -27,11 +28,13 @@ class ChecklistAdapter(Checklist):
                 category["checkpoints"] = checkpoints_list
                 categories_list.append(Category(**category))
 
-        return categories_list
+        return categories_list, copyright
 
     def get_commands(self, filename):
-        categories = self.checklist_parser(filename)
+        categories, copyright = self.checklist_parser(filename)
+
         commands = []
+        commands.append({"copyright": copyright})
         for category in categories:
             checks, lst = [], []
             checkpoints = category.checkpoints

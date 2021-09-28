@@ -1,6 +1,7 @@
 # Syntax to be used
 [
   {
+    copyright: This script is the property of FIXME. It must not be redistributed.
     categories: [
       {
         id: 1

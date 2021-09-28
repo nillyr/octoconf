@@ -47,7 +47,7 @@ class CheckOutputInteractor(OutputParser):
         return check
 
     def execute(self, basedir, checklist, results):
-        categories = self.adapter.checklist_parser(checklist)
+        categories, copyright = self.adapter.checklist_parser(checklist)
         checks = []
         for cmds_list in results:
             for cmd in cmds_list:

@@ -7,7 +7,10 @@ class BashDecorator(Decorator):
     def decorator(func):
         def inner(*args, **kwargs):
             content = []
-            prolog = '''#!/bin/bash
+            prolog = (
+                '''#!/bin/bash
+
+# %s
 
 # Prolog
 echo \"[*] Permission check...\"
@@ -27,6 +30,8 @@ exec 2>/dev/null
 
 # Configuration collection
 echo \"[*] Beginning of the collection...\"'''
+                % args[1][0]["copyright"]
+            )
             content.append(prolog)
             content.extend(func(*args, **kwargs))
             epilog = '''
