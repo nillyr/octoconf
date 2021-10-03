@@ -22,7 +22,7 @@ class LanguageFactory(ILanguageFactory):
 
 class UnixScriptFactory:
     @staticmethod
-    def write_script_for(platform, language_name):  # TODO
+    def write_script_for(platform, language_name):
         # Unused arg: language_name
         try:
             if platform == "linux":
