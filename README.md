@@ -15,14 +15,14 @@ Tool dedicated to the realization of configuration audits of various systems via
 ```
 usage: octoreconf.py [-h] [-v] [-d] {analyze,audit,misc} ...
 
-        ,'""`.       octoreconf v1.0.0b
-       / _  _ \ 
+        ,'""`.       octoreconf v1.2.0b
+       / _  _ \
        |(@)(@)|      Tool for semi-automatic verification
        )  __  (      of security configurations.
       /,'))((`.\
      (( ((  )) ))    /** Nicolas GRELLETY ( ngy.cs@protonmail.com ) **/
    hh `\ `)(' /'
-  
+
 
 positional arguments:
   {analyze,audit,misc}  Available Commands
