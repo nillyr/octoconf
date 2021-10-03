@@ -32,11 +32,15 @@ def parse_analyze_args(args):
     if args.debug:
         debug.set_debug(True)
 
+    print("[*] Launching the archive analysis...")
     uc = CheckArchiveInteractor()
     results = uc.execute(args.checklist, args.archive)
 
-    with open(timestamp() + "_analyze_results.json", "w") as json_file:
+    filename = timestamp() + "_analyze_results.json"
+    print(f"[*] Exporting results in JSON format (path: {filename})")
+    with open(filename, "w") as json_file:
         json.dump(results, json_file, cls=CheckResultJsonEncoder)
+    print("[+] Done")
     return
 
 
@@ -44,11 +48,15 @@ def parse_audit_args(args):
     if args.debug:
         debug.set_debug(True)
 
+    print("[*] Launching the audit...")
     uc = ChecksRunnerInteractor()
     results = uc.execute(args.checklist, args.output)
 
-    with open(timestamp() + "_audit_results.json", "w") as json_file:
+    filename = timestamp() + "_audit_results.json"
+    print(f"[*] Exporting results in JSON format (path: {filename})")
+    with open(filename, "w") as json_file:
         json.dump(results, json_file, cls=CheckResultJsonEncoder)
+    print("[+] Done")
     return
 
 
@@ -65,8 +73,12 @@ def parse_misc_args(args):
             "language": args.language,
             "platform": args.platform,
         }
+        print("[*] Launching the script generation...")
         uc = CollectionScriptRetrievalInteractor()
-        return uc.execute(opts)
+        uc.execute(opts)
+        print(f"[+] The generated script has been put here: {args.output}")
+        print("[+] Done")
+        return
     # gen-report
     if _.get("input"):
         results, output = (args.input, args.output)
