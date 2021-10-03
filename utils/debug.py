@@ -1,15 +1,13 @@
-#!/usr/bin/env python
-
 from icecream import ic
 import sys
 
 
 class Debug:
-    def __init__(self):
+    def __init__(self) -> None:
         self.debug = False
         ic.disable()
 
-    def set_debug(self, value: bool):
+    def set_debug(self, value: bool) -> None:
         self.debug = value
         if self.debug:
             ic.enable()

@@ -1,16 +1,13 @@
-#!/usr/bin/env python
-
 from decorators.decorator import Decorator
+from icecream import ic
 
 
 class BashDecoratorMAC(Decorator):
     def decorator(func):
         def inner(*args, **kwargs):
+            ic(args)
             content = []
-            prolog = (
-                '''#!/bin/bash
-
-# %s
+            prolog = '''#!/bin/bash
 
 # Prolog
 echo \"[*] Permission check...\"
@@ -30,8 +27,6 @@ CHECKSDIR=\"${BASEDIR}\"/checks
 
 # Configuration collection
 echo \"[*] Beginning of the collection...\"'''
-                % args[1][0]["copyright"]
-            )
             content.append(prolog)
             content.extend(func(*args, **kwargs))
             epilog = '''

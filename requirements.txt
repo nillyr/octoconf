@@ -1,6 +1,7 @@
 black==21.7b0
 hjson==3.0.2
 icecream==2.1.1
+Inject==4.3.1
 openpyxl==3.0.7
 pydantic==1.8.2
 sty==1.0.0rc1

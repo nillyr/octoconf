@@ -1,7 +1,4 @@
-#!/usr/bin/env python
-
 from models.checkpoint import Checkpoint
-
 from pydantic import BaseModel
 from typing import List
 

@@ -1,21 +1,53 @@
-#!/usr/bin/env python
-
+from enum import Enum
+from icecream import ic
+from models import *
+from ports.checklist import IChecklist
+from typing import List
 import hjson
 import json
-from models import *
-from ports.checklist import Checklist
+import sys
 
 
-class ChecklistAdapter(Checklist):
-    def checklist_parser(self, filename):
-        with open(filename, "r") as hjson_file:
-            hson_checklist = hjson.loads(hjson_file.read())
-            json_checklist = hjson.dumpsJSON(hson_checklist)
-            checklist = json.loads(json_checklist)
+class NoValue(Enum):
+    def __repr__(self):
+        return "<%s.%s>" % (self.__class__.__name__, self.name)
 
+
+class ChecklistAdapter(IChecklist):
+    _instance = None
+    _checklist = None
+
+    class CmdType(NoValue):
+        # WINDOWS
+        AUDIT_POWERSHELL = "powershell.exe"
+        BATCH_EXEC = "cmd.exe"
+        # UNIX
+        CMD_EXEC = "/bin/bash"
+
+    def __new__(cls):
+        if cls._instance is None:
+            cls._instance = super(IChecklist, cls).__new__(cls)
+        return cls._instance
+
+    def parse_checklist(self, checklist) -> None:
+        if self._checklist is None:
+            with open(checklist, "r") as hjson_file:
+                hson_checklist = hjson.loads(hjson_file.read())
+                json_checklist = hjson.dumpsJSON(hson_checklist)
+                self._checklist = json.loads(json_checklist)
+
+    def get_executable(self, cmd_type) -> str:
+        if cmd_type == "AUDIT_POWERSHELL":
+            return self.CmdType.AUDIT_POWERSHELL.value
+        if cmd_type == "BATCH_EXEC":
+            return self.CmdType.BATCH_EXEC.value
+        if cmd_type == "CMD_EXEC":
+            return self.CmdType.CMD_EXEC.value
+        return
+
+    def get_categories(self) -> List[Category]:
         categories_list = []
-        copyright = checklist[0]["copyright"]
-        for item in checklist:
+        for item in self._checklist:
             categories_list = []
             for category in item["categories"]:
                 checkpoints_list = []
@@ -28,20 +60,17 @@ class ChecklistAdapter(Checklist):
                 category["checkpoints"] = checkpoints_list
                 categories_list.append(Category(**category))
 
-        return categories_list, copyright
+        return categories_list
 
-    def get_commands(self, filename):
-        categories, copyright = self.checklist_parser(filename)
-
+    def get_commands(self):
+        categories = self.get_categories()
         commands = []
-        commands.append({"copyright": copyright})
         for category in categories:
             checks, lst = [], []
             checkpoints = category.checkpoints
             for checkpoint in range(len(checkpoints)):
-                lst.append(checkpoints[checkpoint].collection)
-                if checkpoints[checkpoint].performable == False:
-                    continue
+                if checkpoints[checkpoint].collection_cmd is not None:
+                    lst.append(checkpoints[checkpoint].collection_cmd)
                 for check in range(len(checkpoints[checkpoint].checks)):
                     checks.append(
                         [
@@ -61,7 +90,7 @@ class ChecklistAdapter(Checklist):
             )
         return commands
 
-    def get_check(self, categories, cmd_id):
+    def get_check(self, categories, cmd_id) -> Check:
         category_id, checkpoint_id, check_id = (
             int(cmd_id.split(".")[0]),
             int(cmd_id.split(".")[1]),
@@ -73,3 +102,42 @@ class ChecklistAdapter(Checklist):
             .checks[check_id - 1]
         )
         return check
+
+    def list_collection_cmds(self):
+        collection_cmds = []
+        for item in self._checklist:
+            for category in item["categories"]:
+                for checkpoint in category["checkpoints"]:
+                    if "collection_cmd" in checkpoint:
+                        try:
+                            collection_cmds.append(
+                                {
+                                    "category_name": category["name"],
+                                    "collection_cmd_type": checkpoint[
+                                        "collection_cmd_type"
+                                    ],
+                                    "collection_cmd": checkpoint["collection_cmd"],
+                                }
+                            )
+                        except KeyError as _err:
+                            print(f"Error: {_err} is expected.", file=sys.stderr)
+                        finally:
+                            continue
+
+        return ic(collection_cmds)
+
+    def list_checks(self) -> List[Check]:
+        checks = []
+        for item in self._checklist:
+            for category in item["categories"]:
+                for checkpoint in category["checkpoints"]:
+                    for check in checkpoint["checks"]:
+                        check["id"] = (
+                            str(category["id"])
+                            + "."
+                            + str(checkpoint["id"])
+                            + "."
+                            + str(check["id"])
+                        )
+                        checks.append(Check(**check))
+        return ic(checks)

@@ -1,77 +1,74 @@
-#!/usr/bin/env python
-
 from icecream import ic
+from interactors.check_output import CheckOutputInteractor
+from models import CheckResult
 from pathlib import Path
 from platform import system
+from ports import IChecklist
 import asyncio
-import datetime
-import json
+import inject
 import re
-import time
 
 
 class ChecksRunnerInteractor:
-    __timestamp = lambda _: datetime.datetime.fromtimestamp(time.time()).strftime(
-        "%Y%m%d%H%M%S"
-    )
+    @inject.autoparams("checklist")
+    def __init__(self, checklist: IChecklist) -> None:
+        self._checklist = checklist
 
-    def __init__(self, adapter):
-        self.adapter = adapter
-
-    async def run(self, cmd):
+    async def _run(self, cmd, cmd_type) -> str:
         proc = await asyncio.create_subprocess_shell(
-            cmd, stdout=asyncio.subprocess.PIPE, stderr=asyncio.subprocess.PIPE
+            cmd,
+            stdout=asyncio.subprocess.PIPE,
+            stderr=asyncio.subprocess.PIPE,
+            executable=self._checklist.get_executable(cmd_type),
         )
-        stdout, stderr = await proc.communicate()
-        return ic(stdout.decode("UTF-8"), stderr.decode("UTF-8"))
+        stdout, _ = await proc.communicate()
+        return ic(stdout.decode("UTF-8"))
 
-    def __preprocess_collection_cmd(self, basedir, category, cmd):
+    def _preprocess_collection_cmd(self, basedir, category, cmd) -> str:
         if system() == "Windows" and "| Out-File -Path" in cmd:
             pattern = "| Out-File -Path"
-            md = "New-Item -ItemType directory -Path "
         else:
             pattern = ">"
-            md = "mkdir -p "
 
         output_file = re.split(pattern, cmd)[-1].strip()
         path = (
             Path.cwd() / basedir / category.replace(" ", "_") / Path(output_file).parent
         )
-        if path.exists() == False:
-            asyncio.run(self.run(md + str(path)))
-
+        path.mkdir(parents=True, exist_ok=True)
         replace_path = path / Path(output_file).name
         return ic(re.split(pattern, cmd)[0] + pattern + " " + str(replace_path))
 
-    def execute(self, basedir, checklist):
-        cmds = ic(self.adapter.get_commands(checklist))
+    def execute(self, checklist, output_directory):
+        self._checklist.parse_checklist(checklist)
+        collection_cmds = self._checklist.list_collection_cmds()
+        for collection_cmd in collection_cmds:
+            cat, cmd, cmd_type = (
+                collection_cmd["category_name"],
+                collection_cmd["collection_cmd"],
+                collection_cmd["collection_cmd_type"],
+            )
+            asyncio.run(
+                self._run(
+                    self._preprocess_collection_cmd(output_directory, cat, cmd),
+                    cmd_type,
+                )
+            )
+
+        checks = self._checklist.list_checks()
         results = []
-        for category in range(1, len(cmds)):
-            collection_cmds = cmds[category]["collection_cmds"]
-            [
-                asyncio.run(
-                    self.run(
-                        self.__preprocess_collection_cmd(
-                            basedir, cmds[category]["category_name"], collection_cmd
-                        )
-                    )
-                )
-                for collection_cmd in collection_cmds
-            ]
-            checks_cmds = cmds[category]["checks_cmds"]
-            checks = []
-            for checks_cmd in checks_cmds:
-                checks.append(
-                    {
-                        "cmd_id": checks_cmd[0],
-                        "cmd": checks_cmd[1],
-                        "output": asyncio.run(self.run(checks_cmd[1])),
-                    }
-                )
-            results.append(checks)
+        for check in checks:
+            cmd_output = asyncio.run(self._run(check.cmd, check.type))
+            check_result = {
+                "id": check.id,
+                "description": check.description,
+                "type": check.type,
+                "cmd": check.cmd,
+                "expected": check.expected,
+                "verification_type": check.verification_type,
+                "recommandation_on_failed": check.recommandation_on_failed,
+                "cmd_output": cmd_output,
+                "see_also": check.see_also if check.see_also is not None else None,
+            }
 
-        path = Path.cwd() / basedir / self.__timestamp()
-        with open(str(path) + "_checksrunner_results.json", "w") as json_file:
-            json.dump(results, json_file)
-
-        return results
+            results.append(CheckResult(**check_result))
+        return CheckOutputInteractor().execute(ic(results))

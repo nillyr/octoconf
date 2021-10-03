@@ -1,16 +1,13 @@
-#!/usr/bin/env python
-
 from decorators.decorator import Decorator
+from icecream import ic
 
 
 class BatchDecorator(Decorator):
     def decorator(func):
         def inner(*args, **kwargs):
+            ic(args)
             content = []
-            prolog = (
-                """REM {0}
-
-REM Prolog
+            prolog = """REM Prolog
 
 @@echo off
 echo [*] Permission check...
@@ -32,7 +29,6 @@ echo %time% >> %basedir%\\timestamp.log
 REM Configuration collection
 echo [*] Beginning of the collection...
 """
-            ).format(args[1][0]["copyright"])
             content.append(prolog)
             content.extend(func(*args, **kwargs))
             epilog = """

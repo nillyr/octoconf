@@ -1,26 +1,25 @@
 #!/usr/bin/env python
 
-from adapters import *
-import argparse
+from adapters import ArchiveAdapter, CheckerAdapter, ChecklistAdapter, LanguageFactory
+from components.json_encoders.check_result import CheckResultJsonEncoder
 from icecream import ic
 from interactors import *
+from ports import IArchive, IChecker, IChecklist, ILanguageFactory
+from utils import *
+import argparse
+import datetime
+import inject
+import json
 import os
 import sys
-from utils import *
+import time
 
-const.VERSION = "v1.0.0b"
-const.COLORS = {
-    "DARK_BLUE": "333E4E",
-    "LIGHT_BLUE": "8496AF",
-    "LIGT_GRAY": "D9D9D9",
-    "LIGHT_GREEN": "92D050",
-    "LIGHT_ORANGE": "F6C180",
-    "LIGHT_YELLOW": "FFFF66",
-    "REGULAR_BLUE": "3891DE",
-    "REGULAR_GREEN": "009644",
-    "REGULAR_ORANGE": "F1992D",
-    "REGULAR_RED": "C51718",
-}
+
+timestamp = lambda: datetime.datetime.fromtimestamp(time.time()).strftime(
+    "%Y%m%d%H%M%S"
+)
+
+const.VERSION = "v1.2.0b"
 
 
 def default_parse_args(args):
@@ -33,30 +32,24 @@ def parse_analyze_args(args):
     if args.debug:
         debug.set_debug(True)
 
-    output, archive, checklist = (args.output, args.archive, args.checklist)
-    ic(output, archive, checklist)
+    uc = CheckArchiveInteractor()
+    results = uc.execute(args.checklist, args.archive)
 
-    adapter = ChecklistAdapter()
-    uc_step1 = CheckArchiveInteractor(adapter)
-    results = uc_step1.execute(output, archive, checklist)
-
-    uc_step2 = CheckOutputInteractor(adapter)
-    uc_step2.execute(output, checklist, results)
+    with open(timestamp() + "_analyze_results.json", "w") as json_file:
+        json.dump(results, json_file, cls=CheckResultJsonEncoder)
+    return
 
 
 def parse_audit_args(args):
     if args.debug:
         debug.set_debug(True)
 
-    output, checklist = (args.output, args.checklist)
-    ic(output, checklist)
+    uc = ChecksRunnerInteractor()
+    results = uc.execute(args.checklist, args.output)
 
-    adapter = ChecklistAdapter()
-    uc_step1 = ChecksRunnerInteractor(adapter)
-    results = uc_step1.execute(output, checklist)
-
-    uc_step2 = CheckOutputInteractor(adapter)
-    uc_step2.execute(output, checklist, results)
+    with open(timestamp() + "_audit_results.json", "w") as json_file:
+        json.dump(results, json_file, cls=CheckResultJsonEncoder)
+    return
 
 
 def parse_misc_args(args):
@@ -72,15 +65,13 @@ def parse_misc_args(args):
             "language": args.language,
             "platform": args.platform,
         }
-        ic(opts)
-        adapter = ChecklistAdapter()
-        uc = CollectionScriptRetrievalInteractor(adapter)
+        uc = CollectionScriptRetrievalInteractor()
         return uc.execute(opts)
     # gen-report
     if _.get("input"):
         results, output = (args.input, args.output)
         ic(results, output)
-        # TODO
+        # TODO: to be implemented :)
 
 
 def parse_args() -> argparse.Namespace:
@@ -129,12 +120,6 @@ def parse_args() -> argparse.Namespace:
     analyze_parser.add_argument(
         "-c", "--checklist", required=True, type=str, help="checklist to use"
     )
-    analyze_parser.add_argument(
-        "-o",
-        "--output",
-        required=True,
-        help="output directory",
-    )
 
     ## Audit ##
     audit_parser = cmd.add_parser(
@@ -182,7 +167,9 @@ def parse_args() -> argparse.Namespace:
         choices=("mac", "linux", "windows"),
         help="targeted platform",
     )
-    csr_parser.add_argument("-o", "--output", help="output file to write results")
+    csr_parser.add_argument(
+        "-o", "--output", required=True, help="output file to write results"
+    )
 
     # Report Generator
     rgr_parser = misc_cmd.add_parser(name="gen-report")
@@ -197,5 +184,13 @@ def parse_args() -> argparse.Namespace:
     return args.func(args)
 
 
+def dependency_injection_configuration(binder):
+    binder.bind(IArchive, ArchiveAdapter())
+    binder.bind(IChecker, CheckerAdapter())
+    binder.bind(IChecklist, ChecklistAdapter())
+    binder.bind(ILanguageFactory, LanguageFactory())
+
+
 if __name__ == "__main__":
+    inject.configure(dependency_injection_configuration)
     sys.exit(parse_args())
