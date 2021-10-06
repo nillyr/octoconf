@@ -1,23 +1,18 @@
 #!/usr/bin/env python
 
 from adapters import ArchiveAdapter, CheckerAdapter, ChecklistAdapter, LanguageFactory
-from components.json_encoders.check_result import CheckResultJsonEncoder
+from components.json_encoders.checkresult import CheckResultJsonEncoder
+from components.report_generators import *
 from icecream import ic
 from interactors import *
 from ports import IArchive, IChecker, IChecklist, ILanguageFactory
 from utils import *
 import argparse
-import datetime
 import inject
 import json
 import os
 import sys
-import time
 
-
-timestamp = lambda: datetime.datetime.fromtimestamp(time.time()).strftime(
-    "%Y%m%d%H%M%S"
-)
 
 const.VERSION = "v1.2.0b"
 
@@ -34,14 +29,7 @@ def parse_analyze_args(args):
 
     print("[*] Launching the archive analysis...")
     uc = CheckArchiveInteractor()
-    results = uc.execute(args.checklist, args.archive)
-
-    filename = timestamp() + "_analyze_results.json"
-    print(f"[*] Exporting results in JSON format (path: {filename})")
-    with open(filename, "w") as json_file:
-        json.dump(results, json_file, cls=CheckResultJsonEncoder)
-    print("[+] Done")
-    return
+    return uc.execute(args.checklist, args.archive)
 
 
 def parse_audit_args(args):
@@ -50,14 +38,7 @@ def parse_audit_args(args):
 
     print("[*] Launching the audit...")
     uc = ChecksRunnerInteractor()
-    results = uc.execute(args.checklist, args.output)
-
-    filename = timestamp() + "_audit_results.json"
-    print(f"[*] Exporting results in JSON format (path: {filename})")
-    with open(filename, "w") as json_file:
-        json.dump(results, json_file, cls=CheckResultJsonEncoder)
-    print("[+] Done")
-    return
+    return uc.execute(args.checklist, args.output)
 
 
 def parse_misc_args(args):
@@ -65,6 +46,11 @@ def parse_misc_args(args):
         debug.set_debug(True)
 
     _ = vars(args)
+    # gen-report
+    if _.get("input"):
+        results = args.input
+        uc = ReportGeneratorInteractor()
+        return uc.execute(args.input, is_file=True)
     # gen-script
     if _.get("checklist"):
         opts = {
@@ -79,11 +65,6 @@ def parse_misc_args(args):
         print(f"[+] The generated script has been put here: {args.output}")
         print("[+] Done")
         return
-    # gen-report
-    if _.get("input"):
-        results, output = (args.input, args.output)
-        ic(results, output)
-        # TODO: to be implemented :)
 
 
 def parse_args() -> argparse.Namespace:
@@ -186,7 +167,6 @@ def parse_args() -> argparse.Namespace:
     # Report Generator
     rgr_parser = misc_cmd.add_parser(name="gen-report")
     rgr_parser.add_argument("-i", "--input", required=True, help="JSON results file")
-    rgr_parser.add_argument("-o", "--output", help="output file to write results")
 
     if len(sys.argv) == 1:
         p.print_help(file=sys.stderr)
@@ -201,6 +181,7 @@ def dependency_injection_configuration(binder):
     binder.bind(IChecker, CheckerAdapter())
     binder.bind(IChecklist, ChecklistAdapter())
     binder.bind(ILanguageFactory, LanguageFactory())
+    binder.bind(IReportGenerator, XlsxGenerator())
 
 
 if __name__ == "__main__":

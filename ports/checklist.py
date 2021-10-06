@@ -36,3 +36,7 @@ class IChecklist(ABC):
     def get_executable(self) -> None:
         """Used by checks_runner use case"""
         pass
+
+    @abstractmethod
+    def get_json_reporting(self) -> None:
+        """Used by check_output use case"""

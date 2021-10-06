@@ -5,3 +5,4 @@ Inject==4.3.1
 openpyxl==3.0.7
 pydantic==1.8.2
 sty==1.0.0rc1
+XlsxWriter==3.0.1

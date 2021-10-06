@@ -1,3 +1,4 @@
+from components.json_encoders.checklist import ChecklistJsonEncoder
 from enum import Enum
 from icecream import ic
 from models import *
@@ -141,3 +142,28 @@ class ChecklistAdapter(IChecklist):
                         )
                         checks.append(Check(**check))
         return ic(checks)
+
+    def get_json_reporting(self, results: List[CheckResult]) -> str:
+        checklist = self._checklist
+        for result in results:
+            cat_id, checkpoint_id, check_id = (
+                int(result.id.split(".")[0]),
+                int(result.id.split(".")[1]),
+                int(result.id.split(".")[2]),
+            )
+            result.id = check_id
+            base = checklist[0]["categories"][cat_id - 1]["checkpoints"][
+                checkpoint_id - 1
+            ]
+            if isinstance(base, dict):
+                checklist[0]["categories"][cat_id - 1]["checkpoints"][
+                    checkpoint_id - 1
+                ]["checks"][check_id - 1] = result
+            elif isinstance(base, Checkpoint):
+                checklist[0]["categories"][cat_id - 1]["checkpoints"][
+                    checkpoint_id - 1
+                ].checks[check_id - 1] = result
+            else:
+                continue
+
+        return json.dumps(checklist, cls=ChecklistJsonEncoder, ensure_ascii=False)
