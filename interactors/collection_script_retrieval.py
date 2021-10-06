@@ -16,7 +16,7 @@ class CollectionScriptRetrievalInteractor:
         checklist, output, language, platform = ic(args.values())
 
         self._checklist.parse_checklist(checklist)
-        commands = ic(self._checklist.get_commands())
+        commands = self._checklist.get_commands()
         script = self._factory.get_language(platform, language)
 
         with open(output, "w", newline=self._newline(platform)) as file:

@@ -5,7 +5,6 @@ from icecream import ic
 class PowershellDecorator(Decorator):
     def decorator(func):
         def inner(*args, **kwargs):
-            ic(args)
             content = []
             prolog = """# Prolog
 #Requires -RunAsAdministrator

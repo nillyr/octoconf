@@ -14,7 +14,7 @@ import os
 import sys
 
 
-const.VERSION = "v1.2.0b"
+const.VERSION = "v1.2.1b"
 
 
 def default_parse_args(args):

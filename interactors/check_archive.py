@@ -27,7 +27,7 @@ class CheckArchiveInteractor:
                 filename = file.rsplit(".", 1)[0]
                 check = self._checklist.get_check(categories, filename)
                 with open(str(extract_path) + "/" + file, "r") as check_output:
-                    content = ic(check_output.read())
+                    content = check_output.read()
                     check_result = {
                         "id": filename,
                         "description": check.description,
@@ -42,4 +42,4 @@ class CheckArchiveInteractor:
                         else None,
                     }
                 results.append(CheckResult(**check_result))
-        return CheckOutputInteractor().execute(results)
+        return CheckOutputInteractor().execute(ic(results))

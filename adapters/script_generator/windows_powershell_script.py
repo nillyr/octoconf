@@ -10,8 +10,8 @@ class WindowsPowershellScript(IWindowsScript):
             for check_cmds in category["checks_cmds"]:
                 output_file, cmd = check_cmds[0] + ".txt", check_cmds[1]
                 path = checksdir + "\\" + output_file + IWindowsScript._newline
-                cmds.append(ic(cmd + IWindowsScript._powershell_pattern + path))
-        return cmds
+                cmds.append(cmd + IWindowsScript._powershell_pattern + path)
+        return ic(cmds)
 
     @PowershellDecorator.decorator
     def write_script(self, content, callback):

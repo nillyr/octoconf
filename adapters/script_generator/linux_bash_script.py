@@ -10,8 +10,8 @@ class LinuxBashScript(IUnixScript):
             for check_cmds in category["checks_cmds"]:
                 output_file, cmd = check_cmds[0] + ".txt", check_cmds[1]
                 path = '"' + checksdir + '"/' + output_file + IUnixScript._newline
-                cmds.append(ic(cmd + IUnixScript._pattern + path))
-        return cmds
+                cmds.append(cmd + IUnixScript._pattern + path)
+        return ic(cmds)
 
     @BashDecorator.decorator
     def write_script(self, content, callback):

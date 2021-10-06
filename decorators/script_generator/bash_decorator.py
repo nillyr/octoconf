@@ -5,7 +5,6 @@ from icecream import ic
 class BashDecorator(Decorator):
     def decorator(func):
         def inner(*args, **kwargs):
-            ic(args)
             content = []
             prolog = '''#!/bin/bash
 

@@ -10,15 +10,13 @@ class MacOSBashScript(IUnixScript):
             for check_cmds in category["checks_cmds"]:
                 output_file, cmd = check_cmds[0] + ".txt", check_cmds[1]
                 path = '"' + checksdir + '"/' + output_file + IUnixScript._newline
-                cmds.append(ic(cmd + IUnixScript._pattern + path))
-        return cmds
+                cmds.append(cmd + IUnixScript._pattern + path)
+        return ic(cmds)
 
     @BashDecoratorMAC.decorator
     def write_script(self, content, callback):
         cmds, str = ([], "")
-        ic(content)
         for i in range(len(content)):
-            ic(i)
             str = """
 CATEGORY=\"{0}\"
 echo "[*] Running {1} collection commands..."
@@ -36,5 +34,4 @@ echo "[*] Running {1} collection commands..."
                     + IUnixScript._newline
                 )
             cmds.append(str)
-            ic(cmds)
         return callback("${CHECKSDIR}", content, cmds)
