@@ -1,12 +1,14 @@
-from icecream import ic
-from interactors.check_output import CheckOutputInteractor
-from models import CheckResult
+import asyncio
 from pathlib import Path
 from platform import system
-from ports import IChecklist
-import asyncio
-import inject
 import re
+
+from icecream import ic
+import inject
+
+from interactors.check_output import CheckOutputInteractor
+from models import CheckResult
+from ports import IChecklist
 
 
 class ChecksRunnerInteractor:

@@ -1,12 +1,14 @@
-from components.json_encoders.checklist import ChecklistJsonEncoder
 from enum import Enum
-from icecream import ic
-from models import *
-from ports.checklist import IChecklist
-from typing import List
 import hjson
 import json
+from typing import List
 import sys
+
+from icecream import ic
+
+from components.json_encoders.checklist import ChecklistJsonEncoder
+from models import *
+from ports.checklist import IChecklist
 
 
 class NoValue(Enum):

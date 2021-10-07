@@ -1,7 +1,8 @@
 from icecream import ic
+import inject
+
 from ports import IChecklist
 from ports.script_generator.language_abstract_factory import ILanguageFactory
-import inject
 
 
 class CollectionScriptRetrievalInteractor:

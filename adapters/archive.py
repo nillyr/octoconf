@@ -1,9 +1,11 @@
-from icecream import ic
-from ports.archive import IArchive
-from pathlib import Path
 import os
+from pathlib import Path
 import tarfile
 import zipfile
+
+from icecream import ic
+
+from ports.archive import IArchive
 
 
 class ArchiveAdapter(IArchive):

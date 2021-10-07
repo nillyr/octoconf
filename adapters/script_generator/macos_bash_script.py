@@ -1,5 +1,6 @@
-from decorators.script_generator import BashDecoratorMAC
 from icecream import ic
+
+from decorators.script_generator import BashDecoratorMAC
 from ports.script_generator.unix_script import IUnixScript
 
 

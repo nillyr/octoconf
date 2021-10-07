@@ -1,5 +1,6 @@
-from decorators.decorator import Decorator
 from icecream import ic
+
+from decorators.decorator import Decorator
 
 
 class BashDecoratorMAC(Decorator):

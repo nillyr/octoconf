@@ -1,5 +1,6 @@
-from ports.checker import IChecker
 import re
+
+from ports.checker import IChecker
 
 
 class CheckerAdapter(IChecker):

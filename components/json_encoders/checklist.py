@@ -1,9 +1,12 @@
+import json
+
+from icecream import ic
+
 from components.json_encoders.check import CheckJsonEncoder
 from components.json_encoders.checkpoint import CheckpointJsonEncoder
 from components.json_encoders.checkresult import CheckResultJsonEncoder
-from icecream import ic
 from models import *
-import json
+
 
 class ChecklistJsonEncoder(json.JSONEncoder):
     def default(self, o):

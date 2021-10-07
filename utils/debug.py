@@ -1,5 +1,6 @@
-from icecream import ic
 import sys
+
+from icecream import ic
 
 
 class Debug:

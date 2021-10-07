@@ -1,5 +1,6 @@
-from pydantic import BaseModel
 from typing import Optional
+
+from pydantic import BaseModel
 
 
 class Check(BaseModel):
@@ -11,6 +12,7 @@ class Check(BaseModel):
     verification_type: str
     recommandation_on_failed: str
     see_also: Optional[str]
+
 
 class CheckResult(BaseModel):
     id: str

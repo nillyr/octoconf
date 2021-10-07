@@ -1,17 +1,20 @@
 #!/usr/bin/env python
+# coding: utf-8
+
+import argparse
+import json
+import os
+import sys
+
+from icecream import ic
+import inject
 
 from adapters import ArchiveAdapter, CheckerAdapter, ChecklistAdapter, LanguageFactory
 from components.json_encoders.checkresult import CheckResultJsonEncoder
 from components.report_generators import *
-from icecream import ic
 from interactors import *
 from ports import IArchive, IChecker, IChecklist, ILanguageFactory
 from utils import *
-import argparse
-import inject
-import json
-import os
-import sys
 
 
 const.VERSION = "v1.2.1b"

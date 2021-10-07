@@ -1,7 +1,9 @@
-from icecream import ic
-from components.report_generators.report_generator import IReportGenerator
-import inject
 import json
+
+from icecream import ic
+import inject
+
+from components.report_generators.report_generator import IReportGenerator
 
 
 class ReportGeneratorInteractor:

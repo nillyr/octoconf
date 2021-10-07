@@ -1,9 +1,11 @@
+from typing import List
+
 from icecream import ic
+import inject
+
 from interactors.report_generator import ReportGeneratorInteractor
 from models import CheckResult
 from ports import IChecker, IChecklist
-from typing import List
-import inject
 
 
 class CheckOutputInteractor:

@@ -1,5 +1,6 @@
-from decorators.script_generator import BatchDecorator
 from icecream import ic
+
+from decorators.script_generator import BatchDecorator
 from ports.script_generator.windows_script import IWindowsScript
 
 

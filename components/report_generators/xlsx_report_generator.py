@@ -1,8 +1,10 @@
-from components.report_generators.report_generator import IReportGenerator
-from icecream import ic
-from utils import *
 import json
+
+from icecream import ic
 import xlsxwriter
+
+from components.report_generators.report_generator import IReportGenerator
+from utils import const, timestamp
 
 
 const.COLORS = {
@@ -73,7 +75,8 @@ class XlsxGenerator(IReportGenerator):
             }
         )
 
-    def _get_uncertain_result_format(self, workbook: xlsxwriter.workbook.Workbook):
+    def _get_uncertain_result_format(self,
+                                        workbook: xlsxwriter.workbook.Workbook):
         return workbook.add_format(
             {
                 "bold": 1,
@@ -84,7 +87,9 @@ class XlsxGenerator(IReportGenerator):
             }
         )
 
-    def _write_results(self, workbook: xlsxwriter.workbook.Workbook, data: list):
+    def _write_results(self,
+                        workbook: xlsxwriter.workbook.Workbook,
+                        data: list):
         for item in data:
             for category in item["categories"]:
                 worksheet = workbook.add_worksheet(name=category["name"])
@@ -153,11 +158,9 @@ class XlsxGenerator(IReportGenerator):
                     "N/A": nb_na,
                 }
 
-    def _generate_synthesis(
-        self,
-        workbook: xlsxwriter.workbook.Workbook,
-        worksheet: xlsxwriter.worksheet.Worksheet,
-    ) -> int:
+    def _generate_synthesis(self,
+                            workbook: xlsxwriter.workbook.Workbook,
+                            worksheet: xlsxwriter.worksheet.Worksheet) -> int:
         worksheet.set_column("A:G", 15)
         worksheet.set_row(0, 25)
         worksheet.merge_range("A1:G1", "Synthesis", self._get_category_format(workbook))
@@ -201,12 +204,10 @@ class XlsxGenerator(IReportGenerator):
             )
         return row
 
-    def _generate_charts(
-        self,
-        workbook: xlsxwriter.workbook.Workbook,
-        worksheet: xlsxwriter.worksheet.Worksheet,
-        last_row: int,
-    ):
+    def _generate_charts(self,
+                            workbook: xlsxwriter.workbook.Workbook,
+                            worksheet: xlsxwriter.worksheet.Worksheet,
+                            last_row: int):
         # Radar
         radar_chart = workbook.add_chart({"type": "radar", "subtype": "filled"})
         radar_chart.set_title({"name": "Configuration coverage summary"})

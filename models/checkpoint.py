@@ -1,6 +1,8 @@
-from models.check import Check
-from pydantic import BaseModel
 from typing import List, Optional
+
+from pydantic import BaseModel
+
+from models.check import Check
 
 
 class Checkpoint(BaseModel):

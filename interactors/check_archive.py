@@ -1,10 +1,12 @@
-from icecream import ic
-from interactors.check_output import CheckOutputInteractor
-from models import CheckResult
-from pathlib import Path
-from ports import IArchive, IChecklist
 import inject
 import os
+from pathlib import Path
+
+from icecream import ic
+
+from interactors.check_output import CheckOutputInteractor
+from models import CheckResult
+from ports import IArchive, IChecklist
 
 
 class CheckArchiveInteractor:
