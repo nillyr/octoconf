@@ -10,6 +10,10 @@ from ports import IArchive, IChecklist
 
 
 class CheckArchiveInteractor:
+    """
+    Receives an archive with a certain extension (zip, tar.gz, other) and extracts the files in the "checks" folder. Each file corresponding to a particular check, a list of "CheckResult" objects is created and sent to the use case responsible for checking the results.
+    """
+
     @inject.autoparams("checklist", "archive")
     def __init__(self, checklist: IChecklist, archive: IArchive) -> None:
         self._checklist = checklist

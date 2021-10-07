@@ -8,6 +8,10 @@ from ports.script_generator.language_abstract_factory import ILanguageFactory
 
 
 class LanguageFactory(ILanguageFactory):
+    """
+    Allows to return the correct factory according to the language desired by the user.
+    """
+
     @staticmethod
     def get_language(platform, language_name):
         try:

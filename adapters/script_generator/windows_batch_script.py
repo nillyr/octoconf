@@ -5,7 +5,14 @@ from ports.script_generator.windows_script import IWindowsScript
 
 
 class WindowsBatchScript(IWindowsScript):
+    """
+    Class allowing the generation of the collection script for the indicated system.
+    """
+
     def write_checks_cmds(self, checksdir, content, cmds):
+        """
+        Adds to the collection script all the check commands allowing the analysis of the results by this tool.
+        """
         cmds.append(IWindowsScript._newline + "REM Checks" + IWindowsScript._newline)
         for category in content:
             for check_cmds in category["checks_cmds"]:
@@ -16,6 +23,9 @@ class WindowsBatchScript(IWindowsScript):
 
     @BatchDecorator.decorator
     def write_script(self, content, callback):
+        """
+        Adds to the collection script the set of commands for collecting proofs to perform manual verifications.
+        """
         cmds, str = ([], "")
         for i in range(len(content)):
             str = """

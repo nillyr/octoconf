@@ -6,6 +6,10 @@ from ports.script_generator.language_abstract_factory import ILanguageFactory
 
 
 class CollectionScriptRetrievalInteractor:
+    """
+    Use case for creating, from a checklist, a script to collect the configuration of the system (or the application) to be audited.
+    """
+
     _newline = lambda _, x: "\n" if x in ("linux", "mac") else "\r\n"
 
     @inject.autoparams("checklist", "factory")

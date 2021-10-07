@@ -12,11 +12,18 @@ from ports import IChecklist
 
 
 class ChecksRunnerInteractor:
+    """
+    Use case allowing to execute the commands defined in the checklist provided as argument.
+    """
+
     @inject.autoparams("checklist")
     def __init__(self, checklist: IChecklist) -> None:
         self._checklist = checklist
 
     async def _run(self, cmd, cmd_type) -> str:
+        """
+        This method allows commands to be executed asynchronously. The cmd_type argument is defined in the checklist and can be used to choose between cmd.exe, powershell.exe or /bin/bash.
+        """
         proc = await asyncio.create_subprocess_shell(
             cmd,
             stdout=asyncio.subprocess.PIPE,
@@ -27,6 +34,9 @@ class ChecksRunnerInteractor:
         return ic(stdout.decode("UTF-8"))
 
     def _preprocess_collection_cmd(self, basedir, category, cmd) -> str:
+        """
+        This method puts the audit proofs in the folder corresponding to the current category. Since the user is not aware of the folder automatically created during the tests, it is not possible to specify the exact path for the output of the files in the checklist.
+        """
         if system() == "Windows" and "| Out-File -Path" in cmd:
             pattern = "| Out-File -Path"
         else:
@@ -41,6 +51,9 @@ class ChecksRunnerInteractor:
         return ic(re.split(pattern, cmd)[0] + pattern + " " + str(replace_path))
 
     def execute(self, checklist, output_directory):
+        """
+        Execute all the commands and for each check, create an object of type "CheckResult". These are returned as a list to check the results with the expected results.
+        """
         self._checklist.parse_checklist(checklist)
         collection_cmds = self._checklist.list_collection_cmds()
         for collection_cmd in collection_cmds:

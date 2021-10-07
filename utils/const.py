@@ -2,6 +2,9 @@ import sys
 
 
 class Const(object):
+    """
+    Allows to obtain an operation close to const in C so that it is not possible to redefine a constant.
+    """
     class ConstError(TypeError):
         pass
 

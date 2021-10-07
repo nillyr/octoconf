@@ -9,15 +9,26 @@ from ports.archive import IArchive
 
 
 class ArchiveAdapter(IArchive):
+    """
+    Class allowing to manipulate the archives containing the results of the collection script.
+    """
+
     def __init__(self) -> None:
         pass
 
     def checks_files_only(self, members):
+        """
+        Generator method indicating the files to be extracted only (for tar.gz archives).
+        """
         for tarinfo in members:
             if "checks" in os.path.splitext(tarinfo.name)[0]:
                 yield tarinfo
 
     def extract(self, archive) -> Path:
+        """
+        Performs archive extraction.
+        To date, only zip and tar.gz archives are supported.
+        """
         path = Path(archive)
         if not path.exists():
             return

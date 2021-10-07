@@ -9,6 +9,10 @@ from models import *
 
 
 class ChecklistJsonEncoder(json.JSONEncoder):
+    """
+    Because of the use of objects of a personality type, they are not encodable in JSON format. This class allows to encode them.
+    """
+
     def default(self, o):
         if isinstance(o, Checkpoint):
             return CheckpointJsonEncoder().default(o)

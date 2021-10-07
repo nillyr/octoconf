@@ -9,6 +9,10 @@ from ports import IChecker, IChecklist
 
 
 class CheckOutputInteractor:
+    """
+    Receives a list of "CheckResult" and checks the obtained results with the expected results by using the defined verification type.
+    """
+
     @inject.autoparams("checker", "checklist")
     def __init__(self, checker: IChecker, checklist: IChecklist) -> None:
         self._checker = checker
@@ -21,6 +25,9 @@ class CheckOutputInteractor:
             return self._checker.check_exact(expected, cmd_output)
 
     def execute(self, results):
+        """
+        Launch the verification of the results and send to the report generator use case to ease the manual processing by the user.
+        """
         for result in results:
             result.result = self._check_output(
                 result.cmd_output.rstrip(), result.expected, result.verification_type

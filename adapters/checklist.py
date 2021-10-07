@@ -12,15 +12,27 @@ from ports.checklist import IChecklist
 
 
 class NoValue(Enum):
+    """
+    Enables to set the enumeration values in string form and thus reduce the number of lines of code.
+    """
+
     def __repr__(self):
         return "<%s.%s>" % (self.__class__.__name__, self.name)
 
 
 class ChecklistAdapter(IChecklist):
+    """
+    Implementation of the interface allowing to work with the type of checklist in hjson format presented in the template folder.
+    """
+
     _instance = None
     _checklist = None
 
     class CmdType(NoValue):
+        """
+        Definition of the different cmd_types that can be present in a checklist.
+        """
+
         # WINDOWS
         AUDIT_POWERSHELL = "powershell.exe"
         BATCH_EXEC = "cmd.exe"
@@ -28,11 +40,17 @@ class ChecklistAdapter(IChecklist):
         CMD_EXEC = "/bin/bash"
 
     def __new__(cls):
+        """
+        As some methods can have a high consumption of resources (BigO notation), the singleton design pattern is used to limit the consumption of resources.
+        """
         if cls._instance is None:
             cls._instance = super(IChecklist, cls).__new__(cls)
         return cls._instance
 
     def parse_checklist(self, checklist) -> None:
+        """
+        Retrieves the data present in the checklist provided as an argument.
+        """
         if self._checklist is None:
             with open(checklist, "r") as hjson_file:
                 hson_checklist = hjson.loads(hjson_file.read())
@@ -40,6 +58,9 @@ class ChecklistAdapter(IChecklist):
                 self._checklist = json.loads(json_checklist)
 
     def get_executable(self, cmd_type) -> str:
+        """
+        Returns the value of the cmd_type.
+        """
         if cmd_type == "AUDIT_POWERSHELL":
             return self.CmdType.AUDIT_POWERSHELL.value
         if cmd_type == "BATCH_EXEC":
@@ -49,6 +70,9 @@ class ChecklistAdapter(IChecklist):
         return
 
     def get_categories(self) -> List[Category]:
+        """
+        Puts the data of the checklist in the different defined entities.
+        """
         categories_list = []
         for item in self._checklist:
             categories_list = []
@@ -65,7 +89,10 @@ class ChecklistAdapter(IChecklist):
 
         return categories_list
 
-    def get_commands(self):
+    def get_commands(self) -> list:
+        """
+        Returns all the commands (collection and checks) of the different categories in the form of a list.
+        """
         categories = self.get_categories()
         commands = []
         for category in categories:
@@ -94,6 +121,9 @@ class ChecklistAdapter(IChecklist):
         return commands
 
     def get_check(self, categories, cmd_id) -> Check:
+        """
+        Given an identifier of the form category_id[.]checkpoint_id[.]check_id, returns the corresponding check entity from the checklist.
+        """
         category_id, checkpoint_id, check_id = (
             int(cmd_id.split(".")[0]),
             int(cmd_id.split(".")[1]),
@@ -107,6 +137,9 @@ class ChecklistAdapter(IChecklist):
         return check
 
     def list_collection_cmds(self):
+        """
+        Returns the set of checklist commands for collecting audit proofs.
+        """
         collection_cmds = []
         for item in self._checklist:
             for category in item["categories"]:
@@ -130,6 +163,9 @@ class ChecklistAdapter(IChecklist):
         return ic(collection_cmds)
 
     def list_checks(self) -> List[Check]:
+        """
+        Returns the set of check commands of the checklist.
+        """
         checks = []
         for item in self._checklist:
             for category in item["categories"]:
@@ -146,6 +182,9 @@ class ChecklistAdapter(IChecklist):
         return ic(checks)
 
     def get_json_reporting(self, results: List[CheckResult]) -> str:
+        """
+        Allows the generation of the exported JSON file for later use.
+        """
         checklist = self._checklist
         for result in results:
             cat_id, checkpoint_id, check_id = (

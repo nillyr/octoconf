@@ -180,6 +180,9 @@ def parse_args() -> argparse.Namespace:
 
 
 def dependency_injection_configuration(binder):
+    """
+    Configuration of the dependency injection allowing not to be linked to a concrete implementation.
+    """
     binder.bind(IArchive, ArchiveAdapter())
     binder.bind(IChecker, CheckerAdapter())
     binder.bind(IChecklist, ChecklistAdapter())

@@ -4,6 +4,9 @@ import re
 
 
 class IUnixScript(metaclass=ABCMeta):
+    """
+    Allows you to generate the collection script for the specified system.
+    """
     _newline = "\n"
     _pattern = " > "
 
@@ -17,6 +20,9 @@ class IUnixScript(metaclass=ABCMeta):
 
     @staticmethod
     def preprocess_collection_cmd(basedir, cmd) -> str:
+        """
+        This method puts the audit proofs in the folder corresponding to the current category. Since the user is not aware of the folder automatically created during the tests, it is not possible to specify the exact path for the output of the files in the checklist.
+        """
         output_file = re.split(IUnixScript._pattern, cmd)[-1].strip()
         path = basedir / Path(output_file).parent
         replace_path = path / Path(output_file).name

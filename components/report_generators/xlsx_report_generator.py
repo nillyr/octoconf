@@ -18,10 +18,17 @@ const.COLORS = {
 
 
 class XlsxGenerator(IReportGenerator):
+    """
+    Generates a report in Excel format (xlsx).
+    """
+
     def __init__(self):
         self._synthesis = dict()
 
     def _get_category_format(self, workbook: xlsxwriter.workbook.Workbook):
+        """
+        Definition of the style to be applied.
+        """
         return workbook.add_format(
             {
                 "bold": 1,
@@ -34,6 +41,9 @@ class XlsxGenerator(IReportGenerator):
         )
 
     def _get_checkpoint_format(self, workbook: xlsxwriter.workbook.Workbook):
+        """
+        Definition of the style to be applied.
+        """
         return workbook.add_format(
             {
                 "border": 1,
@@ -45,6 +55,9 @@ class XlsxGenerator(IReportGenerator):
         )
 
     def _get_check_format(self, workbook: xlsxwriter.workbook.Workbook):
+        """
+        Definition of the style to be applied.
+        """
         return workbook.add_format(
             {
                 "border": 1,
@@ -54,6 +67,9 @@ class XlsxGenerator(IReportGenerator):
         )
 
     def _get_passed_result_format(self, workbook: xlsxwriter.workbook.Workbook):
+        """
+        Definition of the style to be applied.
+        """
         return workbook.add_format(
             {
                 "bold": 1,
@@ -65,6 +81,9 @@ class XlsxGenerator(IReportGenerator):
         )
 
     def _get_failed_result_format(self, workbook: xlsxwriter.workbook.Workbook):
+        """
+        Definition of the style to be applied.
+        """
         return workbook.add_format(
             {
                 "bold": 1,
@@ -75,8 +94,10 @@ class XlsxGenerator(IReportGenerator):
             }
         )
 
-    def _get_uncertain_result_format(self,
-                                        workbook: xlsxwriter.workbook.Workbook):
+    def _get_uncertain_result_format(self, workbook: xlsxwriter.workbook.Workbook):
+        """
+        Definition of the style to be applied.
+        """
         return workbook.add_format(
             {
                 "bold": 1,
@@ -87,9 +108,10 @@ class XlsxGenerator(IReportGenerator):
             }
         )
 
-    def _write_results(self,
-                        workbook: xlsxwriter.workbook.Workbook,
-                        data: list):
+    def _write_results(self, workbook: xlsxwriter.workbook.Workbook, data: list):
+        """
+        Add the results obtained during the verification for each of the checks.
+        """
         for item in data:
             for category in item["categories"]:
                 worksheet = workbook.add_worksheet(name=category["name"])
@@ -158,9 +180,14 @@ class XlsxGenerator(IReportGenerator):
                     "N/A": nb_na,
                 }
 
+    # fmt:off
     def _generate_synthesis(self,
                             workbook: xlsxwriter.workbook.Workbook,
                             worksheet: xlsxwriter.worksheet.Worksheet) -> int:
+    #fmt:on
+        """
+        Resumes all the sheets (categories) of the excel file in order to present in the same sheet the synthesis of the results.
+        """
         worksheet.set_column("A:G", 15)
         worksheet.set_row(0, 25)
         worksheet.merge_range("A1:G1", "Synthesis", self._get_category_format(workbook))
@@ -204,10 +231,15 @@ class XlsxGenerator(IReportGenerator):
             )
         return row
 
+    #fmt:off
     def _generate_charts(self,
                             workbook: xlsxwriter.workbook.Workbook,
                             worksheet: xlsxwriter.worksheet.Worksheet,
                             last_row: int):
+    #fmt:on
+        """
+        A picture is worth a thousand words, and this method generates charts indicating the coverage level of security configurations.
+        """
         # Radar
         radar_chart = workbook.add_chart({"type": "radar", "subtype": "filled"})
         radar_chart.set_title({"name": "Configuration coverage summary"})
@@ -255,6 +287,9 @@ class XlsxGenerator(IReportGenerator):
         worksheet.insert_chart(f"A{last_row + 5}", column_chart)
 
     def generate_report(self, data: list):
+        """
+        Conducts the various methods of the class allowing the generation of the report. A json file is also generated for future use.
+        """
         filename = timestamp() + "_results"
         workbook = xlsxwriter.Workbook(filename + ".xlsx")
         worksheet = workbook.add_worksheet(name="Synthesis")

@@ -4,6 +4,10 @@ from decorators.decorator import Decorator
 
 
 class PowershellDecorator(Decorator):
+    """
+    It allows to add instructions before and after the execution of the commands. Among these instructions are the verification of the user's privileges, the creation of the working folder and the creation of the archive.
+    """
+
     def decorator(func):
         def inner(*args, **kwargs):
             content = []

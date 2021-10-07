@@ -7,6 +7,10 @@ from components.report_generators.report_generator import IReportGenerator
 
 
 class ReportGeneratorInteractor:
+    """
+    This use case will allow to call the xlsx report generation component facilitating the manual processing of the audit results.
+    """
+
     @inject.autoparams("xlsx_generator")
     def __init__(self, xlsx_generator: IReportGenerator) -> None:
         self._xlsx_generator = xlsx_generator

@@ -4,6 +4,9 @@ from ports.checker import IChecker
 
 
 class CheckerAdapter(IChecker):
+    """
+    Implementation of the different verification types.
+    """
     def __init__(self) -> None:
         pass
 
