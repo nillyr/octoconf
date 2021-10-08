@@ -4,7 +4,7 @@ from icecream import ic
 import xlsxwriter
 
 from components.report_generators.report_generator import IReportGenerator
-from utils import const, timestamp
+from utils import const, global_values, timestamp
 
 
 const.COLORS = {
@@ -66,7 +66,7 @@ class XlsxGenerator(IReportGenerator):
             }
         )
 
-    def _get_passed_result_format(self, workbook: xlsxwriter.workbook.Workbook):
+    def _get_success_result_format(self, workbook: xlsxwriter.workbook.Workbook):
         """
         Definition of the style to be applied.
         """
@@ -121,7 +121,7 @@ class XlsxGenerator(IReportGenerator):
                     "A1:D1", category["name"], self._get_category_format(workbook)
                 )
                 checkpoint_row = 2
-                nb_passed, nb_failed, nb_na = 0, 0, 0
+                nb_success, nb_failed, nb_na = 0, 0, 0
                 for checkpoint in category["checkpoints"]:
                     worksheet.merge_range(
                         f"A{checkpoint_row}:C{checkpoint_row}",
@@ -130,7 +130,7 @@ class XlsxGenerator(IReportGenerator):
                     )
                     worksheet.write(
                         f"D{checkpoint_row}",
-                        "Result",
+                        global_values.localize.gettext("result"),
                         self._get_checkpoint_format(workbook),
                     )
                     check_row = checkpoint_row + 1
@@ -144,21 +144,21 @@ class XlsxGenerator(IReportGenerator):
                             if check["result"] == True:
                                 worksheet.write(
                                     f"D{check_row}",
-                                    "PASSED",
-                                    self._get_passed_result_format(workbook),
+                                    global_values.localize.gettext("success"),
+                                    self._get_success_result_format(workbook),
                                 )
-                                nb_passed += 1
+                                nb_success += 1
                             elif check["result"] == False:
                                 worksheet.write(
                                     f"D{check_row}",
-                                    "FAILED",
+                                    global_values.localize.gettext("failed"),
                                     self._get_failed_result_format(workbook),
                                 )
                                 nb_failed += 1
                             else:
                                 worksheet.write(
                                     f"D{check_row}",
-                                    "N/A",
+                                    global_values.localize.gettext("na"),
                                     self._get_uncertain_result_format(workbook),
                                 )
                                 nb_na += 1
@@ -167,7 +167,7 @@ class XlsxGenerator(IReportGenerator):
                         else:
                             worksheet.write(
                                 f"D{check_row}",
-                                "N/A",
+                                global_values.localize.gettext("na"),
                                 self._get_uncertain_result_format(workbook),
                             )
                             nb_na += 1
@@ -175,7 +175,7 @@ class XlsxGenerator(IReportGenerator):
                             checkpoint_row = check_row
 
                 self._synthesis[category["name"]] = {
-                    "PASSED": nb_passed,
+                    "SUCCESS": nb_success,
                     "FAILED": nb_failed,
                     "N/A": nb_na,
                 }
@@ -190,19 +190,19 @@ class XlsxGenerator(IReportGenerator):
         """
         worksheet.set_column("A:G", 15)
         worksheet.set_row(0, 25)
-        worksheet.merge_range("A1:G1", "Synthesis", self._get_category_format(workbook))
+        worksheet.merge_range("A1:G1", global_values.localize.gettext("summary"), self._get_category_format(workbook))
         worksheet.merge_range(
-            "A2:C2", "Categories", self._get_checkpoint_format(workbook)
+            "A2:C2", global_values.localize.gettext("categories"), self._get_checkpoint_format(workbook)
         )
-        worksheet.write("D2", "# PASSED", self._get_checkpoint_format(workbook))
-        worksheet.write("E2", "# FAILED", self._get_checkpoint_format(workbook))
-        worksheet.write("F2", "# N/A", self._get_checkpoint_format(workbook))
-        worksheet.write("G2", "% Percentage", self._get_checkpoint_format(workbook))
+        worksheet.write("D2", f"# {global_values.localize.gettext('success')}", self._get_checkpoint_format(workbook))
+        worksheet.write("E2", f"# {global_values.localize.gettext('failed')}", self._get_checkpoint_format(workbook))
+        worksheet.write("F2", f"# {global_values.localize.gettext('na')}", self._get_checkpoint_format(workbook))
+        worksheet.write("G2", f"% {global_values.localize.gettext('percent')}", self._get_checkpoint_format(workbook))
 
         row = 2
         for key, value in self._synthesis.items():
             row += 1
-            ic(key, value["PASSED"], value["FAILED"], value["N/A"])
+            ic(key, value["SUCCESS"], value["FAILED"], value["N/A"])
             worksheet.merge_range(
                 f"A{row}:C{row}",
                 key,
@@ -210,7 +210,7 @@ class XlsxGenerator(IReportGenerator):
             )
             worksheet.write(
                 f"D{row}",
-                value["PASSED"],
+                value["SUCCESS"],
                 self._get_check_format(workbook),
             )
             worksheet.write(
@@ -225,8 +225,8 @@ class XlsxGenerator(IReportGenerator):
             )
             worksheet.write(
                 f"G{row}",
-                (value["PASSED"] * 100)
-                / (value["PASSED"] + value["FAILED"] + value["N/A"]),
+                (value["SUCCESS"] * 100)
+                / (value["SUCCESS"] + value["FAILED"] + value["N/A"]),
                 self._get_check_format(workbook),
             )
         return row
@@ -242,12 +242,12 @@ class XlsxGenerator(IReportGenerator):
         """
         # Radar
         radar_chart = workbook.add_chart({"type": "radar", "subtype": "filled"})
-        radar_chart.set_title({"name": "Configuration coverage summary"})
+        radar_chart.set_title({"name": global_values.localize.gettext("cov_summary")})
         radar_chart.add_series(
             {
-                "name": "=Synthesis!$G$2",
-                "categories": f"=Synthesis!$A$3:$A${last_row + 1}",
-                "values": f"=Synthesis!$G$3:$G${last_row + 1}",
+                "name": f"={global_values.localize.gettext('summary')}!$G$2",
+                "categories": f"={global_values.localize.gettext('summary')}!$A$3:$A${last_row + 1}",
+                "values": f"={global_values.localize.gettext('summary')}!$G$3:$G${last_row + 1}",
                 "fill": {"color": "green"},
             }
         )
@@ -255,30 +255,30 @@ class XlsxGenerator(IReportGenerator):
 
         # Column
         column_chart = workbook.add_chart({"type": "column"})
-        column_chart.set_title({"name": "Configuration coverage summary"})
-        column_chart.set_x_axis({"name": "Categories"})
-        column_chart.set_y_axis({"name": "Number of checks"})
+        column_chart.set_title({"name": global_values.localize.gettext("cov_summary")})
+        column_chart.set_x_axis({"name": global_values.localize.gettext("categories")})
+        column_chart.set_y_axis({"name": global_values.localize.gettext("nb_checks")})
         column_chart.add_series(
             {
-                "name": "=Synthesis!$D$2",
-                "categories": f"=Synthesis!$A$3:$A${last_row}",
-                "values": f"=Synthesis!$D$3:$D${last_row}",
+                "name": f"={global_values.localize.gettext('summary')}!$D$2",
+                "categories": f"={global_values.localize.gettext('summary')}!$A$3:$A${last_row}",
+                "values": f"={global_values.localize.gettext('summary')}!$D$3:$D${last_row}",
                 "fill": {"color": "green"},
             }
         )
         column_chart.add_series(
             {
-                "name": "=Synthesis!$E$2",
-                "categories": f"=Synthesis!$A$3:$A${last_row}",
-                "values": f"=Synthesis!$E$3:$E${last_row}",
+                "name": f"={global_values.localize.gettext('summary')}!$E$2",
+                "categories": f"={global_values.localize.gettext('summary')}!$A$3:$A${last_row}",
+                "values": f"={global_values.localize.gettext('summary')}!$E$3:$E${last_row}",
                 "fill": {"color": "red"},
             }
         )
         column_chart.add_series(
             {
-                "name": "=Synthesis!$F$2",
-                "categories": f"=Synthesis!$A$3:$A${last_row}",
-                "values": f"=Synthesis!$F$3:$F${last_row}",
+                "name": f"={global_values.localize.gettext('summary')}!$F$2",
+                "categories": f"={global_values.localize.gettext('summary')}!$A$3:$A${last_row}",
+                "values": f"={global_values.localize.gettext('summary')}!$F$3:$F${last_row}",
                 "fill": {"color": "blue"},
             }
         )
@@ -292,7 +292,7 @@ class XlsxGenerator(IReportGenerator):
         """
         filename = timestamp() + "_results"
         workbook = xlsxwriter.Workbook(filename + ".xlsx")
-        worksheet = workbook.add_worksheet(name="Synthesis")
+        worksheet = workbook.add_worksheet(name=global_values.localize.gettext("summary"))
         self._write_results(workbook, data)
         last_row = self._generate_synthesis(workbook, worksheet)
         self._generate_charts(workbook, worksheet, last_row)

@@ -1,0 +1,26 @@
+msgid "summary"
+msgstr "Synthèse"
+
+msgid "categories"
+msgstr "Catégories"
+
+msgid "success"
+msgstr "Succès"
+
+msgid "failed"
+msgstr "Echec"
+
+msgid "na"
+msgstr "N/A"
+
+msgid "percent"
+msgstr "Pourcentage"
+
+msgid "result"
+msgstr "Résultat"
+
+msgid "cov_summary"
+msgstr "Synthèse de couverture de la configuration"
+
+msgid "nb_checks"
+msgstr "Nombres de contrôles"

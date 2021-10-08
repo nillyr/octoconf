@@ -1,0 +1,26 @@
+msgid "summary"
+msgstr "Summary"
+
+msgid "categories"
+msgstr "Categories"
+
+msgid "success"
+msgstr "Success"
+
+msgid "failed"
+msgstr "Failed"
+
+msgid "na"
+msgstr "N/A"
+
+msgid "percent"
+msgstr "Percent"
+
+msgid "result"
+msgstr "Result"
+
+msgid "cov_summary"
+msgstr "Configuration coverage summary"
+
+msgid "nb_checks"
+msgstr "Number of checks"

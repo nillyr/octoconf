@@ -17,7 +17,7 @@ from ports import IArchive, IChecker, IChecklist, ILanguageFactory
 from utils import *
 
 
-const.VERSION = "v1.2.1b"
+const.VERSION = "v1.2.2b"
 
 
 def default_parse_args(args):
@@ -30,6 +30,7 @@ def parse_analyze_args(args):
     if args.debug:
         debug.set_debug(True)
 
+    global_values.set_localize(args.language)
     print("[*] Launching the archive analysis...")
     uc = CheckArchiveInteractor()
     return uc.execute(args.checklist, args.archive)
@@ -39,6 +40,7 @@ def parse_audit_args(args):
     if args.debug:
         debug.set_debug(True)
 
+    global_values.set_localize(args.language)
     print("[*] Launching the audit...")
     uc = ChecksRunnerInteractor()
     return uc.execute(args.checklist, args.output)
@@ -48,10 +50,10 @@ def parse_misc_args(args):
     if args.debug:
         debug.set_debug(True)
 
+    global_values.set_localize(args.language)
     _ = vars(args)
     # gen-report
     if _.get("input"):
-        results = args.input
         uc = ReportGeneratorInteractor()
         return uc.execute(args.input, is_file=True)
     # gen-script
@@ -116,6 +118,9 @@ def parse_args() -> argparse.Namespace:
     analyze_parser.add_argument(
         "-c", "--checklist", required=True, type=str, help="checklist to use"
     )
+    analyze_parser.add_argument(
+        "-l", "--language", default="EN", help="EN/FR (default=EN)"
+    )
 
     ## Audit ##
     audit_parser = cmd.add_parser(
@@ -133,6 +138,9 @@ def parse_args() -> argparse.Namespace:
         "--output",
         required=True,
         help="basedir output for collection commands",
+    )
+    audit_parser.add_argument(
+        "-l", "--language", default="EN", help="EN/FR (default=EN)"
     )
 
     ## MISC ##
@@ -170,6 +178,7 @@ def parse_args() -> argparse.Namespace:
     # Report Generator
     rgr_parser = misc_cmd.add_parser(name="gen-report")
     rgr_parser.add_argument("-i", "--input", required=True, help="JSON results file")
+    rgr_parser.add_argument("-l", "--language", default="EN", help="EN/FR (default=EN)")
 
     if len(sys.argv) == 1:
         p.print_help(file=sys.stderr)
