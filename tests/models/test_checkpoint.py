@@ -1,9 +1,11 @@
+import pytest
+
 from models.check import Check
 from models.checkpoint import Checkpoint
 
 
-# @pytest.fixture
-def get_check():
+@pytest.fixture
+def checks():
     checkA = Check(
         id="1",
         description="a_description",
@@ -33,8 +35,7 @@ def get_check():
     return checks
 
 
-def test_checkpoint_model_init():
-    a_check = get_check()
+def test_checkpoint_model_init(checks):
     a_checkpoint = Checkpoint(
         id="1",
         title="a_title",
@@ -42,7 +43,7 @@ def test_checkpoint_model_init():
         reference="a_reference",
         collection_cmd="a_collection_cmd",
         collection_cmd_type="a_collection_cmd_type",
-        checks=a_check,
+        checks=checks,
     )
 
     assert a_checkpoint.id == 1
@@ -51,4 +52,4 @@ def test_checkpoint_model_init():
     assert a_checkpoint.reference == "a_reference"
     assert a_checkpoint.collection_cmd == "a_collection_cmd"
     assert a_checkpoint.collection_cmd_type == "a_collection_cmd_type"
-    assert a_checkpoint.checks == a_check
+    assert a_checkpoint.checks == checks
