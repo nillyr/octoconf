@@ -1,89 +1,205 @@
 import json
+
+import pytest
+
 from adapters.script_generator.linux_bash_script import LinuxBashScript
 from adapters.script_generator.macos_bash_script import MacOSBashScript
 from adapters.script_generator.windows_batch_script import WindowsBatchScript
 from adapters.script_generator.windows_powershell_script import WindowsPowershellScript
 
 
-def test_write_checks_cmds_for_linux():
-    checkdir = "${CHECKSDIR}"
-    content = []
-    content.append(
+@pytest.fixture
+def unix_content():
+    return [
         {
             "category_id": 1,
+            "category_name": "a categegory with space",
             "checks_cmds": [["1.1.1", "whoami"], ["1.1.2", "id"]],
+            "collection_cmds": ["ls -al > ls.txt"],
         }
-    )
-    cmds = []
-
-    expected_output = []
-    expected_output.append("\n# Checks\n")
-    expected_output.append('whoami > "${CHECKSDIR}"/1.1.1.txt\n')
-    expected_output.append('id > "${CHECKSDIR}"/1.1.2.txt\n')
-
-    output = LinuxBashScript().write_checks_cmds(checkdir, content, cmds)
-
-    assert output == expected_output
+    ]
 
 
-def test_write_checks_cmds_for_mac():
-    checkdir = "${CHECKSDIR}"
-    content = []
-    content.append(
+@pytest.fixture
+def windows_content():
+    return [
         {
             "category_id": 1,
-            "checks_cmds": [["1.1.1", "whoami"], ["1.1.2", "id"]],
-        }
-    )
-    cmds = []
-
-    expected_output = []
-    expected_output.append("\n# Checks\n")
-    expected_output.append('whoami > "${CHECKSDIR}"/1.1.1.txt\n')
-    expected_output.append('id > "${CHECKSDIR}"/1.1.2.txt\n')
-
-    output = MacOSBashScript().write_checks_cmds(checkdir, content, cmds)
-
-    assert output == expected_output
-
-
-def test_write_checks_cmds_for_windows_batch():
-    checkdir = "%checksdir%"
-    content = []
-    content.append(
-        {
-            "category_id": 1,
+            "category_name": "a categegory with space",
             "checks_cmds": [["1.1.1", "whoami /all"], ["1.1.2", "net users"]],
+            "collection_cmds": ["dir > dir.txt"],
         }
-    )
-    cmds = []
+    ]
 
+
+@pytest.fixture
+def windows_powershell_cmdlet_content_1():
+    return [
+        {
+            "category_id": 1,
+            "category_name": "a categegory with space",
+            "checks_cmds": [["1.1.1", "whoami /all"], ["1.1.2", "net users"]],
+            "collection_cmds": ["dir | Out-File -FilePath dir.txt"],
+        }
+    ]
+
+
+@pytest.fixture
+def windows_powershell_cmdlet_content_2():
+    return [
+        {
+            "category_id": 1,
+            "category_name": "a categegory with space",
+            "checks_cmds": [["1.1.1", "whoami /all"], ["1.1.2", "net users"]],
+            "collection_cmds": ["dir | Out-File -FilePath -Append dir.txt"],
+        }
+    ]
+
+
+@pytest.fixture
+def windows_powershell_cmdlet_content_3():
+    return [
+        {
+            "category_id": 1,
+            "category_name": "a categegory with space",
+            "checks_cmds": [["1.1.1", "whoami /all"], ["1.1.2", "net users"]],
+            "collection_cmds": ["dir | Out-File -Append -FilePath dir.txt"],
+        }
+    ]
+
+
+def test_write_script_for_linux(unix_content):
+    # fmt:off
+    expected_output = '\nCATEGORY="a_categegory_with_space"\necho "[*] Running \\"${CATEGORY}\\" collection commands..."\n/bin/mkdir -p "${BASEDIR}"/"${CATEGORY}"/\nls -al > "${BASEDIR}"/"${CATEGORY}"/ls.txt\n'
+    # fmt:on
+
+    linux_sh = LinuxBashScript()
+    cmds = linux_sh.write_script(unix_content, linux_sh.write_checks_cmds)
+
+    assert expected_output in cmds
+
+
+def test_write_script_for_mac(unix_content):
+    # fmt:off
+    expected_output = '\nCATEGORY="a_categegory_with_space"\necho "[*] Running \\"${CATEGORY}\\" collection commands..."\n/bin/mkdir -p "${BASEDIR}"/"${CATEGORY}"/\nls -al > "${BASEDIR}"/"${CATEGORY}"/ls.txt\n'
+    # fmt:on
+
+    mac_sh = MacOSBashScript()
+    cmds = mac_sh.write_script(unix_content, mac_sh.write_checks_cmds)
+
+    assert expected_output in cmds
+
+
+def test_write_script_for_windows_batch(windows_content):
+    # fmt:off
+    expected_output = '\nset category=a_categegory_with_space\necho [*] Running %category% collection commands...\nmkdir %basedir%\\%category%\ndir > %basedir%\\%category%\\dir.txt\r\n'
+    # fmt:on
+
+    windows_batch = WindowsBatchScript()
+    cmds = windows_batch.write_script(windows_content, windows_batch.write_checks_cmds)
+
+    assert expected_output in cmds
+
+
+def test_write_script_for_windows_powershell(windows_content):
+    # fmt:off
+    expected_output = '\n$category="a_categegory_with_space"\nWrite-Output "[*] Running $category collection commands..."\nNew-Item -ItemType directory -Path $basedir\\$category\ndir > $basedir\\$category\\dir.txt\r\n'
+    # fmt:on
+
+    windows_ps1 = WindowsPowershellScript()
+    cmds = windows_ps1.write_script(windows_content, windows_ps1.write_checks_cmds)
+
+    assert expected_output in cmds
+
+
+def test_write_script_for_windows_powershell_cmdlet_1(
+    windows_powershell_cmdlet_content_1,
+):
+    # fmt:off
+    expected_output = '\n$category="a_categegory_with_space"\nWrite-Output "[*] Running $category collection commands..."\nNew-Item -ItemType directory -Path $basedir\\$category\ndir | Out-File -FilePath $basedir\\$category\\dir.txt\r\n'
+    # fmt:on
+
+    windows_ps1 = WindowsPowershellScript()
+    cmds = windows_ps1.write_script(
+        windows_powershell_cmdlet_content_1, windows_ps1.write_checks_cmds
+    )
+
+    assert expected_output in cmds
+
+
+def test_write_script_for_windows_powershell_cmdlet_2(
+    windows_powershell_cmdlet_content_2,
+):
+    # fmt:off
+    expected_output = '\n$category="a_categegory_with_space"\nWrite-Output "[*] Running $category collection commands..."\nNew-Item -ItemType directory -Path $basedir\\$category\ndir | Out-File -FilePath -Append $basedir\\$category\\dir.txt\r\n'
+    # fmt:on
+
+    windows_ps1 = WindowsPowershellScript()
+    cmds = windows_ps1.write_script(
+        windows_powershell_cmdlet_content_2, windows_ps1.write_checks_cmds
+    )
+
+    assert expected_output in cmds
+
+
+def test_write_script_for_windows_powershell_cmdlet_3(
+    windows_powershell_cmdlet_content_3,
+):
+    # fmt:off
+    expected_output = '\n$category="a_categegory_with_space"\nWrite-Output "[*] Running $category collection commands..."\nNew-Item -ItemType directory -Path $basedir\\$category\ndir | Out-File -Append -FilePath $basedir\\$category\\dir.txt\r\n'
+    # fmt:on
+
+    windows_ps1 = WindowsPowershellScript()
+    cmds = windows_ps1.write_script(
+        windows_powershell_cmdlet_content_3, windows_ps1.write_checks_cmds
+    )
+
+    assert expected_output in cmds
+
+
+def test_write_checks_cmds_for_linux(unix_content):
+    checkdir = "${CHECKSDIR}"
+    expected_output = []
+    expected_output.append("\n# Checks\n")
+    expected_output.append('whoami > "${CHECKSDIR}"/1.1.1.txt\n')
+    expected_output.append('id > "${CHECKSDIR}"/1.1.2.txt\n')
+
+    output = LinuxBashScript().write_checks_cmds(checkdir, unix_content, [])
+
+    assert output == expected_output
+
+
+def test_write_checks_cmds_for_mac(unix_content):
+    checkdir = "${CHECKSDIR}"
+    expected_output = []
+    expected_output.append("\n# Checks\n")
+    expected_output.append('whoami > "${CHECKSDIR}"/1.1.1.txt\n')
+    expected_output.append('id > "${CHECKSDIR}"/1.1.2.txt\n')
+
+    output = MacOSBashScript().write_checks_cmds(checkdir, unix_content, [])
+
+    assert output == expected_output
+
+
+def test_write_checks_cmds_for_windows_batch(windows_content):
+    checkdir = "%checksdir%"
     expected_output = []
     expected_output.append("\r\nREM Checks\r\n")
     expected_output.append("whoami /all > %checksdir%\\1.1.1.txt\r\n")
     expected_output.append("net users > %checksdir%\\1.1.2.txt\r\n")
 
-    output = WindowsBatchScript().write_checks_cmds(checkdir, content, cmds)
+    output = WindowsBatchScript().write_checks_cmds(checkdir, windows_content, [])
 
     assert output == expected_output
 
 
-def test_write_checks_cmds_for_windows_powershell():
+def test_write_checks_cmds_for_windows_powershell(windows_content):
     checkdir = "$checksdir"
-    content = []
-    content.append(
-        {
-            "category_id": 1,
-            "checks_cmds": [["1.1.1", "whoami /all"], ["1.1.2", "net users"]],
-        }
-    )
-    cmds = []
-
     expected_output = []
     expected_output.append("\r\n# Checks\r\n")
-    expected_output.append("whoami /all | Out-File -Path $checksdir\\1.1.1.txt\r\n")
-    expected_output.append("net users | Out-File -Path $checksdir\\1.1.2.txt\r\n")
+    expected_output.append("whoami /all | Out-File -FilePath $checksdir\\1.1.1.txt\r\n")
+    expected_output.append("net users | Out-File -FilePath $checksdir\\1.1.2.txt\r\n")
 
-    output = WindowsPowershellScript().write_checks_cmds(checkdir, content, cmds)
+    output = WindowsPowershellScript().write_checks_cmds(checkdir, windows_content, [])
 
     assert output == expected_output
