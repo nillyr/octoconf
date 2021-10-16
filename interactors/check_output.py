@@ -30,7 +30,7 @@ class CheckOutputInteractor:
         """
         for result in results:
             result.result = self._check_output(
-                result.cmd_output.rstrip(), result.expected, result.verification_type
+                result.cmd_output, result.expected, result.verification_type
             )
         json_results = self._checklist.get_json_reporting(ic(results))
         return ReportGeneratorInteractor().execute(json_results, is_file=False)
