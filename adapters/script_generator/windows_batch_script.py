@@ -40,7 +40,7 @@ mkdir {2}
             for cmd in content[i]["collection_cmds"]:
                 str += (
                     IWindowsScript.preprocess_collection_cmd(
-                        "%basedir%\\%category%\\", cmd, IWindowsScript._batch_pattern
+                        "%basedir%\\%category%\\", cmd
                     )
                     + IWindowsScript._newline
                 )

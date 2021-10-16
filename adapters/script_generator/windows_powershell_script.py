@@ -38,7 +38,7 @@ New-Item -ItemType directory -Path $basedir\\$category
             for cmd in content[i]["collection_cmds"]:
                 str += (
                     IWindowsScript.preprocess_collection_cmd(
-                        "$basedir\\$category\\", cmd, IWindowsScript._powershell_pattern
+                        "$basedir\\$category\\", cmd
                     )
                     + IWindowsScript._newline
                 )
