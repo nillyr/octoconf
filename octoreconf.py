@@ -50,10 +50,10 @@ def parse_misc_args(args):
     if args.debug:
         debug.set_debug(True)
 
-    global_values.set_localize(args.language)
     _ = vars(args)
     # gen-report
     if _.get("input"):
+        global_values.set_localize(args.language)
         uc = ReportGeneratorInteractor()
         return uc.execute(args.input, is_file=True)
     # gen-script
