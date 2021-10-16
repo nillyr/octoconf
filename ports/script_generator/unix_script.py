@@ -10,7 +10,7 @@ class IUnixScript(metaclass=ABCMeta):
 
     _newline = "\n"
     _pattern = " > "
-    _regex_pattern = "\|\s*Out-File\s+(-(Append|FilePath)\s+)*|\s*>+\s"
+    _regex_pattern = "\|\s*Out-File\s+(-(Append|FilePath)\s+)*|\s*>+\s*"
 
     @abstractmethod
     def write_checks_cmds(self, checksdir, content, cmds):

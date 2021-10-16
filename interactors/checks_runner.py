@@ -37,18 +37,19 @@ class ChecksRunnerInteractor:
         """
         This method puts the audit proofs in the folder corresponding to the current category. Since the user is not aware of the folder automatically created during the tests, it is not possible to specify the exact path for the output of the files in the checklist.
         """
-        if system() == "Windows" and "| Out-File -Path" in cmd:
-            pattern = "| Out-File -Path"
-        else:
-            pattern = ">"
+        regex_pattern = "\|\s*Out-File\s+(-(Append|FilePath)\s+)*|\s*>+\s*"
 
-        output_file = re.split(pattern, cmd)[-1].strip()
+        output_file = re.split(regex_pattern, cmd)[-1].strip()
         path = (
             Path.cwd() / basedir / category.replace(" ", "_") / Path(output_file).parent
         )
         path.mkdir(parents=True, exist_ok=True)
         replace_path = path / Path(output_file).name
-        return ic(re.split(pattern, cmd)[0] + pattern + " " + str(replace_path))
+        return ic(
+            re.split(regex_pattern, cmd)[0]
+            + re.search(regex_pattern, cmd).group(0)
+            + str(replace_path)
+        )
 
     def execute(self, checklist, output_directory):
         """
