@@ -15,7 +15,7 @@ Tool dedicated to the realization of configuration audits of various systems via
 ```
 usage: octoreconf.py [-h] [-v] [-d] {analyze,audit,misc} ...
 
-        ,'""`.       octoreconf v1.2.2b
+        ,'""`.       octoreconf v1.2.3b
        / _  _ \
        |(@)(@)|      Tool for semi-automatic verification
        )  __  (      of security configurations.
