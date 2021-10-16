@@ -6,7 +6,7 @@
 </p>
 
 <p align="center">
-  <img src="https://img.shields.io/badge/coverage-72%25-yellowgreen.svg">
+  <img src="https://img.shields.io/badge/coverage-72%25-green.svg">
   <img src="https://img.shields.io/badge/python-3.7+-blue.svg">
   <img src="https://img.shields.io/badge/platform-macOS%2FLinux%2FWindows-blue.svg">
 </p>
@@ -16,7 +16,7 @@ Tool dedicated to the realization of configuration audits of various systems via
 ```
 usage: octoreconf.py [-h] [-v] [-d] {analyze,audit,misc} ...
 
-        ,'""`.       octoreconf v1.2.3b
+        ,'""`.       octoreconf v1.2.4b
        / _  _ \
        |(@)(@)|      Tool for semi-automatic verification
        )  __  (      of security configurations.
