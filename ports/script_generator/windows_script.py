@@ -11,7 +11,7 @@ class IWindowsScript(metaclass=ABCMeta):
     _newline = "\r\n"
     _batch_pattern = " > "
     _powershell_pattern = " | Out-File -FilePath "
-    _regex_pattern = "\|\s*Out-File\s+(-(Append|FilePath)\s+)?|\s*>+\s"
+    _regex_pattern = "\|\s*Out-File\s+(-(Append|FilePath)\s+)*|\s*>+\s"
 
     @abstractmethod
     def write_checks_cmds(self, checksdir, content, cmds):
