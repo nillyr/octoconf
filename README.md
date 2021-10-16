@@ -6,6 +6,7 @@
 </p>
 
 <p align="center">
+  <img src="https://img.shields.io/badge/coverage-72%25-yellowgreen.svg">
   <img src="https://img.shields.io/badge/python-3.7+-blue.svg">
   <img src="https://img.shields.io/badge/platform-macOS%2FLinux%2FWindows-blue.svg">
 </p>
