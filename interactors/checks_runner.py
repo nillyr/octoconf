@@ -1,6 +1,5 @@
 import asyncio
 from pathlib import Path
-from platform import system
 import re
 
 from icecream import ic
