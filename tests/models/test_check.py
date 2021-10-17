@@ -9,6 +9,7 @@ def test_check_model_init():
         cmd="a_cmd",
         expected="a_expected",
         verification_type="a_verification_type",
+        severity="a_severity",
         recommandation_on_failed="a_recommandation_on_failed",
         see_also="a_see_also",
     )
@@ -19,5 +20,6 @@ def test_check_model_init():
     assert check.cmd == "a_cmd"
     assert check.expected == "a_expected"
     assert check.verification_type == "a_verification_type"
+    assert check.severity == "a_severity"
     assert check.recommandation_on_failed == "a_recommandation_on_failed"
     assert check.see_also == "a_see_also"

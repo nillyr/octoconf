@@ -54,6 +54,29 @@ class XlsxGenerator(IReportGenerator):
             }
         )
 
+    def _get_severity_result_format(
+        self, severity: str, workbook: xlsxwriter.workbook.Workbook
+    ):
+        """
+        Definition of the style to be applied.
+        """
+        if severity == "high":
+            font_color = const.COLORS["REGULAR_RED"]
+        elif severity == "medium":
+            font_color = const.COLORS["REGULAR_ORANGE"]
+        else:
+            font_color = const.COLORS["REGULAR_GREEN"]
+
+        return workbook.add_format(
+            {
+                "bold": 1,
+                "border": 1,
+                "align": "center",
+                "valign": "vcenter",
+                "font_color": font_color,
+            }
+        )
+
     def _get_check_format(self, workbook: xlsxwriter.workbook.Workbook):
         """
         Definition of the style to be applied.
@@ -115,49 +138,61 @@ class XlsxGenerator(IReportGenerator):
         for item in data:
             for category in item["categories"]:
                 worksheet = workbook.add_worksheet(name=category["name"])
-                worksheet.set_column("A:D", 20)
+                worksheet.set_column("A:E", 20)
                 worksheet.set_row(0, 25)
                 worksheet.merge_range(
-                    "A1:D1", category["name"], self._get_category_format(workbook)
+                    "A1:E1", category["name"], self._get_category_format(workbook)
                 )
                 checkpoint_row = 2
                 nb_success, nb_failed, nb_na = 0, 0, 0
                 for checkpoint in category["checkpoints"]:
+                    worksheet.write(
+                        f"A{checkpoint_row}",
+                        global_values.localize.gettext("severity"),
+                        self._get_checkpoint_format(workbook),
+                    )
                     worksheet.merge_range(
-                        f"A{checkpoint_row}:C{checkpoint_row}",
+                        f"B{checkpoint_row}:D{checkpoint_row}",
                         checkpoint["title"],
                         self._get_checkpoint_format(workbook),
                     )
                     worksheet.write(
-                        f"D{checkpoint_row}",
+                        f"E{checkpoint_row}",
                         global_values.localize.gettext("result"),
                         self._get_checkpoint_format(workbook),
                     )
                     check_row = checkpoint_row + 1
                     for check in checkpoint["checks"]:
+                        worksheet.write(
+                            f"A{check_row}",
+                            global_values.localize.gettext(check["severity"]),
+                            self._get_severity_result_format(
+                                check["severity"], workbook
+                            ),
+                        )
                         worksheet.merge_range(
-                            f"A{check_row}:C{check_row}",
+                            f"B{check_row}:D{check_row}",
                             check["description"],
                             self._get_check_format(workbook),
                         )
                         if "result" in check:
                             if check["result"] == True:
                                 worksheet.write(
-                                    f"D{check_row}",
+                                    f"E{check_row}",
                                     global_values.localize.gettext("success"),
                                     self._get_success_result_format(workbook),
                                 )
                                 nb_success += 1
                             elif check["result"] == False:
                                 worksheet.write(
-                                    f"D{check_row}",
+                                    f"E{check_row}",
                                     global_values.localize.gettext("failed"),
                                     self._get_failed_result_format(workbook),
                                 )
                                 nb_failed += 1
                             else:
                                 worksheet.write(
-                                    f"D{check_row}",
+                                    f"E{check_row}",
                                     global_values.localize.gettext("na"),
                                     self._get_uncertain_result_format(workbook),
                                 )
@@ -166,7 +201,7 @@ class XlsxGenerator(IReportGenerator):
                             checkpoint_row = check_row
                         else:
                             worksheet.write(
-                                f"D{check_row}",
+                                f"E{check_row}",
                                 global_values.localize.gettext("na"),
                                 self._get_uncertain_result_format(workbook),
                             )

@@ -4,6 +4,18 @@ msgstr "Summary"
 msgid "categories"
 msgstr "Categories"
 
+msgid "severity"
+msgstr "Severity"
+
+msgid "high"
+msgstr "High"
+
+msgid "medium"
+msgstr "Medium"
+
+msgid "low"
+msgstr "Low"
+
 msgid "success"
 msgstr "Success"
 

@@ -4,6 +4,18 @@ msgstr "Synthèse"
 msgid "categories"
 msgstr "Catégories"
 
+msgid "severity"
+msgstr "Sévérité"
+
+msgid "high"
+msgstr "Haute"
+
+msgid "medium"
+msgstr "Moyenne"
+
+msgid "low"
+msgstr "Basse"
+
 msgid "success"
 msgstr "Succès"
 

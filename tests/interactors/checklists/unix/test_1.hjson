@@ -19,6 +19,7 @@
                 cmd: "whoami | echo $?"
                 expected: "0"
                 verification_type: CHECK_EXACT
+                severity: high
                 recommandation_on_failed: a recommandation on failed
               },
               {
@@ -28,6 +29,7 @@
                 cmd: "whoami"
                 expected: "[A-Za-z0-9-_]{1,}"
                 verification_type: CHECK_REGEX
+                severity: high
                 recommandation_on_failed: a recommandation on failed
               },
             ]

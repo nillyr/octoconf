@@ -12,6 +12,7 @@ def test_serialize_checks():
         cmd="a_cmd",
         expected="a_expected",
         verification_type="a_verification_type",
+        severity="a_severity",
         recommandation_on_failed="a_recommandation_on_failed",
         see_also="a_see_also",
     )
@@ -26,6 +27,7 @@ def test_serialize_checks():
         "verification_type": "a_verification_type",
         "cmd_output": "",
         "result": "",
+        "severity": "a_severity",
         "recommandation_on_failed": "a_recommandation_on_failed",
         "see_also": "a_see_also"
     }}

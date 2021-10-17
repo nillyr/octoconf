@@ -13,6 +13,7 @@ def checks():
         cmd="a_cmd",
         expected="a_expected",
         verification_type="a_verification_type",
+        severity="a_severity",
         recommandation_on_failed="a_recommandation_on_failed",
         see_also="a_see_also",
     )
@@ -24,6 +25,7 @@ def checks():
         cmd="a_cmd",
         expected="a_expected",
         verification_type="a_verification_type",
+        severity="a_severity",
         recommandation_on_failed="a_recommandation_on_failed",
         see_also="a_see_also",
     )

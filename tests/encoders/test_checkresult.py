@@ -16,6 +16,7 @@ def test_serialize_check_result():
         verification_type="a_verification_type",
         cmd_output="a_cmd_output",
         result=True,
+        severity="a_severity",
         recommandation_on_failed="a_recommandation_on_failed",
         see_also="a_see_also",
     )
@@ -30,6 +31,7 @@ def test_serialize_check_result():
         "verification_type": "a_verification_type",
         "cmd_output": "a_cmd_output",
         "result": true,
+        "severity": "a_severity",
         "recommandation_on_failed": "a_recommandation_on_failed",
         "see_also": "a_see_also"
     }}

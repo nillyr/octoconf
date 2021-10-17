@@ -17,6 +17,7 @@ class CheckResultJsonEncoder(json.JSONEncoder):
                 "verification_type": o.verification_type,
                 "cmd_output": o.cmd_output,
                 "result": o.result,
+                "severity": o.severity,
                 "recommandation_on_failed": o.recommandation_on_failed,
                 "see_also": o.see_also if o.see_also is not None else "",
             }

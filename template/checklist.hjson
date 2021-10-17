@@ -19,7 +19,13 @@
             reference: https://www.my-reference.com/
             # Optionnal value
             # Performing a full extraction is highly recommended for collecting audit proof.
-            collection_cmd: "your command > output_path/output_file.ext"
+            /**
+            * Optionnal value
+            * Performing a full extraction is highly recommended for collecting audit proof.
+            *
+            * The output path must not be specified. The latter is automatically generated.
+            */
+            collection_cmd: "your command > output_file.ext"
             # Optionnal value (must be present if collection_cmd is defined)
             # CMD_EXEC = /bin/bash
             # AUDIT_POWERSHELL = powershell.exe
@@ -41,6 +47,13 @@
                 *  - CHECK_REGEX   expects a python regular expression
                 */
                 verification_type: CHECK_EXACT
+                /**
+                * Possible values:
+                *  - high
+                *  - medium
+                *  - low
+                */
+                severity: high
                 recommandation_on_failed:
                 '''
                 When the outcome is not what was expected, it is possible to print a recommendation.

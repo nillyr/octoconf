@@ -80,8 +80,9 @@ class ChecksRunnerInteractor:
                 "cmd": check.cmd,
                 "expected": check.expected,
                 "verification_type": check.verification_type,
-                "recommandation_on_failed": check.recommandation_on_failed,
                 "cmd_output": cmd_output,
+                "severity": check.severity,
+                "recommandation_on_failed": check.recommandation_on_failed,
                 "see_also": check.see_also if check.see_also is not None else None,
             }
 
