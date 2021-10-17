@@ -17,7 +17,7 @@ from ports import IArchive, IChecker, IChecklist, ILanguageFactory
 from utils import *
 
 
-const.VERSION = "v1.2.4b"
+const.VERSION = "v1.2.5b"
 
 
 def default_parse_args(args):
