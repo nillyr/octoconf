@@ -1,0 +1,39 @@
+[
+  {
+    categories: [
+      {
+        id: 1
+        name: a category with some spaces
+        checkpoints: [
+          {
+            id: 1
+            title: a checkpoint title
+            description: a short description
+            collection_cmd: "whoami > whoami.txt"
+            collection_cmd_type: CMD_EXEC
+            checks: [
+              {
+                id: 1
+                description: User info
+                type: CMD_EXEC
+                cmd: "whoami | echo $?"
+                expected: "0"
+                verification_type: CHECK_EXACT
+                recommandation_on_failed: a recommandation on failed
+              },
+              {
+                id: 2
+                description: User info
+                type: CMD_EXEC
+                cmd: "whoami"
+                expected: "[A-Za-z0-9-_]{1,}"
+                verification_type: CHECK_REGEX
+                recommandation_on_failed: a recommandation on failed
+              },
+            ]
+          }
+        ]
+      },
+    ]
+  }
+]
