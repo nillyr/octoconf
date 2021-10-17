@@ -1,0 +1,3 @@
+[submodule "checklists"]
+	path = checklists
+	url = https://github.com/Nillyr/octoreconf-checklists
