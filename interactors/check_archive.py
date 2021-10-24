@@ -26,7 +26,7 @@ class CheckArchiveInteractor:
             return
 
         results = []
-        for root, dirs, files in os.walk(extract_path):
+        for _, _, files in os.walk(extract_path):
             check_result = []
             for file in files:
                 filename = file.rsplit(".", 1)[0]
