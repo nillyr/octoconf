@@ -1,5 +1,3 @@
-from icecream import ic
-
 from decorators.decorator import Decorator
 
 

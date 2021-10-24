@@ -258,12 +258,19 @@ class XlsxGenerator(IReportGenerator):
                 value["N/A"],
                 self._get_check_format(workbook),
             )
-            worksheet.write(
-                f"G{row}",
-                (value["SUCCESS"] * 100)
-                / (value["SUCCESS"] + value["FAILED"] + value["N/A"]),
-                self._get_check_format(workbook),
-            )
+            try:
+                worksheet.write(
+                    f"G{row}",
+                    (value["SUCCESS"] * 100)
+                    / (value["SUCCESS"] + value["FAILED"] + value["N/A"]),
+                    self._get_check_format(workbook),
+                )
+            except ZeroDivisionError:
+                worksheet.write(
+                    f"G{row}",
+                    0,
+                    self._get_check_format(workbook),
+                )
         return row
 
     #fmt:off

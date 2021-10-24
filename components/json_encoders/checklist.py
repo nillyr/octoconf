@@ -1,7 +1,5 @@
 import json
 
-from icecream import ic
-
 from components.json_encoders.checkpoint import CheckpointJsonEncoder
 from components.json_encoders.checkresult import CheckResultJsonEncoder
 from models import *

@@ -50,7 +50,7 @@ class ArchiveAdapter(IArchive):
         else:
             pass
 
-        for root, dirs, files in os.walk(path):
+        for root, _, _ in os.walk(path):
             if "checks" in root:
                 path = Path(root)
 
