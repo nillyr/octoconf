@@ -45,6 +45,7 @@ def test_checkpoint_model_init(checks):
         reference="a_reference",
         collection_cmd="a_collection_cmd",
         collection_cmd_type="a_collection_cmd_type",
+        collect_only=False,
         checks=checks,
     )
 
@@ -54,4 +55,5 @@ def test_checkpoint_model_init(checks):
     assert a_checkpoint.reference == "a_reference"
     assert a_checkpoint.collection_cmd == "a_collection_cmd"
     assert a_checkpoint.collection_cmd_type == "a_collection_cmd_type"
+    assert a_checkpoint.collect_only == False
     assert a_checkpoint.checks == checks

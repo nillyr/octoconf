@@ -32,6 +32,7 @@ def test_serialize_checkpoint(checks):
         reference="a_reference",
         collection_cmd="a_collection_cmd",
         collection_cmd_type="a_collection_cmd_type",
+        collect_only=False,
         checks=checks,
     )
 
@@ -43,6 +44,7 @@ def test_serialize_checkpoint(checks):
         "reference": "a_reference",
         "collection_cmd": "a_collection_cmd",
         "collection_cmd_type": "a_collection_cmd_type",
+        "collect_only": false,
         "checks": [{{
             "id": "1",
             "description": "a_description",

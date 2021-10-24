@@ -12,4 +12,5 @@ class Checkpoint(BaseModel):
     reference: Optional[str]
     collection_cmd: Optional[str]
     collection_cmd_type: Optional[str]
-    checks: List[Check]
+    collect_only: bool
+    checks: Optional[List[Check]]

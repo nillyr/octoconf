@@ -79,6 +79,8 @@ class ChecklistAdapter(IChecklist):
             for category in item["categories"]:
                 checkpoints_list = []
                 for checkpoint in category["checkpoints"]:
+                    if checkpoint["collect_only"] == True:
+                        continue
                     checks_list = []
                     for check in checkpoint["checks"]:
                         checks_list.append(Check(**check))
@@ -129,12 +131,21 @@ class ChecklistAdapter(IChecklist):
             int(cmd_id.split(".")[1]),
             int(cmd_id.split(".")[2]),
         )
-        check = (
-            categories[category_id - 1]
-            .checkpoints[checkpoint_id - 1]
-            .checks[check_id - 1]
-        )
-        return check
+        try:
+            check = (
+                categories[category_id - 1]
+                .checkpoints[checkpoint_id - 1]
+                .checks[check_id - 1]
+            )
+            return check
+        except IndexError as _err:
+            print(
+                f"Error: Check not found. Are you using the correct checklist?{_err}",
+                file=sys.stderr,
+            )
+            pass
+        finally:
+            return None
 
     def list_collection_cmds(self):
         """
@@ -170,15 +181,23 @@ class ChecklistAdapter(IChecklist):
         for item in self._checklist:
             for category in item["categories"]:
                 for checkpoint in category["checkpoints"]:
-                    for check in checkpoint["checks"]:
-                        check["id"] = (
-                            str(category["id"])
-                            + "."
-                            + str(checkpoint["id"])
-                            + "."
-                            + str(check["id"])
-                        )
-                        checks.append(Check(**check))
+                    try:
+                        if checkpoint["collect_only"] == True:
+                            continue
+                        for check in checkpoint["checks"]:
+                            check["id"] = (
+                                str(category["id"])
+                                + "."
+                                + str(checkpoint["id"])
+                                + "."
+                                + str(check["id"])
+                            )
+                            checks.append(Check(**check))
+                    except KeyError as _err:
+                        print(f"Error: {_err} not found.", file=sys.stderr)
+                    finally:
+                        continue
+
         return ic(checks)
 
     def get_json_reporting(self, results: List[CheckResult]) -> str:

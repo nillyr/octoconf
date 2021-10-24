@@ -162,6 +162,8 @@ class XlsxGenerator(IReportGenerator):
                         self._get_checkpoint_format(workbook),
                     )
                     check_row = checkpoint_row + 1
+                    if checkpoint["collect_only"] == True:
+                        continue
                     for check in checkpoint["checks"]:
                         worksheet.write(
                             f"A{check_row}",
@@ -258,12 +260,20 @@ class XlsxGenerator(IReportGenerator):
                 value["N/A"],
                 self._get_check_format(workbook),
             )
-            worksheet.write(
-                f"G{row}",
-                (value["SUCCESS"] * 100)
-                / (value["SUCCESS"] + value["FAILED"] + value["N/A"]),
-                self._get_check_format(workbook),
-            )
+            try:
+                worksheet.write(
+                    f"G{row}",
+                    (value["SUCCESS"] * 100)
+                    / (value["SUCCESS"] + value["FAILED"] + value["N/A"]),
+                    self._get_check_format(workbook),
+                )
+            except ZeroDivisionError:
+                # This error only occurs when the "collect_only" key is set to True. Ignore error and set to percentage cell to 0
+                worksheet.write(
+                    f"G{row}",
+                    0,
+                    self._get_check_format(workbook),
+                )
         return row
 
     #fmt:off

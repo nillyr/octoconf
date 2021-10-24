@@ -11,6 +11,7 @@
             description: a short description
             collection_cmd: "whoami > whoami.txt"
             collection_cmd_type: CMD_EXEC
+            collect_only: false
             checks: [
               {
                 id: 1

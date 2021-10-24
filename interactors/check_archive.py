@@ -1,6 +1,5 @@
 import inject
 import os
-from pathlib import Path
 
 from icecream import ic
 
@@ -32,6 +31,8 @@ class CheckArchiveInteractor:
             for file in files:
                 filename = file.rsplit(".", 1)[0]
                 check = self._checklist.get_check(categories, filename)
+                if check is None:
+                    continue
                 with open(str(extract_path) + "/" + file, "r") as check_output:
                     content = check_output.read()
                     check_result = {

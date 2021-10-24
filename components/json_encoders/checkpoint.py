@@ -23,6 +23,7 @@ class CheckpointJsonEncoder(json.JSONEncoder):
                 "reference": o.reference,
                 "collection_cmd": o.collection_cmd,
                 "collection_cmd_type": o.collection_cmd_type,
+                "collect_only": o.collect_only,
                 "checks": o.checks,
             }
             return to_serialize
