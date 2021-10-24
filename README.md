@@ -53,7 +53,7 @@ optional arguments:
 ## Installation
 
 ```
-# Clone this project and his submodules
+# Clone this project and its submodules
 git clone --recursive git@github.com:Nillyr/octoreconf.git
 # Installation on Linux and macOS
 bash setup.sh
