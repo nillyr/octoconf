@@ -53,9 +53,11 @@ optional arguments:
 ## Installation
 
 ```
-# On Linux and macOS
+# Clone this project and his submodues
+git clone --recursive git@github.com:Nillyr/octoreconf.git
+# Installation on Linux and macOS
 bash setup.sh
-# On Windows
+# Installation on Windows
 .\setup.bat
 ```
 
