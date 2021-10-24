@@ -22,4 +22,4 @@ class ReportGeneratorInteractor:
         else:
             json_results = json.loads(user_input)
 
-        return self._xlsx_generator.generate_report(json_results)
+        return self._xlsx_generator.generate_report(ic(json_results))

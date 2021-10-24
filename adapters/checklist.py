@@ -69,6 +69,22 @@ class ChecklistAdapter(IChecklist):
             return self.CmdType.CMD_EXEC.value
         return
 
+    def _create_empty_check(self, id) -> Check:
+        """
+        This method enables to create an object of type "Check" which does not contain any result. The objective is to represent the collection in the result list so that it is not forgotten to add it to the final report.
+        """
+        return Check(
+            id=id,
+            description="FIXME",
+            type="",
+            cmd="",
+            expected="FIXME",
+            verification_type="",
+            result=False,
+            severity="high",
+            recommandation_on_failed="",
+        )
+
     def get_categories(self) -> List[Category]:
         """
         Puts the data of the checklist in the different defined entities.
@@ -79,9 +95,10 @@ class ChecklistAdapter(IChecklist):
             for category in item["categories"]:
                 checkpoints_list = []
                 for checkpoint in category["checkpoints"]:
-                    if checkpoint["collect_only"] == True:
-                        continue
                     checks_list = []
+                    if checkpoint["collect_only"] == True:
+                        checks_list.append(self._create_empty_check(1))
+                        continue
                     for check in checkpoint["checks"]:
                         checks_list.append(Check(**check))
                     checkpoint["checks"] = checks_list
@@ -181,9 +198,10 @@ class ChecklistAdapter(IChecklist):
         for item in self._checklist:
             for category in item["categories"]:
                 for checkpoint in category["checkpoints"]:
-                    try:
-                        if checkpoint["collect_only"] == True:
-                            continue
+                    if checkpoint["collect_only"] == True:
+                        id = str(category["id"]) + "." + str(checkpoint["id"]) + ".1"
+                        checks.append(self._create_empty_check(id))
+                    else:
                         for check in checkpoint["checks"]:
                             check["id"] = (
                                 str(category["id"])
@@ -193,11 +211,6 @@ class ChecklistAdapter(IChecklist):
                                 + str(check["id"])
                             )
                             checks.append(Check(**check))
-                    except KeyError as _err:
-                        print(f"Error: {_err} not found.", file=sys.stderr)
-                    finally:
-                        continue
-
         return ic(checks)
 
     def get_json_reporting(self, results: List[CheckResult]) -> str:
@@ -215,6 +228,9 @@ class ChecklistAdapter(IChecklist):
             base = checklist[0]["categories"][cat_id - 1]["checkpoints"][
                 checkpoint_id - 1
             ]
+            if base["collect_only"] == True:
+                base["checks"] = [self._create_empty_check(1)]
+                continue
             if isinstance(base, dict):
                 checklist[0]["categories"][cat_id - 1]["checkpoints"][
                     checkpoint_id - 1
