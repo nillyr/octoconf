@@ -17,6 +17,8 @@ class LinuxBashScript(IUnixScript):
         for category in content:
             for check_cmds in category["checks_cmds"]:
                 output_file, cmd = check_cmds[0] + ".txt", check_cmds[1]
+                if not cmd:
+                    continue
                 path = '"' + checksdir + '"/' + output_file + IUnixScript._newline
                 cmds.append(cmd + IUnixScript._pattern + path)
         return ic(cmds)
