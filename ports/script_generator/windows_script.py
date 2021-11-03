@@ -9,9 +9,9 @@ class IWindowsScript(metaclass=ABCMeta):
     """
 
     _newline = "\r\n"
-    _batch_pattern = " > "
-    _powershell_pattern = " | Out-File -FilePath "
-    _regex_pattern = "\|\s*Out-File\s+(-(Append|FilePath)\s+)*|\s*>+\s*"
+    _batch_pattern = " >> "
+    _powershell_pattern = " | Out-File -Append -FilePath "
+    _regex_pattern = "\|\s*Out-File\s+(-(Append|FilePath)\s+)*|\s*>+\s*|\s*/(H|cfg)\s*"
 
     @abstractmethod
     def write_checks_cmds(self, checksdir, content, cmds):
