@@ -98,9 +98,9 @@ class ChecklistAdapter(IChecklist):
                     checks_list = []
                     if checkpoint["collect_only"] == True:
                         checks_list.append(self._create_empty_check(1))
-                        continue
-                    for check in checkpoint["checks"]:
-                        checks_list.append(Check(**check))
+                    else:
+                        for check in checkpoint["checks"]:
+                            checks_list.append(Check(**check))
                     checkpoint["checks"] = checks_list
                     checkpoints_list.append(Checkpoint(**checkpoint))
                 category["checkpoints"] = checkpoints_list
