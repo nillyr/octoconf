@@ -53,6 +53,7 @@ coverage.xml
 
 # Tests
 tests/.ignore/
+tests/interactors/archive/tryme
 
 # Translations
 *.mo
