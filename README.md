@@ -156,6 +156,10 @@ octoreconf -d misc gen-report -i 20211006115003_results.json -l en
 - It is highly recommended to risk assess your checklists on a test virtual machine before using them in production
 - It is highly recommended to manually check each critical configuration of the audited system
 
+## Maintainer
+
+- [Nicolas GRELLETY](https://github.com/Nillyr)
+
 ## Authors
 
 - [Nicolas GRELLETY](https://github.com/Nillyr)
