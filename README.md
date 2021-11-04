@@ -50,7 +50,17 @@ optional arguments:
 
 ## Installation
 
+### Production
+
+```bash
+# Get the latest release
+python -m venv venv
+python -m pip install octoreconf-<version>-py3-none-any.whl
 ```
+
+### Developpement
+
+```bash
 # Clone this project and its submodules
 git clone --recursive git@github.com:Nillyr/octoreconf.git
 # Installation on Linux and macOS
@@ -72,13 +82,13 @@ This use case allows to generate from a checklist passed in argument a collectio
 
 ```bash
 # Linux
-python octoreconf.py misc gen-script -c checklist.hjson -l bash -p linux -o linux-collection-script.sh
+octoreconf misc gen-script -c checklist.hjson -l bash -p linux -o linux-collection-script.sh
 # macOS
-python octoreconf.py misc gen-script -c checklist.hjson -l bash -p mac -o mac-collection-script.sh
+octoreconf misc gen-script -c checklist.hjson -l bash -p mac -o mac-collection-script.sh
 # Windows (Batch)
-python octoreconf.py misc gen-script -c checklist.hjson -l batch -p windows -o windows-collection-script.bat
+octoreconf misc gen-script -c checklist.hjson -l batch -p windows -o windows-collection-script.bat
 # Windows (Powershell)
-python octoreconf.py misc gen-script -c checklist.hjson -l powershell -p windows -o windows-collection-script.ps1
+octoreconf misc gen-script -c checklist.hjson -l powershell -p windows -o windows-collection-script.ps1
 ```
 
 ### Audit
@@ -96,9 +106,9 @@ Finally, an XLSX file is generated presenting the results graphically. A JSON fi
 
 ```bash
 # Launch the audit
-python octoreconf.py audit -c checklists.hjson -o ouput_dir/
+octoreconf audit -c checklists.hjson -o ouput_dir/
 # Launch the audit and specify the language to use in the output file (xlsx)
-python octoreconf.py audit -c checklists.hjson -o ouput_dir/ -l en
+octoreconf audit -c checklists.hjson -o ouput_dir/ -l en
 ```
 
 ### Analyze
@@ -114,13 +124,13 @@ This use case allows an analysis of the results of the checks based on a checkli
 
 ```bash
 # (tag.gz format) Launch the analyze
-python octoreconf.py analyze -a archive.tar.gz -c checklist.hjson
+octoreconf analyze -a archive.tar.gz -c checklist.hjson
 # (tag.gz format) Launch the analyze and specify the language to use in the output file (xlsx)
-python octoreconf.py analyze -a archive.tar.gz -c checklist.hjson -l en
+octoreconf analyze -a archive.tar.gz -c checklist.hjson -l en
 # (zip format) Launch the analyze
-python octoreconf.py analyze -a archive.zip -c checklist.hjson
+octoreconf analyze -a archive.zip -c checklist.hjson
 # (zip format) Launch the analyze and specify the language to use in the output file (xlsx)
-python octoreconf.py analyze -a archive.zip -c checklist.hjson -l en
+octoreconf analyze -a archive.zip -c checklist.hjson -l en
 ```
 
 ### Report Generation
@@ -134,9 +144,9 @@ This use case can be called automatically as a chain of other use cases or indep
 
 ```bash
 # Launch the report generation
-python octoreconf.py -d misc gen-report -i 20211006115003_results.json
+octoreconf -d misc gen-report -i 20211006115003_results.json
 # Launch the report generation and specify the language to use in the output file (xlsx)
-python octoreconf.py -d misc gen-report -i 20211006115003_results.json -l en
+octoreconf -d misc gen-report -i 20211006115003_results.json -l en
 ```
 
 ## Disclaimer
