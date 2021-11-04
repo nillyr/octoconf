@@ -2,7 +2,7 @@
 name: feature_request
 about: Request to add a feature or suggest an improvement
 title: "[Feature Request] FIXME_NAME"
-labels: feature_request
+labels: enhancement
 assignees: Nillyr
 
 ---
