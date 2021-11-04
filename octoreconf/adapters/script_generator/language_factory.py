@@ -1,3 +1,8 @@
+# @copyright Copyright (c) 2021 Nicolas GRELLETY
+# @license https://opensource.org/licenses/GPL-3.0 GNU GPLv3
+# @link https://github.com/Nillyr/octoreconf
+# @since 1.0.0b
+
 import sys
 
 from octoreconf.adapters.script_generator.linux_bash_script import LinuxBashScript

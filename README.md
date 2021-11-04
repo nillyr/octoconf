@@ -150,7 +150,11 @@ python octoreconf.py -d misc gen-report -i 20211006115003_results.json -l en
 
 - [Nicolas GRELLETY](https://github.com/Nillyr)
 
-## Copyright
+## Copyright and license
+
+Copyright (c) 2021 Nicolas GRELLETY
+
+This software is licensed under GNU GPLv3 license. See `LICENSE` file in the root folder of the project.
 
 - Development based on the work done by [kristovatlas](https://github.com/kristovatlas/osx-config-check)
 

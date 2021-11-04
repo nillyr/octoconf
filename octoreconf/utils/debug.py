@@ -1,3 +1,8 @@
+# @copyright Copyright (c) 2021 Nicolas GRELLETY
+# @license https://opensource.org/licenses/GPL-3.0 GNU GPLv3
+# @link https://github.com/Nillyr/octoreconf
+# @since 1.0.0b
+
 import sys
 
 from icecream import ic
@@ -7,6 +12,7 @@ class Debug:
     """
     Configuration of the external package icecream.
     """
+
     def __init__(self) -> None:
         self.debug = False
         ic.disable()
