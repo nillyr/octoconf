@@ -3,7 +3,10 @@
 # @link https://github.com/Nillyr/octoreconf
 # @since 1.0.0b
 
-from models.check import Check
+import sys
+
+sys.path.append("../octoreconf/")
+from octoreconf.models.check import Check
 
 
 def test_check_model_init():

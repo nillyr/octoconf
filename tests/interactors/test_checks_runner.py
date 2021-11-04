@@ -4,18 +4,20 @@
 # @since 1.0.0b
 
 from pathlib import Path
+import sys
 
 import inject
 import pytest
 
-from adapters import CheckerAdapter, ChecklistAdapter
-from components.report_generators.xlsx_report_generator import (
+sys.path.append("../octoreconf/")
+from octoreconf.adapters import CheckerAdapter, ChecklistAdapter
+from octoreconf.components.report_generators.xlsx_report_generator import (
     IReportGenerator,
     XlsxGenerator,
 )
-from interactors.checks_runner import ChecksRunnerInteractor
-from ports import IChecker, IChecklist
-from utils import *
+from octoreconf.interactors.checks_runner import ChecksRunnerInteractor
+from octoreconf.ports import IChecker, IChecklist
+from octoreconf.utils import *
 
 
 @pytest.fixture

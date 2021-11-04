@@ -4,9 +4,11 @@
 # @since 1.0.0b
 
 import json
+import sys
 
-from components.json_encoders import CheckJsonEncoder
-from models.check import Check
+sys.path.append("../octoreconf/")
+from octoreconf.components.json_encoders import CheckJsonEncoder
+from octoreconf.models.check import Check
 
 
 def test_serialize_checks():

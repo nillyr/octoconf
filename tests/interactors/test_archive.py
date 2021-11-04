@@ -4,10 +4,12 @@
 # @since 1.0.0b
 
 import os
+import sys
 
 import pytest
 
-from adapters.archive import ArchiveAdapter
+sys.path.append("../octoreconf/")
+from octoreconf.adapters.archive import ArchiveAdapter
 
 
 @pytest.fixture

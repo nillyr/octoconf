@@ -4,11 +4,13 @@
 # @since 1.0.0b
 
 import json
+import sys
 
 import pytest
 
-from components.json_encoders.checkresult import CheckResultJsonEncoder
-from models.check import CheckResult
+sys.path.append("../octoreconf/")
+from octoreconf.components.json_encoders.checkresult import CheckResultJsonEncoder
+from octoreconf.models.check import CheckResult
 
 
 def test_serialize_check_result():

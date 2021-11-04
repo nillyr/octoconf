@@ -3,7 +3,10 @@
 # @link https://github.com/Nillyr/octoreconf
 # @since 1.0.0b
 
-from adapters.checker import CheckerAdapter
+import sys
+
+sys.path.append("../octoreconf/")
+from octoreconf.adapters.checker import CheckerAdapter
 
 
 def test_check_exact_case_insensitive():

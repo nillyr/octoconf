@@ -3,11 +3,14 @@
 # @link https://github.com/Nillyr/octoreconf
 # @since 1.0.0b
 
+import sys
+
 import pytest
 
-from models.check import Check
-from models.checkpoint import Checkpoint
-from models.category import Category
+sys.path.append("../octoreconf/")
+from octoreconf.models.check import Check
+from octoreconf.models.checkpoint import Checkpoint
+from octoreconf.models.category import Category
 
 
 @pytest.fixture

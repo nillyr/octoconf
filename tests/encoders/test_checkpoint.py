@@ -4,12 +4,14 @@
 # @since 1.0.0b
 
 import json
+import sys
 
 import pytest
 
-from components.json_encoders.checkpoint import CheckpointJsonEncoder
-from models.check import Check
-from models.checkpoint import Checkpoint
+sys.path.append("../octoreconf/")
+from octoreconf.components.json_encoders.checkpoint import CheckpointJsonEncoder
+from octoreconf.models.check import Check
+from octoreconf.models.checkpoint import Checkpoint
 
 
 @pytest.fixture
