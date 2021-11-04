@@ -35,7 +35,7 @@ set pythonvenv=.\venv\Scripts\python.exe
 %pythonvenv% -m pip install --upgrade pip
 
 echo [*] Installing the prerequisites...
-%pythonvenv% -m pip install --no-cache-dir -r requirements.txt
+%pythonvenv% -m pip install --no-cache-dir -r requirements-dev.txt
 
 if errorlevel 1 (
   echo [x] Installation failed >&2

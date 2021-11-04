@@ -34,7 +34,7 @@ else
 fi
 
 echo '[*] Installing the prerequisites...'
-pip install --no-cache-dir -r requirements.txt
+pip install --no-cache-dir -r requirements-dev.txt
 if [ $? -eq 0 ]; then
   echo '[+] Installation complete!'
 else

@@ -1,0 +1,75 @@
+# Syntax to be used
+[
+  {
+    categories: [
+      {
+        id: 1
+        name: A category
+        checkpoints: [
+          {
+            id: 1
+            # The title will be used in the generated files
+            title: This is a title
+            description:
+            '''
+            This is a
+            multiline description.
+            '''
+            # Optionnal value. Should be an URL
+            reference: https://www.my-reference.com/
+            # Optionnal value
+            # Performing a full extraction is highly recommended for collecting audit proof.
+            /**
+            * Optionnal value
+            * Performing a full extraction is highly recommended for collecting audit proof.
+            *
+            * The output path must not be specified. The latter is automatically generated.
+            */
+            collection_cmd: "your command > output_file.ext"
+            # Optionnal value (must be present if collection_cmd is defined)
+            # CMD_EXEC = /bin/bash
+            # AUDIT_POWERSHELL = powershell.exe
+            # BATCH_EXEC = cmd.exe
+            collection_cmd_type: CMD_EXEC
+            # Possible values: true | false
+            # true: checks can be remove
+            # false: checks must be defined
+            collect_only: false
+            checks: [
+              {
+                id: 1
+                description: A short description
+                type: CMD_EXEC
+                # example (macOS - SIP): /usr/bin/csrutil status | tee status.log | grep enabled
+                cmd: "your_command"
+                # example: enabled
+                expected: "expected_value"
+                /**
+                * Type of verification to be performed
+                * Possible values:
+                *  - CHECK_EXACT   expects a simple value
+                *  - CHECK_REGEX   expects a python regular expression
+                */
+                verification_type: CHECK_EXACT
+                /**
+                * Possible values:
+                *  - high
+                *  - medium
+                *  - low
+                */
+                severity: high
+                recommandation_on_failed:
+                '''
+                When the outcome is not what was expected, it is possible to print a recommendation.
+                The recommendation may contain, among other things, the command for correction.
+                '''
+                # Optional value. String (multiline possible)
+                see_also: https://www.my-reference.com/
+              }
+            ]
+          }
+        ]
+      }
+    ]
+  }
+]

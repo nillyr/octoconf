@@ -1,0 +1,16 @@
+from typing import List, Optional
+
+from pydantic import BaseModel
+
+from octoreconf.models.check import Check
+
+
+class Checkpoint(BaseModel):
+    id: int
+    title: str
+    description: str
+    reference: Optional[str]
+    collection_cmd: Optional[str]
+    collection_cmd_type: Optional[str]
+    collect_only: bool
+    checks: Optional[List[Check]]

@@ -1,9 +1,14 @@
+black==21.7b0
 chardet==4.0.0
+coverage==6.0.1
 hjson==3.0.2
 icecream==2.1.1
 Inject==4.3.1
+mock==4.0.3
 openpyxl==3.0.7
 polib==1.1.1
 pydantic==1.8.2
+pytest==6.2.5
 sty==1.0.0rc1
 XlsxWriter==3.0.1
+wheel
