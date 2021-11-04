@@ -1,7 +1,7 @@
 BUILD_DIR := build
 DIST_DIR := dist
 
-default: clean test build
+default: clean test build sdist
 
 clean:
 	$(RM) -r $(BUILD_DIR)
