@@ -148,13 +148,13 @@ class ChecklistAdapter(IChecklist):
             int(cmd_id.split(".")[1]),
             int(cmd_id.split(".")[2]),
         )
+        check: Check = None
         try:
             check = (
                 categories[category_id - 1]
                 .checkpoints[checkpoint_id - 1]
                 .checks[check_id - 1]
             )
-            return check
         except IndexError as _err:
             print(
                 f"Error: Check not found. Are you using the correct checklist?{_err}",
@@ -162,7 +162,7 @@ class ChecklistAdapter(IChecklist):
             )
             pass
         finally:
-            return None
+            return check
 
     def list_collection_cmds(self):
         """
@@ -228,14 +228,19 @@ class ChecklistAdapter(IChecklist):
             base = checklist[0]["categories"][cat_id - 1]["checkpoints"][
                 checkpoint_id - 1
             ]
-            if base["collect_only"] == True:
-                base["checks"] = [self._create_empty_check(1)]
-                continue
             if isinstance(base, dict):
+                if base["collect_only"] == True:
+                    base["checks"] = [self._create_empty_check(1)]
+                    continue
+
                 checklist[0]["categories"][cat_id - 1]["checkpoints"][
                     checkpoint_id - 1
                 ]["checks"][check_id - 1] = result
             elif isinstance(base, Checkpoint):
+                if base.collect_only == True:
+                    base["checks"] = [self._create_empty_check(1)]
+                    continue
+
                 checklist[0]["categories"][cat_id - 1]["checkpoints"][
                     checkpoint_id - 1
                 ].checks[check_id - 1] = result

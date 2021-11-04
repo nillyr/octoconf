@@ -1,6 +1,7 @@
 import inject
 import os
 
+import chardet
 from icecream import ic
 
 from interactors.check_output import CheckOutputInteractor
@@ -33,8 +34,14 @@ class CheckArchiveInteractor:
                 check = self._checklist.get_check(categories, filename)
                 if check is None:
                     continue
-                with open(str(extract_path) + "/" + file, "r") as check_output:
-                    content = check_output.read()
+                with open(str(extract_path) + "/" + file, "rb") as check_output:
+                    raw = check_output.read()
+                    encoding = chardet.detect(raw)["encoding"]
+                    if not encoding:
+                        # This case can be seen when using the powershell Out-File cmdlet (utf8noBom)
+                        encoding = "UTF-8-SIG"
+                    content = raw.decode(encoding)
+
                     check_result = {
                         "id": filename,
                         "description": check.description,

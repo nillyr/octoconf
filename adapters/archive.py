@@ -36,18 +36,21 @@ class ArchiveAdapter(IArchive):
         while path != path.with_suffix(""):
             path = path.with_suffix("")
 
-        if tarfile.is_tarfile(archive):
-            tar = tarfile.open(archive)
-            tar.extractall(path, members=self.checks_files_only(tar))
-            tar.close()
-        elif zipfile.is_zipfile(archive):
-            with zipfile.ZipFile(archive, "r") as zip_file:
-                files = zip_file.namelist()
-                for file in files:
-                    if "checks" in file:
-                        zip_file.extract(file, path)
-            zip_file.close()
-        else:
+        try:
+            if tarfile.is_tarfile(archive):
+                tar = tarfile.open(archive)
+                tar.extractall(path, members=self.checks_files_only(tar))
+                tar.close()
+            elif zipfile.is_zipfile(archive):
+                with zipfile.ZipFile(archive, "r") as zip_file:
+                    files = zip_file.namelist()
+                    for file in files:
+                        if "checks" in file:
+                            zip_file.extract(file, path)
+                zip_file.close()
+            else:
+                pass
+        except:
             pass
 
         for root, _, _ in os.walk(path):

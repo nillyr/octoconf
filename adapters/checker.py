@@ -15,7 +15,5 @@ class CheckerAdapter(IChecker):
         return expected.lower() == output.lower().rstrip()
 
     def check_regex(self, expected, output) -> bool:
-        # DO NOT REMOVE THE FLAG "DOTALL"
-        # https://docs.python.org/3/library/re.html#re.DOTALL
-        flags = re.DOTALL | re.IGNORECASE
-        return re.match(expected, output, flags) is not None
+        flags = re.IGNORECASE | re.MULTILINE | re.DOTALL
+        return re.search(expected, output, flags) is not None
