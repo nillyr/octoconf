@@ -55,6 +55,7 @@ optional arguments:
 ```bash
 # Get the latest release
 python -m venv venv
+# Activate the venv
 python -m pip install octoreconf-<version>-py3-none-any.whl
 ```
 
