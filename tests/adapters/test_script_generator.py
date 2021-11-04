@@ -80,6 +80,24 @@ def windows_powershell_cmdlet_content_3():
     ]
 
 
+@pytest.fixture
+def collect_only_and_not_only():
+    return [
+        {
+            "category_id": 1,
+            "category_name": "a categegory with space",
+            "checks_cmds": [["1.1.1", ""]],
+            "collection_cmds": ["dir > dir.txt"],
+        },
+        {
+            "category_id": 2,
+            "category_name": "a categegory with space",
+            "checks_cmds": [["2.1.1", "whoami /all"]],
+            "collection_cmds": ["net user > net_user.txt"],
+        },
+    ]
+
+
 def test_write_script_for_linux(unix_content):
     # fmt:off
     expected_output = '\nCATEGORY="a_categegory_with_space"\necho "[*] Running \\"${CATEGORY}\\" collection commands..."\n/bin/mkdir -p "${BASEDIR}"/"${CATEGORY}"/\nls -al >> "${BASEDIR}"/"${CATEGORY}"/ls.txt\n'
@@ -219,3 +237,75 @@ def test_write_checks_cmds_for_windows_powershell(windows_content):
     output = WindowsPowershellScript().write_checks_cmds(checkdir, windows_content, [])
 
     assert output == expected_output
+
+
+def test_write_check_with_collect_only_and_not_only_powershell(
+    collect_only_and_not_only,
+):
+    # fmt:off
+    expected_output = '\n$category="a_categegory_with_space"\nWrite-Output "[*] Running $category collection commands..."\nNew-Item -ItemType directory -Path $basedir\\$category\ndir > $basedir\\$category\\dir.txt\r\n'
+    # fmt:on
+
+    windows_ps1 = WindowsPowershellScript()
+    cmds = windows_ps1.write_script(
+        collect_only_and_not_only, windows_ps1.write_checks_cmds
+    )
+
+    expected_absent_check_cmd = (
+        " | Out-File -Encoding utf8 -Append -FilePath $checksdir\\1.1.1.txt\r\n"
+    )
+    expected_check_cmd = "whoami /all | Out-File -Encoding utf8 -Append -FilePath $checksdir\\2.1.1.txt\r\n"
+
+    assert expected_output in cmds
+    assert expected_absent_check_cmd not in cmds
+    assert expected_check_cmd in cmds
+
+
+def test_write_check_with_collect_only_and_not_only_batch(collect_only_and_not_only):
+    # fmt:off
+    expected_output = '\nset category=a_categegory_with_space\necho [*] Running %category% collection commands...\nmkdir %basedir%\\%category%\ndir > %basedir%\\%category%\\dir.txt\r\n'
+    # fmt:on
+
+    windows_batch = WindowsBatchScript()
+    cmds = windows_batch.write_script(
+        collect_only_and_not_only, windows_batch.write_checks_cmds
+    )
+
+    expected_absent_check_cmd = " >> %checksdir%\\1.1.1.txt\r\n"
+    expected_check_cmd = "whoami /all >> %checksdir%\\2.1.1.txt\r\n"
+
+    assert expected_output in cmds
+    assert expected_absent_check_cmd not in cmds
+    assert expected_check_cmd in cmds
+
+
+def test_write_check_with_collect_only_and_not_only_linux(collect_only_and_not_only):
+    # fmt:off
+    expected_output = '\nCATEGORY="a_categegory_with_space"\necho "[*] Running \\"${CATEGORY}\\" collection commands..."\n/bin/mkdir -p "${BASEDIR}"/"${CATEGORY}"/\ndir >> "${BASEDIR}"/"${CATEGORY}"/dir.txt\n'
+    # fmt:on
+
+    linux_sh = LinuxBashScript()
+    cmds = linux_sh.write_script(collect_only_and_not_only, linux_sh.write_checks_cmds)
+
+    expected_absent_check_cmd = ' >> "${CHECKSDIR}"/1.1.1.txt\n'
+    expected_check_cmd = 'whoami /all >> "${CHECKSDIR}"/2.1.1.txt\n'
+
+    assert expected_output in cmds
+    assert expected_absent_check_cmd not in cmds
+    assert expected_check_cmd in cmds
+
+
+def test_write_check_with_collect_only_and_not_only_mac(collect_only_and_not_only):
+    # fmt:off
+    expected_output = '\nCATEGORY="a_categegory_with_space"\necho "[*] Running \\"${CATEGORY}\\" collection commands..."\n/bin/mkdir -p "${BASEDIR}"/"${CATEGORY}"/\ndir >> "${BASEDIR}"/"${CATEGORY}"/dir.txt\n'
+    # fmt:on
+
+    mac_sh = MacOSBashScript()
+    cmds = mac_sh.write_script(collect_only_and_not_only, mac_sh.write_checks_cmds)
+
+    expected_absent_check_cmd = ' >> "${CHECKSDIR}"/1.1.1.txt\n'
+    expected_check_cmd = 'whoami /all >> "${CHECKSDIR}"/2.1.1.txt\n'
+
+    assert expected_output in cmds
+    assert expected_absent_check_cmd not in cmds
+    assert expected_check_cmd in cmds
