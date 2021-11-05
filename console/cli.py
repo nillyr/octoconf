@@ -7,7 +7,6 @@
 # coding: utf-8
 
 import argparse
-import os
 import sys
 
 import inject
@@ -75,6 +74,14 @@ def parse_misc_args(args):
         uc.execute(opts)
         print(f"[+] The generated script has been put here: {args.output}")
         print("[+] Done")
+        return
+    else:
+        # list checklists
+        checklists = checklist_loader.get_checklists(args.category)
+        print("Available checklists:")
+        for checklist_category in checklists.keys():
+            for checklist_name in checklists[checklist_category]:
+                print(f"\t{checklist_category}/{checklist_name}")
         return
 
 
@@ -154,6 +161,15 @@ def parse_args() -> argparse.Namespace:
     misc_parser.set_defaults(func=parse_misc_args)
     misc_cmd = misc_parser.add_subparsers(title="Generators")
 
+    # List of available checklists
+    available_checklists_parser = misc_cmd.add_parser(name="list-checklists")
+    available_checklists_parser.add_argument(
+        "-c",
+        "--category",
+        required=False,
+        help="Filter checklists on a given category",
+    )
+
     # Collection Script Generator
     csr_parser = misc_cmd.add_parser(name="gen-script")
     csr_parser.add_argument(
@@ -207,7 +223,12 @@ def dependency_injection_configuration(binder):
 
 def cli():
     try:
+        # Configuration steps
         inject.configure(dependency_injection_configuration)
+        global checklist_loader
+        checklist_loader = ChecklistsLoader()
+        checklist_loader()
+
         sys.exit(parse_args())
     except:
         pass
