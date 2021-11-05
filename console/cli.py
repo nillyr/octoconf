@@ -7,6 +7,7 @@
 # coding: utf-8
 
 import argparse
+from pathlib import Path
 import sys
 
 import inject
@@ -25,12 +26,32 @@ from octoreconf.utils import *
 from octoreconf.__init__ import __version__
 
 
+def checklist_to_path(func):
+    """
+    Retrieves the path of the checklist requested by the user when it is a checklist present in the submodule.
+    """
+    def inner(*args, **kwargs):
+        try:
+            if not Path(args[0].checklist).exists():
+                args[0].checklist = checklist_loader.get_checklist_path(
+                    args[0].checklist
+                )
+            else:
+                pass
+        except:
+            pass
+        return func(*args, **kwargs)
+
+    return inner
+
+
 def default_parse_args(args):
     if args.version:
         print(f"octoreconf {__version__}")
     sys.exit(0)
 
 
+@checklist_to_path
 def parse_analyze_args(args):
     if args.debug:
         debug.set_debug(True)
@@ -41,6 +62,7 @@ def parse_analyze_args(args):
     return uc.execute(args.checklist, args.archive)
 
 
+@checklist_to_path
 def parse_audit_args(args):
     if args.debug:
         debug.set_debug(True)
@@ -51,6 +73,7 @@ def parse_audit_args(args):
     return uc.execute(args.checklist, args.output)
 
 
+@checklist_to_path
 def parse_misc_args(args):
     if args.debug:
         debug.set_debug(True)
