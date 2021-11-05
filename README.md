@@ -14,7 +14,7 @@
 Tool dedicated to the realization of configuration audits of various systems via semi-automated analysis of the collected security configurations.
 
 ```
-        ,'""`.       octoreconf 1.3.0b1
+        ,'""`.       octoreconf 1.3.1rc1
        / _  _ \
        |(@)(@)|      Tool for semi-automatic verification
        )  __  (      of security configurations.
@@ -72,47 +72,9 @@ bash setup.sh
 
 ## Use cases description
 
-### Script Generation
+The checklist argument uses a custom checklist. It is also possible to use a checklist present in the sub module. See [list checklists](#list-checklists)
 
-- Input: a checklist
-- Output: a collection script
-
-This use case allows to generate from a checklist passed in argument a collection script in the chosen language (see the list of supported languages in the help output). It is also possible to generate collection scripts for devices such as routers, switches, etc. The Epilog and Prolog parts of the script may need to be modified.
-
-#### Examples
-
-```bash
-# Linux
-octoreconf misc gen-script -c checklist.hjson -l bash -p linux -o linux-collection-script.sh
-# macOS
-octoreconf misc gen-script -c checklist.hjson -l bash -p mac -o mac-collection-script.sh
-# Windows (Batch)
-octoreconf misc gen-script -c checklist.hjson -l batch -p windows -o windows-collection-script.bat
-# Windows (Powershell)
-octoreconf misc gen-script -c checklist.hjson -l powershell -p windows -o windows-collection-script.ps1
-```
-
-### Audit
-
-- Input: a checklist
-- Output: an XLSX and a JSON file
-
-This use case allows to execute all the specified commands from a checklist. The results of the "collection_cmd" will be present in output files. The output path is automatically determined by taking into account the name of the category and the file specified in the command.
-
-After the execution of the commands, the results are verified taking into account the verification type requested.
-
-Finally, an XLSX file is generated presenting the results graphically. A JSON file is also generated for later use.
-
-#### Examples
-
-```bash
-# Launch the audit
-octoreconf audit -c checklists.hjson -o ouput_dir/
-# Launch the audit and specify the language to use in the output file (xlsx)
-octoreconf audit -c checklists.hjson -o ouput_dir/ -l en
-```
-
-### Analyze
+### Analyze Command
 
 - Input: a checklist and an archive
 - Output: an XLSX and a JSON file
@@ -134,14 +96,69 @@ octoreconf analyze -a archive.zip -c checklist.hjson
 octoreconf analyze -a archive.zip -c checklist.hjson -l en
 ```
 
-### Report Generation
+### Audit Command
+
+- Input: a checklist
+- Output: an XLSX and a JSON file
+
+This use case allows to execute all the specified commands from a checklist. The results of the "collection_cmd" will be present in output files. The output path is automatically determined by taking into account the name of the category and the file specified in the command.
+
+After the execution of the commands, the results are verified taking into account the verification type requested.
+
+Finally, an XLSX file is generated presenting the results graphically. A JSON file is also generated for later use.
+
+#### Examples
+
+```bash
+# Launch the audit
+octoreconf audit -c checklists.hjson -o ouput_dir/
+# Launch the audit and specify the language to use in the output file (xlsx)
+octoreconf audit -c checklists.hjson -o ouput_dir/ -l en
+```
+
+### Misc Command
+
+#### List checklists
+
+Allows you to list the various checklists present in the submodule.
+
+##### Examples
+
+```bash
+# No filter
+octoreconf misc list-checklists
+# List only server related checklists
+octoreconf misc list-checklists -c server
+```
+
+#### Script Generation
+
+- Input: a checklist
+- Output: a collection script
+
+This use case allows to generate from a checklist passed in argument a collection script in the chosen language (see the list of supported languages in the help output). It is also possible to generate collection scripts for devices such as routers, switches, etc. The Epilog and Prolog parts of the script may need to be modified.
+
+##### Examples
+
+```bash
+# Linux
+octoreconf misc gen-script -c checklist.hjson -l bash -p linux -o linux-collection-script.sh
+# macOS
+octoreconf misc gen-script -c checklist.hjson -l bash -p mac -o mac-collection-script.sh
+# Windows (Batch)
+octoreconf misc gen-script -c checklist.hjson -l batch -p windows -o windows-collection-script.bat
+# Windows (Powershell)
+octoreconf misc gen-script -c checklist.hjson -l powershell -p windows -o windows-collection-script.ps1
+```
+
+#### Report Generation
 
 - Input: a JSON file
 - Output: an XLSX and a JSON file
 
 This use case can be called automatically as a chain of other use cases or independently. When called independently, this use case takes as input a JSON file (the one produced by the other use cases) in order to (re)generate a file in XLSX format.
 
-#### Examples
+##### Examples
 
 ```bash
 # Launch the report generation
