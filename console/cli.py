@@ -7,7 +7,7 @@
 # coding: utf-8
 
 import argparse
-import os
+from pathlib import Path
 import sys
 
 import inject
@@ -26,12 +26,32 @@ from octoreconf.utils import *
 from octoreconf.__init__ import __version__
 
 
+def checklist_to_path(func):
+    """
+    Retrieves the path of the checklist requested by the user when it is a checklist present in the submodule.
+    """
+    def inner(*args, **kwargs):
+        try:
+            if not Path(args[0].checklist).exists():
+                args[0].checklist = checklist_loader.get_checklist_path(
+                    args[0].checklist
+                )
+            else:
+                pass
+        except:
+            pass
+        return func(*args, **kwargs)
+
+    return inner
+
+
 def default_parse_args(args):
     if args.version:
         print(f"octoreconf {__version__}")
     sys.exit(0)
 
 
+@checklist_to_path
 def parse_analyze_args(args):
     if args.debug:
         debug.set_debug(True)
@@ -42,6 +62,7 @@ def parse_analyze_args(args):
     return uc.execute(args.checklist, args.archive)
 
 
+@checklist_to_path
 def parse_audit_args(args):
     if args.debug:
         debug.set_debug(True)
@@ -52,6 +73,7 @@ def parse_audit_args(args):
     return uc.execute(args.checklist, args.output)
 
 
+@checklist_to_path
 def parse_misc_args(args):
     if args.debug:
         debug.set_debug(True)
@@ -75,6 +97,14 @@ def parse_misc_args(args):
         uc.execute(opts)
         print(f"[+] The generated script has been put here: {args.output}")
         print("[+] Done")
+        return
+    else:
+        # list checklists
+        checklists = checklist_loader.get_checklists(args.category)
+        print("Available checklists:")
+        for checklist_category in checklists.keys():
+            for checklist_name in checklists[checklist_category]:
+                print(f"\t{checklist_category}/{checklist_name}")
         return
 
 
@@ -154,6 +184,15 @@ def parse_args() -> argparse.Namespace:
     misc_parser.set_defaults(func=parse_misc_args)
     misc_cmd = misc_parser.add_subparsers(title="Generators")
 
+    # List of available checklists
+    available_checklists_parser = misc_cmd.add_parser(name="list-checklists")
+    available_checklists_parser.add_argument(
+        "-c",
+        "--category",
+        required=False,
+        help="Filter checklists on a given category",
+    )
+
     # Collection Script Generator
     csr_parser = misc_cmd.add_parser(name="gen-script")
     csr_parser.add_argument(
@@ -207,7 +246,12 @@ def dependency_injection_configuration(binder):
 
 def cli():
     try:
+        # Configuration steps
         inject.configure(dependency_injection_configuration)
+        global checklist_loader
+        checklist_loader = ChecklistsLoader()
+        checklist_loader()
+
         sys.exit(parse_args())
     except:
         pass
