@@ -14,7 +14,7 @@
 Tool dedicated to the realization of configuration audits of various systems via semi-automated analysis of the collected security configurations.
 
 ```
-        ,'""`.       octoreconf 1.3.1rc1
+        ,'""`.       octoreconf 1.3.2rc1
        / _  _ \
        |(@)(@)|      Tool for semi-automatic verification
        )  __  (      of security configurations.
@@ -24,14 +24,15 @@ Tool dedicated to the realization of configuration audits of various systems via
 
 
 positional arguments:
-  {analyze,audit,misc}  Available Commands
+  {analyze,audit,checklist,report} Available Commands
     analyze             performs an analysis on an archive based on a checklist
     audit               performs an audit of the host based on a checklist
-    misc                miscellaneous commands
+    checklist           performs the interaction with the checklists
+    report              performs the generation of audit reports
 
 optional arguments:
   -h, --help            show this help message and exit
-  -v, --version         print version and exit
+  --version             print version and exit
   -d, --debug           debug output (verbose)
 ```
 

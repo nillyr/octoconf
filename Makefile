@@ -4,8 +4,8 @@ DIST_DIR := dist
 default: clean test wheel sdist epub pdf
 
 clean:
-	$(RM) $(BUILD_DIR)
-	$(RM) $(DIST_DIR)
+	$(RM) $(BUILD_DIR)/*
+	$(RM) $(DIST_DIR)/*
 
 wheel:
 	python setup.py bdist_wheel

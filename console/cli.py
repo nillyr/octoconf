@@ -30,6 +30,7 @@ def checklist_to_path(func):
     """
     Retrieves the path of the checklist requested by the user when it is a checklist present in the submodule.
     """
+
     def inner(*args, **kwargs):
         try:
             if not Path(args[0].checklist).exists():
@@ -74,18 +75,13 @@ def parse_audit_args(args):
 
 
 @checklist_to_path
-def parse_misc_args(args):
+def parse_checklist_args(args):
     if args.debug:
         debug.set_debug(True)
 
     _ = vars(args)
-    # gen-report
-    if _.get("input"):
-        global_values.set_localize(args.language)
-        uc = ReportGeneratorInteractor()
-        return uc.execute(args.input, is_file=True)
-    # gen-script
-    if _.get("checklist"):
+    if _.get("language"):
+        # generate command
         opts = {
             "checklist": args.checklist,
             "output": args.output,
@@ -98,14 +94,39 @@ def parse_misc_args(args):
         print(f"[+] The generated script has been put here: {args.output}")
         print("[+] Done")
         return
+    elif _.get("checklist"):
+        # export
+        print("[*] Launching the checklist exportation...")
+        status = ChecklistExporter.export(args.checklist, args.output)
+        if status == 0:
+            print(f"[+] The checklist has been exported here: {args.output}")
+            print("[+] Done")
+        else:
+            print("[x] Error: something went wrong")
+        return status
     else:
-        # list checklists
-        checklists = checklist_loader.get_checklists(args.category)
+        # list by default
+        category = None
+        try:
+            category = args.category
+        except:
+            pass
+
+        checklists = checklist_loader.get_checklists(category)
         print("Available checklists:")
         for checklist_category in checklists.keys():
             for checklist_name in checklists[checklist_category]:
                 print(f"\t{checklist_category}/{checklist_name}")
-        return
+    return
+
+
+def parse_report_args(args):
+    if args.debug:
+        debug.set_debug(True)
+
+    global_values.set_localize(args.language)
+    uc = ReportGeneratorInteractor()
+    return uc.execute(args.input, is_file=True)
 
 
 def parse_args() -> argparse.Namespace:
@@ -125,7 +146,6 @@ def parse_args() -> argparse.Namespace:
     )
 
     p.add_argument(
-        "-v",
         "--version",
         default=False,
         help="print version and exit",
@@ -179,29 +199,41 @@ def parse_args() -> argparse.Namespace:
         "-l", "--language", default="EN", help="EN/FR (default=EN)"
     )
 
-    ## MISC ##
-    misc_parser = cmd.add_parser(name="misc", help="miscellaneous commands")
-    misc_parser.set_defaults(func=parse_misc_args)
-    misc_cmd = misc_parser.add_subparsers(title="Generators")
-
-    # List of available checklists
-    available_checklists_parser = misc_cmd.add_parser(name="list-checklists")
-    available_checklists_parser.add_argument(
-        "-c",
-        "--category",
-        required=False,
-        help="Filter checklists on a given category",
+    ## Checklist ##
+    checklist_parser = cmd.add_parser(
+        name="checklist", help="performs the interaction with the checklists"
     )
+    checklist_parser.set_defaults(func=parse_checklist_args)
+    checklists_commands = checklist_parser.add_subparsers(title="Commands")
 
-    # Collection Script Generator
-    csr_parser = misc_cmd.add_parser(name="gen-script")
-    csr_parser.add_argument(
+    export_parser = checklists_commands.add_parser(
+        name="export",
+        help="performs a checklist export",
+    )
+    export_parser.add_argument(
         "-c",
         "--checklist",
         required=True,
-        help="generate a collection script from the provided checklist",
+        help="checklist to be exported",
     )
-    csr_parser.add_argument(
+    export_parser.add_argument(
+        "-o",
+        "--output",
+        required=True,
+        help="output file to write results",
+    )
+
+    gen_script_parser = checklists_commands.add_parser(
+        name="generate",
+        help="performs the generation of collection scripts based on a checklist",
+    )
+    gen_script_parser.add_argument(
+        "-c",
+        "--checklist",
+        required=True,
+        help="checklist",
+    )
+    gen_script_parser.add_argument(
         "-l",
         "--language",
         choices=("bash", "batch", "powershell"),
@@ -209,21 +241,37 @@ def parse_args() -> argparse.Namespace:
         required=True,
         help="script language",
     )
-    csr_parser.add_argument(
+    gen_script_parser.add_argument(
         "-p",
         "--platform",
         required=True,
         choices=("mac", "linux", "windows"),
         help="targeted platform",
     )
-    csr_parser.add_argument(
+    gen_script_parser.add_argument(
         "-o", "--output", required=True, help="output file to write results"
     )
 
-    # Report Generator
-    rgr_parser = misc_cmd.add_parser(name="gen-report")
-    rgr_parser.add_argument("-i", "--input", required=True, help="JSON results file")
-    rgr_parser.add_argument("-l", "--language", default="EN", help="EN/FR (default=EN)")
+    list_parser = checklists_commands.add_parser(
+        name="list", help="performs a listing of the checklists (default behavior)"
+    )
+    list_parser.add_argument(
+        "-c",
+        "--category",
+        required=False,
+        help="Filter checklists on a given category",
+    )
+
+    ## Report ##
+    report_parser = cmd.add_parser(
+        name="report", help="performs the generation of audit reports"
+    )
+    report_parser.set_defaults(func=parse_report_args)
+
+    report_parser.add_argument("-i", "--input", required=True, help="JSON results file")
+    report_parser.add_argument(
+        "-l", "--language", default="EN", help="EN/FR (default=EN)"
+    )
 
     if len(sys.argv) == 1:
         p.print_help(file=sys.stderr)
