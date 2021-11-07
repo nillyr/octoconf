@@ -1,3 +1,4 @@
+from octoreconf.utils.checklist_exporter import ChecklistExporter
 from octoreconf.utils.checklists_loader import ChecklistsLoader
 import octoreconf.utils.const
 import octoreconf.utils.debug

@@ -15,7 +15,7 @@ class Locale:
     It takes as argument the ISO 639-1 code. See also: https://en.wikipedia.org/wiki/List_of_ISO_639-1_codes
     """
 
-    _basedir: str = "utils/locale"
+    _basedir: str = "octoreconf/utils/locale"
 
     def __init__(self, lang: str):
         self._dict = dict()
