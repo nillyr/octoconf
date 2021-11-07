@@ -20,6 +20,19 @@ python -m pip install octoreconf-<version>.tar.gz
 
 Directly from the sources. This method is presented in section [developer installation](#developer-installation).
 
+## Existing checklists
+
+The tool uses the [octoreconf-checklists](https://github.com/Nillyr/octoreconf-checklists) submodule containing a set of checklists.
+
+The existing checklists can be listed as follows:
+
+```bash
+# No filter
+octoreconf checklist list
+# Filter on desktop category
+octoreconf checklist list -c desktop
+```
+
 ## Creating the checklists
 
 The format chosen for the checklists is hjson (human readable json).
@@ -214,13 +227,13 @@ Allows to generate from a checklist passed in argument a collection script in th
 
 ```bash
 # Linux
-octoreconf misc gen-script -c checklist.hjson -l bash -p linux -o linux-collection-script.sh
+octoreconf checklist generate -c desktop/ubuntu20-04 -l bash -p linux -o ubuntu20-04.sh
 # macOS
-octoreconf misc gen-script -c checklist.hjson -l bash -p mac -o mac-collection-script.sh
+octoreconf checklist generate -c desktop/macOS11 -l bash -p mac -o macOS11.sh
 # Windows (Batch)
-octoreconf misc gen-script -c checklist.hjson -l batch -p windows -o windows-collection-script.bat
+octoreconf checklist generate -c desktop/windows10 -l batch -p windows -o windows10.bat
 # Windows (Powershell)
-octoreconf misc gen-script -c checklist.hjson -l powershell -p windows -o windows-collection-script.ps1
+octoreconf checklist generate -c desktop/windows10 -l powershell -p windows -o windows10.ps1
 ```
 
 ### Report generation
@@ -233,7 +246,7 @@ This use case can be called automatically as a chain of other use cases or indep
 
 ```bash
 # Launch the report generation
-octoreconf -d misc gen-report -i 20211006115003_results.json
-# Launch the report generation and specify the language to use in the output file (xlsx)
-octoreconf -d misc gen-report -i 20211006115003_results.json -l en
+octoreconf report -i 20211006115003_results.json
+# Launch the report generation and specify the language to use in the output file
+octoreconf report -i 20211006115003_results.json -l en
 ```
