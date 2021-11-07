@@ -1,0 +1,6 @@
+---
+title: Octoreconf
+author: Nicolas Grellety
+rights: GNU General Public License v3.0
+language: en-US
+...
