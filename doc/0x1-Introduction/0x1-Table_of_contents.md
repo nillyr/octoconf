@@ -19,3 +19,6 @@
          1. [Command examples: Report generation](#command-examples-report-generation)
 4. [Developer documentation](#developer-documentation)
    1. [Developer installation](#developer-installation)
+   2. [Contributing](#contributing)
+      1. [Rules](#rules)
+   3. [How-to: Build](#how-to-build)
