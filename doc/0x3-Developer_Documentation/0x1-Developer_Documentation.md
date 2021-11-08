@@ -2,6 +2,16 @@
 
 The following documentation is intended for developers.
 
+## Prerequisites
+
+The following prerequisites are required:
+
+- [pandoc](https://pandoc.org/installing.html#)
+  - [TeX Live](https://www.tug.org/texlive/) (Linux)
+  - [BasicTeX](https://www.tug.org/mactex/morepackages.html) (macOS)
+  - [MiKTeX](https://miktex.org) (Windows)
+- [upx](https://upx.github.io)
+
 ## Developer installation
 
 ```bash
