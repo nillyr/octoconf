@@ -19,6 +19,9 @@ setup(
     python_requires=">=3.7",
     install_requires=requirements,
     packages=find_packages(),
+    package_data={
+        "": ["*.po"],
+    },
     entry_points={
         "console_scripts": [
             "octoreconf=console.cli:cli",

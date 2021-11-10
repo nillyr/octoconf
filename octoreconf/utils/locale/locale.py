@@ -3,8 +3,8 @@
 # @link https://github.com/Nillyr/octoreconf
 # @since 1.0.0b
 
-from pathlib import Path
 import sys
+import os
 
 import polib
 
@@ -15,7 +15,7 @@ class Locale:
     It takes as argument the ISO 639-1 code. See also: https://en.wikipedia.org/wiki/List_of_ISO_639-1_codes
     """
 
-    _basedir: str = "octoreconf/utils/locale"
+    _basedir = os.path.abspath(os.path.dirname(__file__))
 
     def __init__(self, lang: str):
         self._dict = dict()
@@ -26,9 +26,9 @@ class Locale:
         """
         Parse the ".po" file of the language chosen by the user and populate the dictionary.
         """
-        path = Path.cwd() / self._basedir / self._pofilename
+        path = os.path.join(self._basedir, self._pofilename)
         try:
-            pofile = polib.pofile(str(path), encoding="utf-8")
+            pofile = polib.pofile(path, encoding="utf-8")
             for entry in pofile:
                 self._dict[entry.msgid] = entry.msgstr
         except IOError as _err:
