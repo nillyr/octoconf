@@ -3,9 +3,9 @@
 # @link https://github.com/Nillyr/octoreconf
 # @since 1.0.0b
 
-import asyncio
 from pathlib import Path
 import re
+from subprocess import Popen, PIPE, STDOUT
 
 from icecream import ic
 import inject
@@ -24,24 +24,28 @@ class ChecksRunnerInteractor:
     def __init__(self, checklist: IChecklist) -> None:
         self._checklist = checklist
 
-    async def _run(self, cmd, cmd_type) -> str:
+    def _run(self, cmd, cmd_type) -> str:
         """
-        This method allows commands to be executed asynchronously. The cmd_type argument is defined in the checklist and can be used to choose between cmd.exe, powershell.exe or /bin/bash.
+        This method allows commands to be executed. The cmd_type argument is defined in the checklist.
         """
-        proc = await asyncio.create_subprocess_shell(
-            cmd,
-            stdout=asyncio.subprocess.PIPE,
-            stderr=asyncio.subprocess.PIPE,
-            executable=self._checklist.get_executable(cmd_type),
-        )
-        stdout, _ = await proc.communicate()
-        return ic(stdout.decode("UTF-8"))
+        cmd = [self._checklist.get_executable(cmd_type), cmd]
+        if cmd[0] == None or len(cmd[1]) == 0:
+            return ""
+        ic(f"check_cmd: {cmd}")
+        stdout = ""
+        proc = Popen(cmd, stdout=PIPE, stderr=STDOUT, shell=False)
+        try:
+            # timeout: 3 min
+            stdout, _ = ic(proc.communicate(timeout=180))
+        except TimeoutExpired:
+            proc.kill()
+        return ic(str(stdout))
 
     def _preprocess_collection_cmd(self, basedir, category, cmd) -> str:
         """
         This method puts the audit proofs in the folder corresponding to the current category. Since the user is not aware of the folder automatically created during the tests, it is not possible to specify the exact path for the output of the files in the checklist.
         """
-        regex_pattern = "\|\s*Out-File\s+(-(Append|FilePath)\s+)*|\s*>+\s*"
+        regex_pattern = "\|\s*Out-File\s+-Encoding\s+utf8\s+(-(Append|FilePath)\s+)*|\s*>+\s*|\s*/(H|cfg)\s*"
 
         output_file = re.split(regex_pattern, cmd)[-1].strip()
         path = (
@@ -59,6 +63,7 @@ class ChecksRunnerInteractor:
         """
         Execute all the commands and for each check, create an object of type "CheckResult". These are returned as a list to check the results with the expected results.
         """
+        print("[*] Running collection commands (this may take a while)...")
         self._checklist.parse_checklist(checklist)
         collection_cmds = self._checklist.list_collection_cmds()
         for collection_cmd in collection_cmds:
@@ -67,17 +72,15 @@ class ChecksRunnerInteractor:
                 collection_cmd["collection_cmd"],
                 collection_cmd["collection_cmd_type"],
             )
-            asyncio.run(
-                self._run(
-                    self._preprocess_collection_cmd(output_directory, cat, cmd),
-                    cmd_type,
-                )
+            self._run(
+                self._preprocess_collection_cmd(output_directory, cat, cmd), cmd_type
             )
 
+        print("[*] Running checks...")
         checks = self._checklist.list_checks()
         results = []
         for check in checks:
-            cmd_output = asyncio.run(self._run(check.cmd, check.type))
+            cmd_output = self._run(check.cmd, check.type)
             check_result = {
                 "id": check.id,
                 "description": check.description,
@@ -92,4 +95,5 @@ class ChecksRunnerInteractor:
             }
 
             results.append(CheckResult(**check_result))
+        print("[+] Done")
         return CheckOutputInteractor().execute(ic(results))
