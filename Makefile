@@ -21,17 +21,17 @@ coverage:
 	coverage html
 
 epub:
-	pandoc -o $(DIST_DIR)/octoreconf.epub doc/title.txt \
-	doc/0x1-Introduction/0x1-Table_of_contents.md \
-	doc/0x1-Introduction/0x2-License.md \
-	doc/0x1-Introduction/0x3-Introduction.md \
-	doc/0x2-User_Documentation/0x1-User_Documentation.md \
-	doc/0x3-Developer_Documentation/0x1-Developer_Documentation.md
+	pandoc -o $(DIST_DIR)/octoreconf.epub docs/title.txt \
+	docs/0x1-Introduction/0x1-Table_of_contents.md \
+	docs/0x1-Introduction/0x2-License.md \
+	docs/0x1-Introduction/0x3-Introduction.md \
+	docs/0x2-User_Documentation/0x1-User_Documentation.md \
+	docs/0x3-Developer_Documentation/0x1-Developer_Documentation.md
 
 pdf:
-	pandoc -o $(DIST_DIR)/octoreconf.pdf doc/title.txt \
-	doc/0x1-Introduction/0x1-Table_of_contents.md \
-	doc/0x1-Introduction/0x2-License.md \
-	doc/0x1-Introduction/0x3-Introduction.md \
-	doc/0x2-User_Documentation/0x1-User_Documentation.md \
-	doc/0x3-Developer_Documentation/0x1-Developer_Documentation.md
+	pandoc -o $(DIST_DIR)/octoreconf.pdf docs/title.txt \
+	docs/0x1-Introduction/0x1-Table_of_contents.md \
+	docs/0x1-Introduction/0x2-License.md \
+	docs/0x1-Introduction/0x3-Introduction.md \
+	docs/0x2-User_Documentation/0x1-User_Documentation.md \
+	docs/0x3-Developer_Documentation/0x1-Developer_Documentation.md
