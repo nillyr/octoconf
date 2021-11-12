@@ -4,8 +4,10 @@
 # @since 1.0.0b
 
 from pathlib import Path
+import platform
 import re
-from subprocess import Popen, PIPE, STDOUT
+from subprocess import Popen, PIPE, STDOUT, DEVNULL, TimeoutExpired
+import sys
 
 from icecream import ic
 import inject
@@ -24,22 +26,41 @@ class ChecksRunnerInteractor:
     def __init__(self, checklist: IChecklist) -> None:
         self._checklist = checklist
 
-    def _run(self, cmd, cmd_type) -> str:
+    def _run(self, cmd, cmd_type, is_check=False) -> str:
         """
         This method allows commands to be executed. The cmd_type argument is defined in the checklist.
         """
-        cmd = [self._checklist.get_executable(cmd_type), cmd]
-        if cmd[0] == None or len(cmd[1]) == 0:
+        if self._checklist.get_executable(cmd_type) == None or len(cmd) == 0:
             return ""
-        ic(f"check_cmd: {cmd}")
-        stdout = ""
-        proc = Popen(cmd, stdout=PIPE, stderr=STDOUT, shell=False)
+
+        shell = True
+        if platform.system() == "Windows":
+            shell = False
+            cmd = [self._checklist.get_executable(cmd_type), cmd]
+
+        stdout = str()
+
+        # When the collection commands are run, the output is redirected to a file. No need to have it. On the other hand, when the checks are performed, stdout is needed
+        proc = Popen(
+            cmd,
+            stdout=PIPE if is_check else DEVNULL,
+            stderr=STDOUT,
+            shell=shell,
+        )
         try:
             # timeout: 3 min
             stdout, _ = ic(proc.communicate(timeout=180))
+            return ic(str(stdout.decode("utf-8")))
+        except AttributeError:
+            # This case occurs when stdout is set to DEVNULL
+            return ""
         except TimeoutExpired:
             proc.kill()
-        return ic(str(stdout))
+        except UnicodeDecodeError as _err:
+            # This case happens when Windows is in French
+            return ic(stdout.decode("cp1252"))
+        except Exception as _err:
+            print(f"Error: {_err}.", file=sys.stderr)
 
     def _preprocess_collection_cmd(self, basedir, category, cmd) -> str:
         """
@@ -72,15 +93,17 @@ class ChecksRunnerInteractor:
                 collection_cmd["collection_cmd"],
                 collection_cmd["collection_cmd_type"],
             )
-            self._run(
-                self._preprocess_collection_cmd(output_directory, cat, cmd), cmd_type
+            _ = self._run(
+                self._preprocess_collection_cmd(output_directory, cat, cmd),
+                cmd_type,
+                False,
             )
 
         print("[*] Running checks...")
         checks = self._checklist.list_checks()
         results = []
         for check in checks:
-            cmd_output = self._run(check.cmd, check.type)
+            cmd_output = self._run(check.cmd, check.type, True)
             check_result = {
                 "id": check.id,
                 "description": check.description,
