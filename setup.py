@@ -20,7 +20,7 @@ setup(
     install_requires=requirements,
     packages=find_packages(),
     package_data={
-        "": ["*.po"],
+        "": ["*.po"] + ["*/*.hjson"],
     },
     entry_points={
         "console_scripts": [

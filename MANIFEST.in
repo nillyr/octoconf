@@ -1,4 +1,2 @@
 include LICENSE
 include requirements.txt
-include octoreconf/utils/locale/en_EN.po
-include octoreconf/utils/locale/fr_FR.po
