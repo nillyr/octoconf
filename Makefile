@@ -17,7 +17,7 @@ test:
 	pytest -v
 
 coverage:
-	coverage run -m pytest -v -W ignore::UserWarning
+	coverage run -m pytest -v -W error::UserWarning
 	coverage html
 
 epub:
