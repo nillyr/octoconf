@@ -16,6 +16,8 @@ const.COLORS = {
     "WHITE": "FFFFFF",
     "DARK_BLUE": "333E4E",
     "LIGHT_BLUE": "8496AF",
+    "LIGHT_ORANGE": "F5B76C",
+    "REGULAR_BLUE": "2C68C4",
     "REGULAR_GREEN": "009644",
     "REGULAR_ORANGE": "F1992D",
     "REGULAR_RED": "C51718",
@@ -65,12 +67,14 @@ class XlsxGenerator(IReportGenerator):
         """
         Definition of the style to be applied.
         """
-        if severity == "high":
-            font_color = const.COLORS["REGULAR_RED"]
+        if severity == "info":
+            font_color = const.COLORS["REGULAR_BLUE"]
+        elif severity == "low":
+            font_color = const.COLORS["LIGHT_ORANGE"]
         elif severity == "medium":
             font_color = const.COLORS["REGULAR_ORANGE"]
         else:
-            font_color = const.COLORS["REGULAR_GREEN"]
+            font_color = const.COLORS["REGULAR_RED"]
 
         return workbook.add_format(
             {

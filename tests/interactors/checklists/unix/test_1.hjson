@@ -30,7 +30,27 @@
                 cmd: "whoami"
                 expected: "[A-Za-z0-9-_]{1,}"
                 verification_type: CHECK_REGEX
-                severity: high
+                severity: medium
+                recommandation_on_failed: a recommandation on failed
+              },
+              {
+                id: 3
+                description: User info
+                type: CMD_EXEC
+                cmd: "whoami"
+                expected: "[A-Za-z0-9-_]{1,}"
+                verification_type: CHECK_REGEX
+                severity: low
+                recommandation_on_failed: a recommandation on failed
+              },
+              {
+                id: 4
+                description: User info
+                type: CMD_EXEC
+                cmd: "whoami"
+                expected: "[A-Za-z0-9-_]{1,}"
+                verification_type: CHECK_REGEX
+                severity: info
                 recommandation_on_failed: a recommandation on failed
               },
             ]

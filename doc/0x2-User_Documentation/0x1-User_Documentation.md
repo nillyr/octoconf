@@ -114,6 +114,7 @@ The basic template is as follows:
                 *  - high
                 *  - medium
                 *  - low
+                *  - info
                 */
                 severity: high
                 recommandation_on_failed:

@@ -16,6 +16,9 @@ msgstr "Medium"
 msgid "low"
 msgstr "Low"
 
+msgid "info"
+msgstr "Info"
+
 msgid "success"
 msgstr "Success"
 
