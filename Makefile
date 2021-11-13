@@ -1,11 +1,13 @@
 BUILD_DIR := build
 DIST_DIR := dist
+TEST_DIR := tests/.ignore/pytest
 
 default: clean test wheel sdist epub pdf
 
 clean:
 	$(RM) -r $(BUILD_DIR)/*
 	$(RM) -r $(DIST_DIR)/*
+	$(RM) -r $(TEST_DIR)/*
 
 wheel:
 	python setup.py bdist_wheel
