@@ -10,13 +10,13 @@ import inject
 import pytest
 
 sys.path.append("../octoreconf/")
-from octoreconf.adapters import CheckerAdapter, ChecklistAdapter
+from octoreconf.adapters import CheckerAdapter, ChecklistAdapter, CommandRunnerFactory
 from octoreconf.components.report_generators.xlsx_report_generator import (
     IReportGenerator,
     XlsxGenerator,
 )
 from octoreconf.interactors.checks_runner import ChecksRunnerInteractor
-from octoreconf.ports import IChecker, IChecklist
+from octoreconf.ports import IChecker, IChecklist, ICommandRunnerFactory
 from octoreconf.utils import *
 
 
@@ -25,6 +25,7 @@ def setup():
     inject.clear_and_configure(
         lambda binder: binder.bind(IChecker, CheckerAdapter())
         .bind(IChecklist, ChecklistAdapter())
+        .bind(ICommandRunnerFactory, CommandRunnerFactory())
         .bind(IReportGenerator, XlsxGenerator())
     )
     global_values.set_localize("en")

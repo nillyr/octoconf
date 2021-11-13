@@ -17,11 +17,18 @@ from octoreconf.adapters import (
     ArchiveAdapter,
     CheckerAdapter,
     ChecklistAdapter,
+    CommandRunnerFactory,
     LanguageFactory,
 )
 from octoreconf.components.report_generators import *
 from octoreconf.interactors import *
-from octoreconf.ports import IArchive, IChecker, IChecklist, ILanguageFactory
+from octoreconf.ports import (
+    IArchive,
+    IChecker,
+    IChecklist,
+    ILanguageFactory,
+    ICommandRunnerFactory,
+)
 from octoreconf.utils import *
 from octoreconf.__init__ import __version__
 
@@ -288,6 +295,7 @@ def dependency_injection_configuration(binder):
     binder.bind(IArchive, ArchiveAdapter())
     binder.bind(IChecker, CheckerAdapter())
     binder.bind(IChecklist, ChecklistAdapter())
+    binder.bind(ICommandRunnerFactory, CommandRunnerFactory())
     binder.bind(ILanguageFactory, LanguageFactory())
     binder.bind(IReportGenerator, XlsxGenerator())
 

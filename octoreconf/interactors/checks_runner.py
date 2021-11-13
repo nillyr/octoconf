@@ -4,10 +4,7 @@
 # @since 1.0.0b
 
 from pathlib import Path
-import platform
 import re
-from subprocess import Popen, PIPE, STDOUT, DEVNULL, TimeoutExpired
-import sys
 
 from icecream import ic
 import inject
@@ -15,6 +12,7 @@ import inject
 from octoreconf.interactors.check_output import CheckOutputInteractor
 from octoreconf.models import CheckResult
 from octoreconf.ports import IChecklist
+from octoreconf.ports.runner.command_runner_abstract_factory import ICommandRunnerFactory
 
 
 class ChecksRunnerInteractor:
@@ -22,45 +20,10 @@ class ChecksRunnerInteractor:
     Use case allowing to execute the commands defined in the checklist provided as argument.
     """
 
-    @inject.autoparams("checklist")
-    def __init__(self, checklist: IChecklist) -> None:
+    @inject.autoparams("checklist", "factory")
+    def __init__(self, checklist: IChecklist, factory: ICommandRunnerFactory) -> None:
         self._checklist = checklist
-
-    def _run(self, cmd, cmd_type, is_check=False) -> str:
-        """
-        This method allows commands to be executed. The cmd_type argument is defined in the checklist.
-        """
-        if self._checklist.get_executable(cmd_type) == None or len(cmd) == 0:
-            return ""
-
-        shell = True
-        if platform.system() == "Windows":
-            shell = False
-            cmd = [self._checklist.get_executable(cmd_type), cmd]
-
-        stdout = str()
-
-        # When the collection commands are run, the output is redirected to a file. No need to have it. On the other hand, when the checks are performed, stdout is needed
-        proc = Popen(
-            cmd,
-            stdout=PIPE if is_check else DEVNULL,
-            stderr=STDOUT,
-            shell=shell,
-        )
-        try:
-            # timeout: 3 min
-            stdout, _ = ic(proc.communicate(timeout=180))
-            return ic(str(stdout.decode("utf-8")))
-        except AttributeError:
-            # This case occurs when stdout is set to DEVNULL
-            return ""
-        except TimeoutExpired:
-            proc.kill()
-        except UnicodeDecodeError as _err:
-            # This case happens when Windows is in French
-            return ic(stdout.decode("cp1252"))
-        except Exception as _err:
-            print(f"Error: {_err}.", file=sys.stderr)
+        self._runner = factory.get_runner()
 
     def _preprocess_collection_cmd(self, basedir, category, cmd) -> str:
         """
@@ -91,19 +54,25 @@ class ChecksRunnerInteractor:
             cat, cmd, cmd_type = (
                 collection_cmd["category_name"],
                 collection_cmd["collection_cmd"],
-                collection_cmd["collection_cmd_type"],
+                self._checklist.get_executable(collection_cmd["collection_cmd_type"]),
             )
-            _ = self._run(
+            if cmd_type == None or len(cmd) == 0:
+                continue
+
+            _ = self._runner.exec(
                 self._preprocess_collection_cmd(output_directory, cat, cmd),
                 cmd_type,
-                False,
             )
 
         print("[*] Running checks...")
         checks = self._checklist.list_checks()
         results = []
         for check in checks:
-            cmd_output = self._run(check.cmd, check.type, True)
+            cmd_type = self._checklist.get_executable(check.type)
+            if cmd_type == None or len(check.cmd) == 0:
+                cmd_output = ""
+            else:
+                cmd_output = self._runner.exec(check.cmd, cmd_type, True)
             check_result = {
                 "id": check.id,
                 "description": check.description,
