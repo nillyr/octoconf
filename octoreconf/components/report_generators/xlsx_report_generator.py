@@ -337,21 +337,13 @@ class XlsxGenerator(IReportGenerator):
         column_chart.set_legend({"position": "none"})
         worksheet.insert_chart(f"A{last_row + 5}", column_chart)
 
-    def generate_report(self, data: list):
+    def generate_report(self, data: list, filename: str):
         """
-        Conducts the various methods of the class allowing the generation of the report. A json file is also generated for future use.
+        Conducts the various methods of the class allowing the generation of the report.
         """
-        filename = timestamp() + "_results"
         workbook = xlsxwriter.Workbook(filename + ".xlsx")
         worksheet = workbook.add_worksheet(name=global_values.localize.gettext("summary"))
         self._write_results(workbook, data)
         last_row = self._generate_synthesis(workbook, worksheet)
         self._generate_charts(workbook, worksheet, last_row)
         workbook.close()
-
-        filename += ".json"
-        print(f"[*] Exporting results in JSON format (path: {filename})")
-        with open(filename, "w") as json_file:
-            json.dump(data, json_file)
-        print("[+] Done")
-        return
