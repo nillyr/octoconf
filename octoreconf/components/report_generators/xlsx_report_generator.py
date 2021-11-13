@@ -9,7 +9,7 @@ from icecream import ic
 import xlsxwriter
 
 from octoreconf.components.report_generators.report_generator import IReportGenerator
-from octoreconf.utils import const, global_values, timestamp
+from octoreconf.utils import const, global_values
 
 
 const.COLORS = {

@@ -54,6 +54,9 @@ class ChecklistsLoader:
                         ] = checklist_path
 
     def _filter_dict(self, d, f) -> dict:
+        """
+        Returns the checklists corresponding to the filtered category.
+        """
         filtered_dict: dict = dict()
         for key, value in d.items():
             if f(key, value):
