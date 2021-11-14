@@ -7,6 +7,8 @@ from abc import ABCMeta, abstractmethod
 from pathlib import PureWindowsPath
 import re
 
+from octoreconf.adapters.redirector_regex.redirector_regex import RedirectorRegex
+
 
 class IWindowsScript(metaclass=ABCMeta):
     """
@@ -16,7 +18,7 @@ class IWindowsScript(metaclass=ABCMeta):
     _newline = "\r\n"
     _batch_pattern = " >> "
     _powershell_pattern = " | Out-File -Encoding utf8 -Append -FilePath "
-    _regex_pattern = "\|\s*Out-File\s+-Encoding\s+utf8\s+(-(Append|FilePath)\s+)*|\s*>+\s*|\s*/(H|cfg)\s*"
+    _regex_pattern = RedirectorRegex.get_redirector_regex("Windows")
 
     @abstractmethod
     def write_checks_cmds(self, checksdir, content, cmds):

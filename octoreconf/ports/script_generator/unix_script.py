@@ -7,6 +7,8 @@ from abc import ABCMeta, abstractmethod
 from pathlib import Path
 import re
 
+from octoreconf.adapters.redirector_regex.redirector_regex import RedirectorRegex
+
 
 class IUnixScript(metaclass=ABCMeta):
     """
@@ -15,7 +17,7 @@ class IUnixScript(metaclass=ABCMeta):
 
     _newline = "\n"
     _pattern = " >> "
-    _regex_pattern = "\|\s*Out-File\s+-Encoding\s+utf8\s+(-(Append|FilePath)\s+)*|\s*>+\s*|\s*/(H|cfg)\s*"
+    _regex_pattern = RedirectorRegex.get_redirector_regex("Unix")
 
     @abstractmethod
     def write_checks_cmds(self, checksdir, content, cmds):

@@ -4,11 +4,13 @@
 # @since 1.0.0b
 
 from pathlib import Path
+import platform
 import re
 
 from icecream import ic
 import inject
 
+from octoreconf.adapters.redirector_regex.redirector_regex import RedirectorRegex
 from octoreconf.interactors.check_output import CheckOutputInteractor
 from octoreconf.models import CheckResult
 from octoreconf.ports import IChecklist
@@ -29,7 +31,7 @@ class ChecksRunnerInteractor:
         """
         This method puts the audit proofs in the folder corresponding to the current category. Since the user is not aware of the folder automatically created during the tests, it is not possible to specify the exact path for the output of the files in the checklist.
         """
-        regex_pattern = "\|\s*Out-File\s+-Encoding\s+utf8\s+(-(Append|FilePath)\s+)*|\s*>+\s*|\s*/(H|cfg)\s*"
+        regex_pattern = RedirectorRegex.get_redirector_regex(platform.system())
 
         output_file = re.split(regex_pattern, cmd)[-1].strip()
         path = (
