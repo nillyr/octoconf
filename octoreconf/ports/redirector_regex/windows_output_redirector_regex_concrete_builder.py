@@ -33,7 +33,7 @@ class WindowsOutputRedirectorRegexCB(IOutputRedirectorRegexBuilder):
         Set of supported redirections.
         """
 
-        DEFAULT = "\s*>+\s*"
+        COMBINE_REDIR = "\s*(([1-6]>\&[1-6]\s*)*|[1-6]|[\*])>+\s*"
         OUT_FILE_CMDLET = "\s*\|\s*Out-File\s+(-[a-zA-Z]*\s*(?:utf8\s*)*)*"
         GPRESULT = "\s*/H\s*"
         SECEDIT = "\s*/cfg\s*"
