@@ -34,9 +34,7 @@ class WindowsOutputRedirectorRegexCB(IOutputRedirectorRegexBuilder):
         """
 
         DEFAULT = "\s*>+\s*"
-        OUT_FILE_CMDLET = (
-            "\s*\|\s*Out-File\s+-Encoding\s+utf8\s+(-(Append|FilePath)\s+)*"
-        )
+        OUT_FILE_CMDLET = "\s*\|\s*Out-File\s+(-[a-zA-Z]*\s*(?:utf8\s*)*)*"
         GPRESULT = "\s*/H\s*"
         SECEDIT = "\s*/cfg\s*"
 
