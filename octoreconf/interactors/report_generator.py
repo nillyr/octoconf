@@ -33,7 +33,10 @@ class ReportGeneratorInteractor:
         filename += ".xml"
         print(f"[*] Exporting results in XML format (path: {filename})")
         xml = dicttoxml.dicttoxml(
-            data, attr_type=False, custom_root="octoreconf-results"
+            data,
+            attr_type=True,
+            custom_root="octoreconf-results",
+            item_func=lambda x: x,
         )
         dom = parseString(xml)
         xml_data = dom.toprettyxml()
