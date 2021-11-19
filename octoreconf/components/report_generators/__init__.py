@@ -1,2 +1,1 @@
-from octoreconf.components.report_generators.report_generator import IReportGenerator
 from octoreconf.components.report_generators.xlsx_report_generator import XlsxGenerator

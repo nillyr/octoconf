@@ -9,7 +9,7 @@ import requests
 
 from . import config
 from .exceptions import DeepLError
-from octoreconf.components.translators.translator import ITranslator
+from octoreconf.ports import ITranslator
 
 
 class DeepL(ITranslator):

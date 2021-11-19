@@ -20,16 +20,17 @@ from octoreconf.adapters import (
     CommandRunnerFactory,
     LanguageFactory,
 )
-from octoreconf.components.report_generators import *
-from octoreconf.components.translators.translator import ITranslator
+from octoreconf.components.report_generators.xlsx_report_generator import XlsxGenerator
 from octoreconf.components.translators.deepl_translator.deepl_translator import DeepL
 from octoreconf.interactors import *
 from octoreconf.ports import (
     IArchive,
     IChecker,
     IChecklist,
-    ILanguageFactory,
     ICommandRunnerFactory,
+    ILanguageFactory,
+    IReportGenerator,
+    ITranslator,
 )
 from octoreconf.utils import *
 from octoreconf.__init__ import __version__

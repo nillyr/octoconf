@@ -9,7 +9,7 @@ from xml.dom.minidom import parseString
 import dicttoxml
 import inject
 
-from octoreconf.components.report_generators.report_generator import IReportGenerator
+from octoreconf.ports import IReportGenerator
 from octoreconf.utils import timestamp
 
 
