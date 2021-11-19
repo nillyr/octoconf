@@ -10,6 +10,8 @@ openpyxl==3.0.7
 polib==1.1.1
 pydantic==1.8.2
 pytest==6.2.5
+python-dotenv==0.19.2
+requests==2.26.0
 sty==1.0.0rc1
 XlsxWriter==3.0.1
 wheel

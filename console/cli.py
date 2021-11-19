@@ -21,6 +21,8 @@ from octoreconf.adapters import (
     LanguageFactory,
 )
 from octoreconf.components.report_generators import *
+from octoreconf.components.translators.translator import ITranslator
+from octoreconf.components.translators.deepl_translator.deepl_translator import DeepL
 from octoreconf.interactors import *
 from octoreconf.ports import (
     IArchive,
@@ -82,12 +84,19 @@ def parse_audit_args(args):
 
 
 @checklist_to_path
-def parse_checklist_args(args):
+def parse_checklist_args(args) -> int:
+    """
+    Distinguishing arguments:
+      - Generate: platform
+      - Translate: target_lang
+      - Export: checklist
+      - List: category (can be none -> default behavior)
+    """
     if args.debug:
         debug.set_debug(True)
 
     _ = vars(args)
-    if _.get("language"):
+    if _.get("platform"):
         # generate command
         opts = {
             "checklist": args.checklist,
@@ -100,7 +109,23 @@ def parse_checklist_args(args):
         uc.execute(opts)
         print(f"[+] The generated script has been put here: {args.output}")
         print("[+] Done")
-        return
+        return 0
+    elif _.get("target_lang"):
+        # translate command
+        opts = {
+            "checklist": args.checklist,
+            "output": args.output,
+            "source_lang": args.source_lang,
+            "target_lang": args.target_lang,
+        }
+        print("[*] Launching the checklist translation...")
+        translator = ChecklistTranslatorInteractor()
+        status = translator.execute(opts)
+        if status == 0:
+            print("[+] Done")
+        else:
+            print("[x] Error: something went wrong")
+        return status
     elif _.get("checklist"):
         # export
         print("[*] Launching the checklist exportation...")
@@ -124,7 +149,7 @@ def parse_checklist_args(args):
         for checklist_category in checklists.keys():
             for checklist_name in checklists[checklist_category]:
                 print(f"\t{checklist_category}/{checklist_name}")
-    return
+    return 0
 
 
 def parse_report_args(args):
@@ -269,6 +294,32 @@ def parse_args() -> argparse.Namespace:
         help="Filter checklists on a given category",
     )
 
+    translate_parser = checklists_commands.add_parser(
+        name="translate", help="performs checklist translation"
+    )
+    translate_parser.add_argument(
+        "-c",
+        "--checklist",
+        required=True,
+        help="checklist",
+    )
+    translate_parser.add_argument(
+        "-o", "--output", required=True, help="output file to write results"
+    )
+    translate_parser.add_argument(
+        "-s",
+        "--source_lang",
+        required=False,
+        default="EN",
+        help="iso code of the source language (ex.: FR, EN, RU, etc.)",
+    )
+    translate_parser.add_argument(
+        "-t",
+        "--target_lang",
+        required=True,
+        help="iso code of the target language (ex.: FR, EN, RU, etc.)",
+    )
+
     ## Report ##
     report_parser = cmd.add_parser(
         name="report", help="performs the generation of audit reports"
@@ -298,6 +349,7 @@ def dependency_injection_configuration(binder):
     binder.bind(ICommandRunnerFactory, CommandRunnerFactory())
     binder.bind(ILanguageFactory, LanguageFactory())
     binder.bind(IReportGenerator, XlsxGenerator())
+    binder.bind(ITranslator, DeepL())
 
 
 def cli():
@@ -309,8 +361,8 @@ def cli():
         checklist_loader()
 
         sys.exit(parse_args())
-    except:
-        pass
+    except Exception as _err:
+        print(f"{_err}", file=sys.stderr)
 
 
 if __name__ == "__main__":
