@@ -15,7 +15,7 @@
             checks: [
               {
                 id: 1
-                description: User info
+                title: User info
                 type: CMD_EXEC
                 cmd: "whoami | echo $?"
                 expected: "0"
@@ -25,7 +25,7 @@
               },
               {
                 id: 2
-                description: User info
+                title: User info
                 type: CMD_EXEC
                 cmd: "whoami"
                 expected: "[A-Za-z0-9-_]{1,}"
@@ -35,7 +35,7 @@
               },
               {
                 id: 3
-                description: User info
+                title: User info
                 type: CMD_EXEC
                 cmd: "whoami"
                 expected: "[A-Za-z0-9-_]{1,}"
@@ -45,7 +45,7 @@
               },
               {
                 id: 4
-                description: User info
+                title: User info
                 type: CMD_EXEC
                 cmd: "whoami"
                 expected: "[A-Za-z0-9-_]{1,}"

@@ -18,6 +18,7 @@ def check_result():
     return [
         CheckResult(
             id="1",
+            title="a_title",
             description="a_description",
             type="a_type",
             cmd="a_cmd",
@@ -69,6 +70,7 @@ def test_serialize_category(checkpoints):
             "collect_only": false,
             "checks": [{{
                 "id": "1",
+                "title": "a_title",
                 "description": "a_description",
                 "type": "a_type",
                 "cmd": "a_cmd",

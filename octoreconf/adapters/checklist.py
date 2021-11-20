@@ -80,7 +80,8 @@ class ChecklistAdapter(IChecklist):
         """
         return Check(
             id=id,
-            description="FIXME",
+            title="FIXME",
+            description="",
             type="",
             cmd="",
             expected="FIXME",

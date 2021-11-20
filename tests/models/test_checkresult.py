@@ -12,6 +12,7 @@ from octoreconf.models.check import CheckResult
 def test_checkresult_model_init():
     check_result = CheckResult(
         id="1",
+        title="a_title",
         description="a_description",
         type="a_type",
         cmd="a_cmd",
@@ -25,6 +26,7 @@ def test_checkresult_model_init():
     )
 
     assert check_result.id == "1"
+    assert check_result.title == "a_title"
     assert check_result.description == "a_description"
     assert check_result.type == "a_type"
     assert check_result.cmd == "a_cmd"

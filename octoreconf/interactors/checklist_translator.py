@@ -43,9 +43,15 @@ class ChecklistTranslatorInteractor:
                         checkpoint.description, source_lang, target_lang
                     )
                     for check in checkpoint.checks:
-                        check.description = self._translate(
-                            check.description, source_lang, target_lang
+                        check.title = self._translate(
+                            check.title, source_lang, target_lang
                         )
+                        try:
+                            check.description = self._translate(
+                                check.description, source_lang, target_lang
+                            )
+                        except:
+                            pass
                         check.recommandation_on_failed = self._translate(
                             check.recommandation_on_failed, source_lang, target_lang
                         )

@@ -13,7 +13,12 @@ sys.path.append("../octoreconf/")
 from octoreconf.adapters import CheckerAdapter, ChecklistAdapter, CommandRunnerFactory
 from octoreconf.components.report_generators.xlsx_report_generator import XlsxGenerator
 from octoreconf.interactors.checks_runner import ChecksRunnerInteractor
-from octoreconf.ports import IChecker, IChecklist, ICommandRunnerFactory, IReportGenerator
+from octoreconf.ports import (
+    IChecker,
+    IChecklist,
+    ICommandRunnerFactory,
+    IReportGenerator,
+)
 from octoreconf.utils import *
 
 

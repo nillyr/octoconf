@@ -16,6 +16,7 @@ from octoreconf.models.check import CheckResult
 def test_serialize_check_result():
     check_result = CheckResult(
         id="1",
+        title="a_title",
         description="a_description",
         type="a_type",
         cmd="a_cmd",
@@ -31,6 +32,7 @@ def test_serialize_check_result():
     expected_json = f"""
     {{
         "id": "1",
+        "title": "a_title",
         "description": "a_description",
         "type": "a_type",
         "cmd": "a_cmd",

@@ -14,7 +14,8 @@ class Check(BaseModel):
     """
 
     id: str
-    description: str
+    title: str
+    description: Optional[str]
     type: str
     cmd: str
     expected: str
@@ -28,7 +29,8 @@ class Check(BaseModel):
 
 class CheckResult(BaseModel):
     id: str
-    description: str
+    title: str
+    description: Optional[str]
     type: str
     cmd: str
     expected: str

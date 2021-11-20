@@ -17,6 +17,7 @@ from octoreconf.models.category import Category
 def checks():
     checkA = Check(
         id="1",
+        title="a_title",
         description="a_description",
         type="a_type",
         cmd="a_cmd",
@@ -29,6 +30,7 @@ def checks():
 
     checkB = Check(
         id="1",
+        title="a_title",
         description="a_description",
         type="a_type",
         cmd="a_cmd",

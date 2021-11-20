@@ -49,7 +49,10 @@ class CheckArchiveInteractor:
 
                     check_result = {
                         "id": filename,
-                        "description": check.description,
+                        "title": check.title,
+                        "description": check.description
+                        if check.description is not None
+                        else None,
                         "type": check.type,
                         "cmd": check.cmd,
                         "expected": check.expected,

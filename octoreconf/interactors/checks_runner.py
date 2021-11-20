@@ -77,7 +77,8 @@ class ChecksRunnerInteractor:
                 cmd_output = self._runner.exec(check.cmd, cmd_type, True)
             check_result = {
                 "id": check.id,
-                "description": check.description,
+                "title": check.title,
+                "description": check.description if check.description is not None else None,
                 "type": check.type,
                 "cmd": check.cmd,
                 "expected": check.expected,

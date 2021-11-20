@@ -181,7 +181,7 @@ class XlsxGenerator(IReportGenerator):
                         )
                         worksheet.merge_range(
                             f"B{check_row}:D{check_row}",
-                            check["description"],
+                            check["title"],
                             self._get_check_format(workbook),
                         )
                         if "result" in check:

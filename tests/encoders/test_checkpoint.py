@@ -19,6 +19,7 @@ def checks():
     return [
         Check(
             id="1",
+            title="a_title",
             description="a_description",
             type="a_type",
             cmd="a_cmd",
@@ -54,6 +55,7 @@ def test_serialize_checkpoint(checks):
         "collect_only": false,
         "checks": [{{
             "id": "1",
+            "title": "a_title",
             "description": "a_description",
             "type": "a_type",
             "cmd": "a_cmd",
