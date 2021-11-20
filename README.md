@@ -14,7 +14,7 @@
 Tool dedicated to the realization of configuration audits of various systems via semi-automated analysis of the collected security configurations.
 
 ```
-        ,'""`.       octoreconf 1.3.4rc1
+        ,'""`.       octoreconf 1.3.5rc1
        / _  _ \
        |(@)(@)|      Tool for semi-automatic verification
        )  __  (      of security configurations.
