@@ -86,7 +86,7 @@ class ChecklistAdapter(IChecklist):
             expected="FIXME",
             verification_type="",
             result=False,
-            severity="high",
+            severity="info",
             recommandation_on_failed="",
         )
 
@@ -113,7 +113,7 @@ class ChecklistAdapter(IChecklist):
 
         return categories_list
 
-    def get_commands(self) -> list:
+    def get_commands(self) -> List:
         """
         Returns all the commands (collection and checks) of the different categories in the form of a list.
         """
@@ -169,7 +169,7 @@ class ChecklistAdapter(IChecklist):
         finally:
             return check
 
-    def list_collection_cmds(self):
+    def list_collection_cmds(self) -> List:
         """
         Returns the set of checklist commands for collecting audit proofs.
         """
@@ -253,3 +253,13 @@ class ChecklistAdapter(IChecklist):
                 continue
 
         return json.dumps(checklist, cls=ChecklistJsonEncoder, ensure_ascii=False)
+
+    def get_original_format(self, checklist: List[Category]):
+        """
+        Takes content in the form of a category list and returns the same content in the original format (hjson)
+        """
+        json_content = json.dumps(
+            checklist, cls=ChecklistJsonEncoder, ensure_ascii=False
+        )
+        # [3:-3] because hjson.dumps adds ''' around content
+        return hjson.dumps(json_content)[3:-3]

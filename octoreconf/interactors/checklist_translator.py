@@ -21,14 +21,37 @@ class ChecklistTranslatorInteractor:
         self._checklist = checklist
         self._translator = translator
 
+    def _translate(self, text, source_lang, target_lang) -> str:
+        return self._translator.translate(text, source_lang, target_lang)
+
     def execute(self, args) -> int:
         checklist, output, source_lang, target_lang = ic(args.values())
+        source_lang = source_lang.upper()
+        target_lang = target_lang.upper()
 
+        self._checklist.parse_checklist(checklist)
+        categories = []
+        categories.append({"categories": self._checklist.get_categories()})
         try:
-            text = self._translator.translate(
-                "Work in Progress", source_lang.upper(), target_lang.upper()
-            )
-            print(text)
+            for category in categories[0]["categories"]:
+                category.name = self._translate(category.name, source_lang, target_lang)
+                for checkpoint in category.checkpoints:
+                    checkpoint.title = self._translate(
+                        checkpoint.title, source_lang, target_lang
+                    )
+                    checkpoint.description = self._translate(
+                        checkpoint.description, source_lang, target_lang
+                    )
+                    for check in checkpoint.checks:
+                        check.description = self._translate(
+                            check.description, source_lang, target_lang
+                        )
+                        check.recommandation_on_failed = self._translate(
+                            check.recommandation_on_failed, source_lang, target_lang
+                        )
+
+            with open(output, "w") as output_file:
+                output_file.write(self._checklist.get_original_format(categories))
             return 0
         except Exception as _err:
             print(f"{self.__class__} error: {_err}", file=sys.stderr)
