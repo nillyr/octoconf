@@ -8,6 +8,7 @@ import sys
 from icecream import ic
 import inject
 
+from octoreconf.components.translators import TranslatorCache
 from octoreconf.ports import IChecklist, ITranslator
 
 
@@ -16,18 +17,26 @@ class ChecklistTranslatorInteractor:
     Use case for the translation of checklists.
     """
 
+    _cache: TranslatorCache
+
     @inject.autoparams("checklist", "translator")
     def __init__(self, checklist: IChecklist, translator: ITranslator) -> None:
         self._checklist = checklist
         self._translator = translator
+        self._cache = TranslatorCache()
 
     def _translate(self, text, source_lang, target_lang) -> str:
-        return self._translator.translate(text, source_lang, target_lang)
+        cached_translation = self._cache.retrieve_from_cache(text)
+        if cached_translation is not None:
+            return cached_translation
 
+        translated = self._translator.translate(text, source_lang, target_lang)
+        self._cache.populate_cache(text, translated)
+        return translated
+
+    @TranslatorCache.decorator
     def execute(self, args) -> int:
         checklist, output, source_lang, target_lang = ic(args.values())
-        source_lang = source_lang.upper()
-        target_lang = target_lang.upper()
 
         self._checklist.parse_checklist(checklist)
         categories = []
