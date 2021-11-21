@@ -21,7 +21,7 @@
                 expected: "0"
                 verification_type: CHECK_EXACT
                 severity: high
-                recommandation_on_failed: a recommandation on failed
+                recommendation_on_failed: a recommendation on failed
               },
               {
                 id: 2
@@ -31,7 +31,7 @@
                 expected: "[A-Za-z0-9-_]{1,}"
                 verification_type: CHECK_REGEX
                 severity: medium
-                recommandation_on_failed: a recommandation on failed
+                recommendation_on_failed: a recommendation on failed
               },
               {
                 id: 3
@@ -41,7 +41,7 @@
                 expected: "[A-Za-z0-9-_]{1,}"
                 verification_type: CHECK_REGEX
                 severity: low
-                recommandation_on_failed: a recommandation on failed
+                recommendation_on_failed: a recommendation on failed
               },
               {
                 id: 4
@@ -51,7 +51,7 @@
                 expected: "[A-Za-z0-9-_]{1,}"
                 verification_type: CHECK_REGEX
                 severity: info
-                recommandation_on_failed: a recommandation on failed
+                recommendation_on_failed: a recommendation on failed
               },
             ]
           }

@@ -59,7 +59,7 @@ class CheckArchiveInteractor:
                         "verification_type": check.verification_type,
                         "cmd_output": content,
                         "severity": check.severity,
-                        "recommandation_on_failed": check.recommandation_on_failed,
+                        "recommendation_on_failed": check.recommendation_on_failed,
                         "see_also": check.see_also
                         if check.see_also is not None
                         else None,

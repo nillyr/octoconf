@@ -14,7 +14,9 @@ from octoreconf.adapters.redirector_regex.redirector_regex import RedirectorRege
 from octoreconf.interactors.check_output import CheckOutputInteractor
 from octoreconf.models import CheckResult
 from octoreconf.ports import IChecklist
-from octoreconf.ports.runner.command_runner_abstract_factory import ICommandRunnerFactory
+from octoreconf.ports.runner.command_runner_abstract_factory import (
+    ICommandRunnerFactory,
+)
 
 
 class ChecksRunnerInteractor:
@@ -78,14 +80,16 @@ class ChecksRunnerInteractor:
             check_result = {
                 "id": check.id,
                 "title": check.title,
-                "description": check.description if check.description is not None else None,
+                "description": check.description
+                if check.description is not None
+                else None,
                 "type": check.type,
                 "cmd": check.cmd,
                 "expected": check.expected,
                 "verification_type": check.verification_type,
                 "cmd_output": cmd_output,
                 "severity": check.severity,
-                "recommandation_on_failed": check.recommandation_on_failed,
+                "recommendation_on_failed": check.recommendation_on_failed,
                 "see_also": check.see_also if check.see_also is not None else None,
             }
 

@@ -52,8 +52,8 @@ class ChecklistTranslatorInteractor:
                             )
                         except:
                             pass
-                        check.recommandation_on_failed = self._translate(
-                            check.recommandation_on_failed, source_lang, target_lang
+                        check.recommendation_on_failed = self._translate(
+                            check.recommendation_on_failed, source_lang, target_lang
                         )
 
             with open(output, "w") as output_file:

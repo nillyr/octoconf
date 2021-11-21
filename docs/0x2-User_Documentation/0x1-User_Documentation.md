@@ -93,7 +93,8 @@ The basic template is as follows:
               {
                 # id must be int and unique
                 id: 1
-                description: A short description
+                title: A short title
+                description: A description
                 # type:
                 # CMD_EXEC = /bin/bash
                 # AUDIT_POWERSHELL = powershell.exe
@@ -117,7 +118,7 @@ The basic template is as follows:
                 *  - info
                 */
                 severity: high
-                recommandation_on_failed:
+                recommendation_on_failed:
                 '''
                 When the outcome is not what was expected, it is possible to print a recommendation.
                 The recommendation may contain, among other things, the command for correction.
@@ -162,7 +163,7 @@ Below is an example of a category for Windows 10:
                 expected: "All disks are encrypted"
                 verification_type: CHECK_EXACT
                 severity: medium
-                recommandation_on_failed:
+                recommendation_on_failed:
                 '''
                 Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nulla sit amet nunc varius dolor fermentum pulvinar. Proin dignissim semper condimentum. Nam quis maximus elit.
                 '''

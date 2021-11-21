@@ -88,7 +88,7 @@ class ChecklistAdapter(IChecklist):
             verification_type="",
             result=False,
             severity="info",
-            recommandation_on_failed="",
+            recommendation_on_failed="",
         )
 
     def get_categories(self) -> List[Category]:

@@ -24,7 +24,7 @@ class CheckResultJsonEncoder(json.JSONEncoder):
                 "cmd_output": o.cmd_output,
                 "result": o.result,
                 "severity": o.severity,
-                "recommandation_on_failed": o.recommandation_on_failed,
+                "recommendation_on_failed": o.recommendation_on_failed,
                 "see_also": o.see_also if o.see_also is not None else "",
             }
             return to_serialize

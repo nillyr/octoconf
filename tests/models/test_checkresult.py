@@ -21,7 +21,7 @@ def test_checkresult_model_init():
         cmd_output="a_cmd_output",
         result=True,
         severity="a_severity",
-        recommandation_on_failed="a_recommandation_on_failed",
+        recommendation_on_failed="a_recommendation_on_failed",
         see_also="a_see_also",
     )
 
@@ -35,5 +35,5 @@ def test_checkresult_model_init():
     assert check_result.cmd_output == "a_cmd_output"
     assert check_result.result == True
     assert check_result.severity == "a_severity"
-    assert check_result.recommandation_on_failed == "a_recommandation_on_failed"
+    assert check_result.recommendation_on_failed == "a_recommendation_on_failed"
     assert check_result.see_also == "a_see_also"

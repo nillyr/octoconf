@@ -23,7 +23,7 @@ def checks():
         expected="a_expected",
         verification_type="a_verification_type",
         severity="a_severity",
-        recommandation_on_failed="a_recommandation_on_failed",
+        recommendation_on_failed="a_recommendation_on_failed",
         see_also="a_see_also",
     )
 
@@ -36,7 +36,7 @@ def checks():
         expected="a_expected",
         verification_type="a_verification_type",
         severity="a_severity",
-        recommandation_on_failed="a_recommandation_on_failed",
+        recommendation_on_failed="a_recommendation_on_failed",
         see_also="a_see_also",
     )
 
