@@ -36,6 +36,7 @@ class WindowsOutputRedirectorRegexCB(IOutputRedirectorRegexBuilder):
         BASICS = "\s*(([1-6]>\&[1-6]\s*)*|[1-6]|[\*])>+\s*"
         CMD_GPRESULT = "\s*/H\s*"
         CMD_SECEDIT = "\s*/cfg\s*"
+        CMDLET_EXPORT_CSV = "\s*\|\s*Export-CSV\s+(-[a-zA-Z]*\s*)*"
         CMDLET_OUT_FILE = "\s*\|\s*Out-File\s+(-[a-zA-Z]*\s*(?:utf8\s*)*)*"
         CMDLET_TEE_OBJECT = "\s*\|\s*Tee-Object\s+(-((InputObject\s+[a-zA-Z0-9_-]*\s+)|([a-zA-Z]*\s*(?:utf8\s*)*)))*"
 
