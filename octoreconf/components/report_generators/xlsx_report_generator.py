@@ -297,8 +297,8 @@ class XlsxGenerator(IReportGenerator):
         radar_chart.add_series(
             {
                 "name": f"={global_values.localize.gettext('summary')}!$G$2",
-                "categories": f"={global_values.localize.gettext('summary')}!$A$3:$A${last_row + 1}",
-                "values": f"={global_values.localize.gettext('summary')}!$G$3:$G${last_row + 1}",
+                "categories": f"={global_values.localize.gettext('summary')}!$A$3:$A${last_row}",
+                "values": f"={global_values.localize.gettext('summary')}!$G$3:$G${last_row}",
                 "fill": {"color": "green"},
             }
         )
