@@ -3,11 +3,11 @@
     categories: [
       {
         id: 1
-        name: a category with some spaces
+        name: a category <x>with</x> some spaces
         checkpoints: [
           {
             id: 1
-            title: a checkpoint title
+            title: a <x>checkpoint</x> title
             description: a short description
             collection_cmd: "whoami > whoami.txt"
             collection_cmd_type: CMD_EXEC
@@ -15,7 +15,7 @@
             checks: [
               {
                 id: 1
-                title: User info
+                title: User <x>info</x>
                 type: CMD_EXEC
                 cmd: "whoami | echo $?"
                 expected: "0"
@@ -25,7 +25,7 @@
               },
               {
                 id: 2
-                title: User info
+                title: <x>User</x> info
                 type: CMD_EXEC
                 cmd: "whoami"
                 expected: "[A-Za-z0-9-_]{1,}"

@@ -6,8 +6,10 @@
 from enum import Enum
 import hjson
 import json
-from typing import List
+import re
 import sys
+from typing import List
+
 
 from icecream import ic
 
@@ -254,6 +256,59 @@ class ChecklistAdapter(IChecklist):
                 continue
 
         return json.dumps(checklist, cls=ChecklistJsonEncoder, ensure_ascii=False)
+
+    def remove_ignore_tag(self, json_data) -> str:
+        """
+        Remove ignore_tag used for translation before creating reports.
+        """
+        regex = r"\<\/?x\>"
+        subst = ""
+        json_data = json.loads(json_data)
+        for root in json_data:
+            for category in root["categories"]:
+                # name
+                category["name"] = re.sub(
+                    regex,
+                    subst,
+                    category["name"],
+                    0,
+                    re.MULTILINE | re.IGNORECASE | re.DOTALL,
+                )
+                for checkpoint in category["checkpoints"]:
+                    # title
+                    checkpoint["title"] = re.sub(
+                        regex,
+                        subst,
+                        checkpoint["title"],
+                        0,
+                        re.MULTILINE | re.IGNORECASE | re.DOTALL,
+                    )
+                    # description
+                    checkpoint["description"] = re.sub(
+                        regex,
+                        subst,
+                        checkpoint["description"],
+                        0,
+                        re.MULTILINE | re.IGNORECASE | re.DOTALL,
+                    )
+                    for check in checkpoint["checks"]:
+                        # title
+                        check["title"] = re.sub(
+                            regex,
+                            subst,
+                            check["title"],
+                            0,
+                            re.MULTILINE | re.IGNORECASE | re.DOTALL,
+                        )
+                        # recommendation_on_failed
+                        check["recommendation_on_failed"] = re.sub(
+                            regex,
+                            subst,
+                            check["recommendation_on_failed"],
+                            0,
+                            re.MULTILINE | re.IGNORECASE | re.DOTALL,
+                        )
+        return json.dumps(json_data, cls=ChecklistJsonEncoder, ensure_ascii=False)
 
     def get_original_format(self, checklist: List[Category]):
         """

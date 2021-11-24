@@ -15,8 +15,8 @@ class CheckJsonEncoder(json.JSONEncoder):
         try:
             to_serialize = {
                 "id": o.id,
-                "title": o.title if o.title is not None else "",
-                "description": o.description,
+                "title": o.title,
+                "description": o.description if o.description is not None else "",
                 "type": o.type,
                 "cmd": o.cmd,
                 "expected": o.expected,
