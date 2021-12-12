@@ -33,6 +33,13 @@ class ChecksRunnerInteractor:
         """
         This method puts the audit proofs in the folder corresponding to the current category. Since the user is not aware of the folder automatically created during the tests, it is not possible to specify the exact path for the output of the files in the checklist.
         """
+        # Remove ignore tag in category
+        regex = r"\<\/?x\>"
+        subst = ""
+        category = re.sub(
+            regex, subst, category, 0, re.MULTILINE | re.IGNORECASE | re.DOTALL
+        )
+
         regex_pattern = RedirectorRegex.get_redirector_regex(platform.system())
 
         output_file = re.split(regex_pattern, cmd)[-1].strip()
