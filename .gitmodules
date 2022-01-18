@@ -1,3 +1,3 @@
 [submodule "octoreconf/checklists"]
 	path = octoreconf/checklists
-	url = https://github.com/Nillyr/octoreconf-checklists
+	url = https://github.com/Nillyr/octochecklists
