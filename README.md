@@ -6,7 +6,7 @@
 </p>
 
 <p align="center">
-  <img src="https://img.shields.io/badge/coverage-83%25-green.svg">
+  <img src="https://img.shields.io/badge/coverage-80%25-green.svg">
   <img src="https://img.shields.io/badge/python-3.7+-blue.svg">
   <img src="https://img.shields.io/badge/platform-macOS%2FLinux%2FWindows-blue.svg">
 </p>
@@ -14,7 +14,7 @@
 Tool dedicated to the realization of configuration audits of various systems via semi-automated analysis of the collected security configurations.
 
 ```
-        ,'""`.       octoreconf 1.3.8rc1
+        ,'""`.       octoreconf 1.4.0rc1
        / _  _ \
        |(@)(@)|      Tool for semi-automatic verification
        )  __  (      of security configurations.
@@ -65,7 +65,7 @@ octoreconf analyze -c desktop/windows10 -a Audit[...].zip
 
 ## Documentation
 
-The documentation is available in `ePub` and `pdf` formats. See the [releases](https://github.com/Nillyr/octoreconf/releases) page.
+The documentation is available in `pdf` format. See the [releases](https://github.com/Nillyr/octoreconf/releases) page.
 
 ## Disclaimer
 
@@ -84,7 +84,7 @@ The documentation is available in `ePub` and `pdf` formats. See the [releases](h
 
 ## Copyright and license
 
-Copyright (c) 2021 Nicolas GRELLETY
+Copyright (c) 2021-2022 Nicolas GRELLETY
 
 This software is licensed under GNU GPLv3 license. See `LICENSE` file in the root folder of the project.
 

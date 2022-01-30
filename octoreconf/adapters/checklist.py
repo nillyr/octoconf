@@ -1,17 +1,16 @@
-# @copyright Copyright (c) 2021 Nicolas GRELLETY
+# @copyright Copyright (c) 2021-2022 Nicolas GRELLETY
 # @license https://opensource.org/licenses/GPL-3.0 GNU GPLv3
 # @link https://github.com/Nillyr/octoreconf
 # @since 1.0.0b
 
 from enum import Enum
-import hjson
 import json
 import re
 import sys
 from typing import List
 
-
 from icecream import ic
+import yaml
 
 from octoreconf.components.json_encoders.checklist import ChecklistJsonEncoder
 from octoreconf.models import *
@@ -29,7 +28,7 @@ class NoValue(Enum):
 
 class ChecklistAdapter(IChecklist):
     """
-    Implementation of the interface allowing to work with the type of checklist in hjson format presented in the template folder.
+    Implementation of the interface allowing to work with the type of checklist.
     """
 
     _instance = None
@@ -54,15 +53,17 @@ class ChecklistAdapter(IChecklist):
             cls._instance = super(IChecklist, cls).__new__(cls)
         return cls._instance
 
-    def parse_checklist(self, checklist) -> None:
+    def parse_checklist(self, fchecklist) -> None:
         """
         Retrieves the data present in the checklist provided as an argument.
         """
         if self._checklist is None:
-            with open(checklist, "r") as hjson_file:
-                hson_checklist = hjson.loads(hjson_file.read())
-                json_checklist = hjson.dumpsJSON(hson_checklist)
-                self._checklist = json.loads(json_checklist)
+            categories = []
+            checklist = dict(categories=categories)
+            with open(fchecklist, "r") as file:
+                for data in yaml.load_all(file, Loader=yaml.BaseLoader):
+                    checklist["categories"].append(data)
+                    self._checklist = json.loads(json.dumps(checklist))
 
     def get_executable(self, cmd_type) -> str:
         """
@@ -98,21 +99,20 @@ class ChecklistAdapter(IChecklist):
         Puts the data of the checklist in the different defined entities.
         """
         categories_list = []
-        for item in self._checklist:
+        for category in self._checklist["categories"][0]:
             categories_list = []
-            for category in item["categories"]:
-                checkpoints_list = []
-                for checkpoint in category["checkpoints"]:
-                    checks_list = []
-                    if checkpoint["collect_only"] == True:
-                        checks_list.append(self._create_empty_check(1))
-                    else:
-                        for check in checkpoint["checks"]:
-                            checks_list.append(Check(**check))
-                    checkpoint["checks"] = checks_list
-                    checkpoints_list.append(Checkpoint(**checkpoint))
-                category["checkpoints"] = checkpoints_list
-                categories_list.append(Category(**category))
+            checkpoints_list = []
+            for checkpoint in category["checkpoints"]:
+                checks_list = []
+                if checkpoint["collect_only"] in ("true", "True"):
+                    checks_list.append(self._create_empty_check(1))
+                else:
+                    for check in checkpoint["checks"]:
+                        checks_list.append(Check(**check))
+                checkpoint["checks"] = checks_list
+                checkpoints_list.append(Checkpoint(**checkpoint))
+            category["checkpoints"] = checkpoints_list
+            categories_list.append(Category(**category))
 
         return categories_list
 
@@ -177,24 +177,23 @@ class ChecklistAdapter(IChecklist):
         Returns the set of checklist commands for collecting audit proofs.
         """
         collection_cmds = []
-        for item in self._checklist:
-            for category in item["categories"]:
-                for checkpoint in category["checkpoints"]:
-                    if "collection_cmd" in checkpoint:
-                        try:
-                            collection_cmds.append(
-                                {
-                                    "category_name": category["name"],
-                                    "collection_cmd_type": checkpoint[
-                                        "collection_cmd_type"
-                                    ],
-                                    "collection_cmd": checkpoint["collection_cmd"],
-                                }
-                            )
-                        except KeyError as _err:
-                            print(f"Error: {_err} is expected.", file=sys.stderr)
-                        finally:
-                            continue
+        for category in self._checklist["categories"][0]:
+            for checkpoint in category["checkpoints"]:
+                if "collection_cmd" in checkpoint:
+                    try:
+                        collection_cmds.append(
+                            {
+                                "category_name": category["name"],
+                                "collection_cmd_type": checkpoint[
+                                    "collection_cmd_type"
+                                ],
+                                "collection_cmd": checkpoint["collection_cmd"],
+                            }
+                        )
+                    except KeyError as _err:
+                        print(f"Error: {_err} is expected.", file=sys.stderr)
+                    finally:
+                        continue
 
         return ic(collection_cmds)
 
@@ -203,22 +202,21 @@ class ChecklistAdapter(IChecklist):
         Returns the set of check commands of the checklist.
         """
         checks = []
-        for item in self._checklist:
-            for category in item["categories"]:
-                for checkpoint in category["checkpoints"]:
-                    if checkpoint["collect_only"] == True:
-                        id = str(category["id"]) + "." + str(checkpoint["id"]) + ".1"
-                        checks.append(self._create_empty_check(id))
-                    else:
-                        for check in checkpoint["checks"]:
-                            check["id"] = (
-                                str(category["id"])
-                                + "."
-                                + str(checkpoint["id"])
-                                + "."
-                                + str(check["id"])
-                            )
-                            checks.append(Check(**check))
+        for category in self._checklist["categories"][0]:
+            for checkpoint in category["checkpoints"]:
+                if checkpoint["collect_only"] in ("true", "True"):
+                    id = str(category["id"]) + "." + str(checkpoint["id"]) + ".1"
+                    checks.append(self._create_empty_check(id))
+                else:
+                    for check in checkpoint["checks"]:
+                        check["id"] = (
+                            str(category["id"])
+                            + "."
+                            + str(checkpoint["id"])
+                            + "."
+                            + str(check["id"])
+                        )
+                        checks.append(Check(**check))
         return ic(checks)
 
     def get_json_reporting(self, results: List[CheckResult]) -> str:
@@ -227,29 +225,30 @@ class ChecklistAdapter(IChecklist):
         """
         checklist = self._checklist
         for result in results:
+            ic(result)
             cat_id, checkpoint_id, check_id = (
                 int(result.id.split(".")[0]),
                 int(result.id.split(".")[1]),
                 int(result.id.split(".")[2]),
             )
             result.id = check_id
-            base = checklist[0]["categories"][cat_id - 1]["checkpoints"][
+            base = checklist["categories"][0][cat_id - 1]["checkpoints"][
                 checkpoint_id - 1
             ]
             if isinstance(base, dict):
-                if base["collect_only"] == True:
+                if base["collect_only"] in ("true", "True"):
                     base["checks"] = [self._create_empty_check(1)]
                     continue
 
-                checklist[0]["categories"][cat_id - 1]["checkpoints"][
+                checklist["categories"][0][cat_id - 1]["checkpoints"][
                     checkpoint_id - 1
                 ]["checks"][check_id - 1] = result
             elif isinstance(base, Checkpoint):
-                if base.collect_only == True:
+                if base.collect_only in ("true", "True"):
                     base["checks"] = [self._create_empty_check(1)]
                     continue
 
-                checklist[0]["categories"][cat_id - 1]["checkpoints"][
+                checklist["categories"][0][cat_id - 1]["checkpoints"][
                     checkpoint_id - 1
                 ].checks[check_id - 1] = result
             else:
@@ -264,58 +263,65 @@ class ChecklistAdapter(IChecklist):
         regex = r"\<\/?x\>"
         subst = ""
         json_data = json.loads(json_data)
-        for root in json_data:
-            for category in root["categories"]:
-                # name
-                category["name"] = re.sub(
+        # for root in json_data:
+        for category in json_data["categories"][0]:
+            # name
+            category["name"] = re.sub(
+                regex,
+                subst,
+                category["name"],
+                0,
+                re.MULTILINE | re.IGNORECASE | re.DOTALL,
+            )
+            for checkpoint in category["checkpoints"]:
+                # title
+                checkpoint["title"] = re.sub(
                     regex,
                     subst,
-                    category["name"],
+                    checkpoint["title"],
                     0,
                     re.MULTILINE | re.IGNORECASE | re.DOTALL,
                 )
-                for checkpoint in category["checkpoints"]:
+                # description
+                checkpoint["description"] = re.sub(
+                    regex,
+                    subst,
+                    checkpoint["description"],
+                    0,
+                    re.MULTILINE | re.IGNORECASE | re.DOTALL,
+                )
+                for check in checkpoint["checks"]:
                     # title
-                    checkpoint["title"] = re.sub(
+                    check["title"] = re.sub(
                         regex,
                         subst,
-                        checkpoint["title"],
+                        check["title"],
                         0,
                         re.MULTILINE | re.IGNORECASE | re.DOTALL,
                     )
                     # description
-                    checkpoint["description"] = re.sub(
+                    check["description"] = re.sub(
                         regex,
                         subst,
-                        checkpoint["description"],
+                        check["description"],
                         0,
                         re.MULTILINE | re.IGNORECASE | re.DOTALL,
                     )
-                    for check in checkpoint["checks"]:
-                        # title
-                        check["title"] = re.sub(
-                            regex,
-                            subst,
-                            check["title"],
-                            0,
-                            re.MULTILINE | re.IGNORECASE | re.DOTALL,
-                        )
-                        # recommendation_on_failed
-                        check["recommendation_on_failed"] = re.sub(
-                            regex,
-                            subst,
-                            check["recommendation_on_failed"],
-                            0,
-                            re.MULTILINE | re.IGNORECASE | re.DOTALL,
-                        )
+                    # recommendation_on_failed
+                    check["recommendation_on_failed"] = re.sub(
+                        regex,
+                        subst,
+                        check["recommendation_on_failed"],
+                        0,
+                        re.MULTILINE | re.IGNORECASE | re.DOTALL,
+                    )
         return json.dumps(json_data, cls=ChecklistJsonEncoder, ensure_ascii=False)
 
     def get_original_format(self, checklist: List[Category]):
         """
-        Takes content in the form of a category list and returns the same content in the original format (hjson)
+        Takes content in the form of a category list and returns the same content in the original format
         """
         json_content = json.dumps(
             checklist, cls=ChecklistJsonEncoder, ensure_ascii=False
         )
-        # [3:-3] because hjson.dumps adds ''' around content
-        return hjson.dumps(json_content)[3:-3]
+        return yaml.dump(json.loads(json_content), sort_keys=False)

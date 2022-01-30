@@ -1,4 +1,4 @@
-# @copyright Copyright (c) 2021 Nicolas GRELLETY
+# @copyright Copyright (c) 2021-2022 Nicolas GRELLETY
 # @license https://opensource.org/licenses/GPL-3.0 GNU GPLv3
 # @link https://github.com/Nillyr/octoreconf
 # @since 1.0.0b
@@ -17,6 +17,7 @@ class CommandRunnerFactory(ICommandRunnerFactory):
     """
     Implementation of the abstract factory.
     """
+
     @staticmethod
     def get_runner():
         """

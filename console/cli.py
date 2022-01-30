@@ -1,4 +1,4 @@
-# @copyright Copyright (c) 2021 Nicolas GRELLETY
+# @copyright Copyright (c) 2021-2022 Nicolas GRELLETY
 # @license https://opensource.org/licenses/GPL-3.0 GNU GPLv3
 # @link https://github.com/Nillyr/octoreconf
 # @since 1.0.0b
@@ -121,12 +121,9 @@ def parse_checklist_args(args) -> int:
         }
         print("[*] Launching the checklist translation...")
         translator = ChecklistTranslatorInteractor()
-        status = translator.execute(opts)
-        if status == 0:
-            print("[+] Done")
-        else:
-            print("[x] Error: something went wrong")
-        return status
+        translator.execute(opts)
+        print("[+] Done")
+        return 0
     elif _.get("checklist"):
         # export
         print("[*] Launching the checklist exportation...")

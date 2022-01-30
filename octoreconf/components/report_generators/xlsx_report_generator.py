@@ -1,4 +1,4 @@
-# @copyright Copyright (c) 2021 Nicolas GRELLETY
+# @copyright Copyright (c) 2021-2022 Nicolas GRELLETY
 # @license https://opensource.org/licenses/GPL-3.0 GNU GPLv3
 # @link https://github.com/Nillyr/octoreconf
 # @since 1.0.0b
@@ -144,70 +144,58 @@ class XlsxGenerator(IReportGenerator):
         """
         Add the results obtained during the verification for each of the checks.
         """
-        for item in data:
-            for category in item["categories"]:
-                worksheet = workbook.add_worksheet(name=category["name"])
-                worksheet.set_column("A:E", 20)
-                worksheet.set_row(0, 25)
-                worksheet.merge_range(
-                    "A1:E1", category["name"], self._get_category_format(workbook)
+        for category in data["categories"][0]:
+            worksheet = workbook.add_worksheet(name=category["name"])
+            worksheet.set_column("A:E", 20)
+            worksheet.set_row(0, 25)
+            worksheet.merge_range(
+                "A1:E1", category["name"], self._get_category_format(workbook)
+            )
+            checkpoint_row = 2
+            nb_success, nb_failed, nb_na = 0, 0, 0
+            for checkpoint in category["checkpoints"]:
+                worksheet.write(
+                    f"A{checkpoint_row}",
+                    global_values.localize.gettext("severity"),
+                    self._get_checkpoint_format(workbook),
                 )
-                checkpoint_row = 2
-                nb_success, nb_failed, nb_na = 0, 0, 0
-                for checkpoint in category["checkpoints"]:
+                worksheet.merge_range(
+                    f"B{checkpoint_row}:D{checkpoint_row}",
+                    checkpoint["title"],
+                    self._get_checkpoint_format(workbook),
+                )
+                worksheet.write(
+                    f"E{checkpoint_row}",
+                    global_values.localize.gettext("result"),
+                    self._get_checkpoint_format(workbook),
+                )
+                check_row = checkpoint_row + 1
+                for check in checkpoint["checks"]:
                     worksheet.write(
-                        f"A{checkpoint_row}",
-                        global_values.localize.gettext("severity"),
-                        self._get_checkpoint_format(workbook),
+                        f"A{check_row}",
+                        global_values.localize.gettext(check["severity"]),
+                        self._get_severity_result_format(check["severity"], workbook),
                     )
                     worksheet.merge_range(
-                        f"B{checkpoint_row}:D{checkpoint_row}",
-                        checkpoint["title"],
-                        self._get_checkpoint_format(workbook),
+                        f"B{check_row}:D{check_row}",
+                        check["title"],
+                        self._get_check_format(workbook),
                     )
-                    worksheet.write(
-                        f"E{checkpoint_row}",
-                        global_values.localize.gettext("result"),
-                        self._get_checkpoint_format(workbook),
-                    )
-                    check_row = checkpoint_row + 1
-                    for check in checkpoint["checks"]:
-                        worksheet.write(
-                            f"A{check_row}",
-                            global_values.localize.gettext(check["severity"]),
-                            self._get_severity_result_format(
-                                check["severity"], workbook
-                            ),
-                        )
-                        worksheet.merge_range(
-                            f"B{check_row}:D{check_row}",
-                            check["title"],
-                            self._get_check_format(workbook),
-                        )
-                        if "result" in check:
-                            if check["result"] == True:
-                                worksheet.write(
-                                    f"E{check_row}",
-                                    global_values.localize.gettext("success"),
-                                    self._get_success_result_format(workbook),
-                                )
-                                nb_success += 1
-                            elif check["result"] == False:
-                                worksheet.write(
-                                    f"E{check_row}",
-                                    global_values.localize.gettext("failed"),
-                                    self._get_failed_result_format(workbook),
-                                )
-                                nb_failed += 1
-                            else:
-                                worksheet.write(
-                                    f"E{check_row}",
-                                    global_values.localize.gettext("na"),
-                                    self._get_uncertain_result_format(workbook),
-                                )
-                                nb_na += 1
-                            check_row += 1
-                            checkpoint_row = check_row
+                    if "result" in check:
+                        if check["result"] == True:
+                            worksheet.write(
+                                f"E{check_row}",
+                                global_values.localize.gettext("success"),
+                                self._get_success_result_format(workbook),
+                            )
+                            nb_success += 1
+                        elif check["result"] == False:
+                            worksheet.write(
+                                f"E{check_row}",
+                                global_values.localize.gettext("failed"),
+                                self._get_failed_result_format(workbook),
+                            )
+                            nb_failed += 1
                         else:
                             worksheet.write(
                                 f"E{check_row}",
@@ -215,14 +203,23 @@ class XlsxGenerator(IReportGenerator):
                                 self._get_uncertain_result_format(workbook),
                             )
                             nb_na += 1
-                            check_row += 1
-                            checkpoint_row = check_row
+                        check_row += 1
+                        checkpoint_row = check_row
+                    else:
+                        worksheet.write(
+                            f"E{check_row}",
+                            global_values.localize.gettext("na"),
+                            self._get_uncertain_result_format(workbook),
+                        )
+                        nb_na += 1
+                        check_row += 1
+                        checkpoint_row = check_row
 
-                self._synthesis[category["name"]] = {
-                    "SUCCESS": nb_success,
-                    "FAILED": nb_failed,
-                    "N/A": nb_na,
-                }
+            self._synthesis[category["name"]] = {
+                "SUCCESS": nb_success,
+                "FAILED": nb_failed,
+                "N/A": nb_na,
+            }
 
     # fmt:off
     def _generate_synthesis(self,
