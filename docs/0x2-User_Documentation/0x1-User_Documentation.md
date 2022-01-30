@@ -175,3 +175,11 @@ The basic template is as follows:
       see_also: https://www.my-reference.com/
 
 ```
+
+## Checklists tranlation
+
+This tool uses the free deepl api to perform the translation of the checklists.
+
+In order to use this feature, it is necessary to create an account on the application DeepL in order to obtain an "Authentication Key for DeepL API".
+
+Then, it is necessary to create a `.env` file at the root of the project and to add the API key for the `DEEPL_API_KEY` environment variable.
