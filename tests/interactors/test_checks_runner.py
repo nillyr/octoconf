@@ -1,4 +1,4 @@
-# @copyright Copyright (c) 2021 Nicolas GRELLETY
+# @copyright Copyright (c) 2021-2022 Nicolas GRELLETY
 # @license https://opensource.org/licenses/GPL-3.0 GNU GPLv3
 # @link https://github.com/Nillyr/octoreconf
 # @since 1.0.0b
@@ -37,7 +37,7 @@ def setup():
 
 @pytest.fixture
 def unix_checklist_path():
-    return "tests/interactors/checklists/unix/test_1.hjson"
+    return "tests/interactors/checklists/unix/test.yaml"
 
 
 @pytest.fixture
@@ -57,4 +57,4 @@ def test_checks_runner_file_creation(setup, checklist_path, output_path):
     uc = ChecksRunnerInteractor()
     uc.execute(checklist_path, output_path)
 
-    assert Path(output_path + "a_category_with_some_spaces/whoami.txt").exists()
+    assert Path(output_path + "pytest_category/whoami.txt").exists()

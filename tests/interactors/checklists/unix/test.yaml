@@ -1,0 +1,21 @@
+- id: 1
+  name: pytest <x>category</x>
+  checkpoints:
+  - id: 1
+    title: a <x>random</x> title
+    description: >
+      a <x>random</x> description
+    collection_cmd: whoami > whoami.txt
+    collection_cmd_type: CMD_EXEC
+    collect_only: false
+    checks:
+    - id: 1
+      title: a random title
+      description: >
+        a <x>random</x> description
+      type: CMD_EXEC
+      cmd: whoami
+      expected: .*
+      verification_type: CHECK_REGEX
+      severity: high
+      recommendation_on_failed: a <x>reco</x> here

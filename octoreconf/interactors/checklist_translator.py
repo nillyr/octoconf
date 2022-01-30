@@ -1,4 +1,4 @@
-# @copyright Copyright (c) 2021 Nicolas GRELLETY
+# @copyright Copyright (c) 2021-2022 Nicolas GRELLETY
 # @license https://opensource.org/licenses/GPL-3.0 GNU GPLv3
 # @link https://github.com/Nillyr/octoreconf
 # @since 1.0.0b
@@ -35,14 +35,15 @@ class ChecklistTranslatorInteractor:
         return translated
 
     @TranslatorCache.decorator
-    def execute(self, args) -> int:
+    def execute(self, args) -> None:
         checklist, output, source_lang, target_lang = ic(args.values())
 
         self._checklist.parse_checklist(checklist)
         categories = []
         categories.append({"categories": self._checklist.get_categories()})
         try:
-            for category in categories[0]["categories"]:
+            categories = categories[0]["categories"]
+            for category in categories:
                 category.name = self._translate(category.name, source_lang, target_lang)
                 for checkpoint in category.checkpoints:
                     checkpoint.title = self._translate(
@@ -66,8 +67,7 @@ class ChecklistTranslatorInteractor:
                         )
 
             with open(output, "w") as output_file:
+                print(f"[*] Writing translated checklist in '{output}'")
                 output_file.write(self._checklist.get_original_format(categories))
-            return 0
         except Exception as _err:
             print(f"{self.__class__} error: {_err}", file=sys.stderr)
-            return 1
