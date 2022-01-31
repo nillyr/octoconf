@@ -3,6 +3,8 @@
 # @link https://github.com/Nillyr/octoreconf
 # @since 1.0.0b
 
+import re
+
 from icecream import ic
 
 from octoreconf.decorators.script_generator import PowershellDecorator
@@ -40,7 +42,8 @@ $category=\"{0}\"
 Write-Output "[*] Running {1} collection commands..."
 New-Item -ItemType directory -Path $basedir\\$category
 """.format(
-                content[i]["category_name"].replace(" ", "_"), "$category"
+                re.sub("[,\s]", "_", content[i]["category_name"]),
+                "$category",
             )
             for cmd in content[i]["collection_cmds"]:
                 str += (

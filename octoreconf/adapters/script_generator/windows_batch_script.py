@@ -3,6 +3,8 @@
 # @link https://github.com/Nillyr/octoreconf
 # @since 1.0.0b
 
+import re
+
 from icecream import ic
 
 from octoreconf.decorators.script_generator import BatchDecorator
@@ -40,7 +42,7 @@ set category={0}
 echo [*] Running {1} collection commands...
 mkdir {2}
 """.format(
-                content[i]["category_name"].replace(" ", "_"),
+                re.sub("[,\s]", "_", content[i]["category_name"]),
                 "%category%",
                 "%basedir%\\%category%",
             )

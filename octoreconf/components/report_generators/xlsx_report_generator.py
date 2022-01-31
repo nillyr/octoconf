@@ -145,7 +145,8 @@ class XlsxGenerator(IReportGenerator):
         Add the results obtained during the verification for each of the checks.
         """
         for category in data["categories"][0]:
-            worksheet = workbook.add_worksheet(name=category["name"])
+            # It is not possible to use a worksheet's title > 31 chars, so we need to slice
+            worksheet = workbook.add_worksheet(name=category["name"][0:31])
             worksheet.set_column("A:E", 20)
             worksheet.set_row(0, 25)
             worksheet.merge_range(
