@@ -3,11 +3,11 @@
 # @link https://github.com/Nillyr/octoreconf
 # @since 1.0.0b
 
-import inject
 import os
 
 import chardet
 from icecream import ic
+import inject
 
 from octoreconf.interactors.check_output import CheckOutputInteractor
 from octoreconf.models import CheckResult
