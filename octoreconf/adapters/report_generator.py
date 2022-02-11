@@ -24,7 +24,7 @@ const.COLORS = {
 }
 
 
-class XlsxGenerator(IReportGenerator):
+class ReportGeneratorAdapter(IReportGenerator):
     """
     Generates a report in Excel format (xlsx).
     """

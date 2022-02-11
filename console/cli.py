@@ -19,8 +19,8 @@ from octoreconf.adapters import (
     ChecklistAdapter,
     CommandRunnerFactory,
     LanguageFactory,
+    ReportGeneratorAdapter,
 )
-from octoreconf.components.report_generators.xlsx_report_generator import XlsxGenerator
 from octoreconf.components.translators.deepl_translator.deepl_translator import DeepL
 from octoreconf.interactors import *
 from octoreconf.ports import (
@@ -346,7 +346,7 @@ def dependency_injection_configuration(binder):
     binder.bind(IChecklist, ChecklistAdapter())
     binder.bind(ICommandRunnerFactory, CommandRunnerFactory())
     binder.bind(ILanguageFactory, LanguageFactory())
-    binder.bind(IReportGenerator, XlsxGenerator())
+    binder.bind(IReportGenerator, ReportGeneratorAdapter())
     binder.bind(ITranslator, DeepL())
 
 

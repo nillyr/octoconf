@@ -15,12 +15,12 @@ from octoreconf.utils import timestamp
 
 class ReportGeneratorInteractor:
     """
-    This use case will allow to call the xlsx report generation component facilitating the manual processing of the audit results.
+    This use case will allow to call the report generator facilitating the manual processing of the audit results.
     """
 
-    @inject.autoparams("xlsx_generator")
-    def __init__(self, xlsx_generator: IReportGenerator) -> None:
-        self._xlsx_generator = xlsx_generator
+    @inject.autoparams("report_generator")
+    def __init__(self, report_generator: IReportGenerator) -> None:
+        self._report_generator = report_generator
 
     def _write_json_file(self, filename, data) -> None:
         filename += ".json"
@@ -54,4 +54,4 @@ class ReportGeneratorInteractor:
         filename = timestamp() + "_results"
         self._write_json_file(filename, json_results)
         self._write_xml_file(filename, json_results)
-        return self._xlsx_generator.generate_report(json_results, filename)
+        return self._report_generator.generate_report(json_results, filename)

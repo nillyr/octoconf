@@ -11,7 +11,7 @@ import pytest
 
 sys.path.append("../octoreconf/")
 from octoreconf.adapters import CheckerAdapter, ChecklistAdapter, CommandRunnerFactory
-from octoreconf.components.report_generators.xlsx_report_generator import XlsxGenerator
+from octoreconf.adapters.report_generator import ReportGeneratorAdapter
 from octoreconf.interactors.checks_runner import ChecksRunnerInteractor
 from octoreconf.ports import (
     IChecker,
@@ -28,7 +28,7 @@ def setup():
         lambda binder: binder.bind(IChecker, CheckerAdapter())
         .bind(IChecklist, ChecklistAdapter())
         .bind(ICommandRunnerFactory, CommandRunnerFactory())
-        .bind(IReportGenerator, XlsxGenerator())
+        .bind(IReportGenerator, ReportGeneratorAdapter())
     )
     global_values.set_localize("en")
     yield None
