@@ -41,16 +41,9 @@ optional arguments:
 - Python 3.7+
 - pip
 
-## Installation
+## Documentation
 
-```bash
-# Get the latest release
-python -m venv octoreconf
-# Activate the venv
-python -m pip install octoreconf-<version>.whl
-```
-
-See the [documentation](#documentation) for other installation methods.
+The documentation is available in `pdf` format. See the [releases](https://github.com/Nillyr/octoreconf/releases) page.
 
 ## Quick usage
 
@@ -63,15 +56,12 @@ powershell.exe -nop -exec bypass .\windows10.ps1
 octoreconf analyze -c desktop/windows10 -a Audit[...].zip
 ```
 
-## Documentation
-
-The documentation is available in `pdf` format. See the [releases](https://github.com/Nillyr/octoreconf/releases) page.
-
 ## Disclaimer
 
+- This is not a turn key tool, read the documentation
 - This tool does not offer any guarantee
 - The authors of this tool cannot be held responsible for the effects caused by the commands made in the checklists
-- It is highly recommended to risk assess your checklists on a test virtual machine before using them in production
+- It is highly recommended to risk assess your checklists in a test environment before using them in production
 - It is highly recommended to manually check each critical configuration of the audited system
 
 ## Maintainer
