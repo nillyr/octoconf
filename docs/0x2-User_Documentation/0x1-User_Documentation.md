@@ -1,6 +1,6 @@
 # User documentation
 
-## User installation
+## Installation
 
 Two installation methods of the tool are available.
 
@@ -26,6 +26,15 @@ cd octoreconf
 bash ./setup.sh
 # Install on Windows
 .\setup.bat
+```
+
+## Compilation
+
+```bash
+# Make sure you have clone the repo with submodules
+# git clone --recurse-submodules https://github.com/Nillyr/octoreconf.git
+cd octoreconf
+make
 ```
 
 ## Features
