@@ -98,9 +98,9 @@ octoreconf report -i 20211006115003_results.json -l en
 
 ## Existing checklists
 
-The tool uses the [octochecklists](https://github.com/Nillyr/octochecklists) submodule containing a set of checklists.
+The tool uses the [octochecklists](https://github.com/Nillyr/octochecklists) submodule which can contain publicly available checklists.
 
-The existing checklists can be listed as follows:
+When checklists are made public and are contained in the tool, it is then possible to list them:
 
 ```bash
 # No filter
