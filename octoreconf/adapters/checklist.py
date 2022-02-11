@@ -53,14 +53,14 @@ class ChecklistAdapter(IChecklist):
             cls._instance = super(IChecklist, cls).__new__(cls)
         return cls._instance
 
-    def parse_checklist(self, fchecklist) -> None:
+    def parse_checklist(self, checklist_filename) -> None:
         """
         Retrieves the data present in the checklist provided as an argument.
         """
         if self._checklist is None:
             categories = []
             checklist = dict(categories=categories)
-            with open(fchecklist, "r") as file:
+            with open(checklist_filename, "r") as file:
                 for data in yaml.load_all(file, Loader=yaml.BaseLoader):
                     checklist["categories"].append(data)
                     self._checklist = json.loads(json.dumps(checklist))
