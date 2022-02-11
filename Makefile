@@ -3,7 +3,7 @@ DIST_DIR := dist
 COV_DIR := htmlcov
 TEST_DIR := tests/.ignore/pytest
 
-default: clean test wheel sdist pdf
+default: clean test wheel sdist doc
 
 clean:
 	$(RM) -r $(BUILD_DIR)/*
@@ -24,7 +24,8 @@ coverage:
 	coverage run -m pytest -v -W error::UserWarning
 	coverage html
 
-pdf:
+doc:
+	@mkdir $(DIST_DIR)
 	pandoc -o $(DIST_DIR)/octoreconf.pdf docs/title.txt \
 	docs/0x1-Introduction/0x1-Table_of_contents.md \
 	docs/0x1-Introduction/0x2-License.md \
