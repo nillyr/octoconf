@@ -37,7 +37,7 @@ def setup():
 
 @pytest.fixture
 def unix_checklist_path():
-    return "octoreconf-tests/interactors/checklists/unix/test.yaml"
+    return "octoreconf_tests/interactors/checklists/unix/test.yaml"
 
 
 @pytest.fixture
@@ -47,7 +47,7 @@ def checklist_path(unix_checklist_path):
 
 @pytest.fixture
 def output_path():
-    return "octoreconf-tests/.ignore/pytest/"
+    return "octoreconf_tests/.ignore/pytest/"
 
 
 def test_checks_runner_file_creation(setup, checklist_path, output_path):

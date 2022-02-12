@@ -52,8 +52,8 @@ coverage.xml
 .pytest_cache/
 
 # Tests
-octoreconf-tests/.ignore/
-octoreconf-tests/interactors/archive/tryme
+octoreconf_tests/.ignore/
+octoreconf_tests/interactors/archive/tryme
 
 # Translations
 *.mo

@@ -1,7 +1,7 @@
 BUILD_DIR := build
 DIST_DIR := dist
 COV_DIR := htmlcov
-TEST_DIR := octoreconf-tests/.ignore/pytest
+TEST_DIR := octoreconf_tests/.ignore/pytest
 
 default: clean test wheel sdist doc
 
