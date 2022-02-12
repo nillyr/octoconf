@@ -1,15 +1,15 @@
 BUILD_DIR := build
 DIST_DIR := dist
 COV_DIR := htmlcov
-TEST_DIR := tests/.ignore/pytest
+TEST_DIR := octoreconf-tests/.ignore/pytest
 
 default: clean test wheel sdist doc
 
 clean:
-	$(RM) -r $(BUILD_DIR)/*
-	$(RM) -r $(DIST_DIR)/*
+	$(RM) -r $(BUILD_DIR)
+	$(RM) -r $(DIST_DIR)
 	$(RM) -r $(COV_DIR)
-	$(RM) -r $(TEST_DIR)/*
+	$(RM) -r $(TEST_DIR)
 
 wheel:
 	python setup.py bdist_wheel
@@ -25,7 +25,6 @@ coverage:
 	coverage html
 
 doc:
-	@mkdir $(DIST_DIR)
 	pandoc -o $(DIST_DIR)/octoreconf.pdf docs/title.txt \
 	docs/0x1-Introduction/0x1-Table_of_contents.md \
 	docs/0x1-Introduction/0x2-License.md \

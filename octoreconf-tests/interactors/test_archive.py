@@ -14,12 +14,12 @@ from octoreconf.adapters.archive import ArchiveAdapter
 
 @pytest.fixture
 def tar_gz_archive():
-    return "tests/interactors/archive/tryme.tar.gz"
+    return "octoreconf-tests/interactors/archive/tryme.tar.gz"
 
 
 @pytest.fixture
 def zip_archive():
-    return "tests/interactors/archive/tryme.zip"
+    return "octoreconf-tests/interactors/archive/tryme.zip"
 
 
 def test_extract_checks_files_only_from_nothing():
