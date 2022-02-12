@@ -13,8 +13,14 @@ class IArchive(ABC):
 
     @abstractmethod
     def checks_files_only(self):
+        """
+        This method returns only checks files and not collection files.
+        """
         pass
 
     @abstractmethod
     def extract(self):
+        """
+        This method enables the extraction of an archive.
+        """
         pass

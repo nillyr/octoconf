@@ -12,9 +12,15 @@ class IChecker(ABC):
     """
 
     @abstractmethod
-    def check_exact(self) -> None:
+    def check_exact(self) -> bool:
+        """
+        This method returns true if the output value = expected value.
+        """
         pass
 
     @abstractmethod
-    def check_regex(self) -> None:
+    def check_regex(self) -> bool:
+        """
+        This method returns true if there is a match in the output.
+        """
         pass
