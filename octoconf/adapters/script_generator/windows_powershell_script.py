@@ -42,7 +42,13 @@ $category=\"{0}\"
 Write-Output "[*] Running {1} collection commands..."
 New-Item -ItemType directory -Path $basedir\\$category
 """.format(
-                re.sub("[,\s]", "_", content[i]["category_name"]),
+                re.sub(
+                    "(</?x>)|[^a-zàâçéèêëîïôûù0-9]",
+                    "_",
+                    content[i]["category_name"],
+                    0,
+                    re.IGNORECASE,
+                ),
                 "$category",
             )
             for cmd in content[i]["collection_cmds"]:

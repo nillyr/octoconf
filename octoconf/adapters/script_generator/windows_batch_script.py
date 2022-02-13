@@ -42,7 +42,13 @@ set category={0}
 echo [*] Running {1} collection commands...
 mkdir {2}
 """.format(
-                re.sub("[,\s]", "_", content[i]["category_name"]),
+                re.sub(
+                    "(</?x>)|[^a-zàâçéèêëîïôûù0-9]",
+                    "_",
+                    content[i]["category_name"],
+                    0,
+                    re.IGNORECASE,
+                ),
                 "%category%",
                 "%basedir%\\%category%",
             )
