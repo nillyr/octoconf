@@ -43,22 +43,22 @@ optional arguments:
 
 ## Documentation
 
-The documentation is available in `pdf` format. See the [releases](https://github.com/Nillyr/octoreconf/releases) page.
+Documentation can be generated with `pandoc` with `make doc`. The chosen format is `pdf`.
 
 ## Quick usage
 
 ```bash
 # Generate a collection script
-octoreconf checklist generate -c desktop/windows10 -l powershell -p windows -o windows10.ps1
+octoreconf checklist generate -c windows/windows10-desktop -l powershell -p windows -o windows10.ps1
 # Run the script on the targeted host (admin)
 powershell.exe -nop -exec bypass .\windows10.ps1
 # Retrieve audit evidence and then analyze
-octoreconf analyze -c desktop/windows10 -a Audit[...].zip
+octoreconf analyze -c windows/windows10-desktop -a Audit[...].zip
 ```
 
 ## Disclaimer
 
-- This is not a turn key tool, read the documentation
+- This is not a turn key tool, read the documentation for more information
 - This tool does not offer any guarantee
 - The authors of this tool cannot be held responsible for the effects caused by the commands made in the checklists
 - It is highly recommended to risk assess your checklists in a test environment before using them in production
