@@ -18,6 +18,7 @@ def checks():
         id="1",
         title="a_title",
         description="a_description",
+        reference="a_reference",
         type="a_type",
         cmd="a_cmd",
         expected="a_expected",
@@ -31,6 +32,7 @@ def checks():
         id="1",
         title="a_title",
         description="a_description",
+        reference="a_reference",
         type="a_type",
         cmd="a_cmd",
         expected="a_expected",
@@ -52,7 +54,6 @@ def test_checkpoint_model_init(checks):
         id="1",
         title="a_title",
         description="a_description",
-        reference="a_reference",
         collection_cmd="a_collection_cmd",
         collection_cmd_type="a_collection_cmd_type",
         collect_only=False,
@@ -62,7 +63,6 @@ def test_checkpoint_model_init(checks):
     assert a_checkpoint.id == 1
     assert a_checkpoint.title == "a_title"
     assert a_checkpoint.description == "a_description"
-    assert a_checkpoint.reference == "a_reference"
     assert a_checkpoint.collection_cmd == "a_collection_cmd"
     assert a_checkpoint.collection_cmd_type == "a_collection_cmd_type"
     assert a_checkpoint.collect_only == False

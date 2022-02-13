@@ -137,8 +137,6 @@ The basic template is as follows:
   - id: 1
     # The title will be used in the generated files
     title: A checkpoint title
-    # Optionnal value. Should be an URL
-    reference: https://www.my-reference.com/
     description: >
       A multiline description
       The text contained between the ignore_tags parameter (x: <x> and </x>) will not be translated
@@ -166,6 +164,8 @@ The basic template is as follows:
       title: a random title
       description: >
         a <x>random</x> description
+      # Optionnal value. String. Rule ID (eg. SV-238204r653787_rule)/Your reference
+      reference: your-reference
       type: CMD_EXEC
       # No output file here (it is done dynamically)
       cmd: whoami
@@ -182,9 +182,8 @@ The basic template is as follows:
       #   - info
       severity: high
       recommendation_on_failed: a <x>reco</x> here
-      # Optional value. String (multiline possible)
-      see_also: https://www.my-reference.com/
-
+      # Optional value. String
+      see_also: https://www.your-reference.com/
 ```
 
 ### Usage exemple with your checklist

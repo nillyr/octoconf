@@ -14,7 +14,6 @@ class Checkpoint(BaseModel):
     id: int
     title: str
     description: str
-    reference: Optional[str]
     collection_cmd: Optional[str]
     collection_cmd_type: Optional[str]
     collect_only: bool

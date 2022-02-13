@@ -16,6 +16,7 @@ class Check(BaseModel):
     id: str
     title: str
     description: Optional[str]
+    reference: Optional[str]
     type: str
     cmd: str
     expected: str
@@ -31,6 +32,7 @@ class CheckResult(BaseModel):
     id: str
     title: str
     description: Optional[str]
+    reference: Optional[str]
     type: str
     cmd: str
     expected: str

@@ -25,7 +25,6 @@ class CheckpointJsonEncoder(json.JSONEncoder):
                 "id": o.id,
                 "title": o.title,
                 "description": o.description,
-                "reference": o.reference,
                 "collection_cmd": o.collection_cmd,
                 "collection_cmd_type": o.collection_cmd_type,
                 "collect_only": o.collect_only,

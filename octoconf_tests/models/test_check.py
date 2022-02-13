@@ -14,6 +14,7 @@ def test_check_model_init():
         id="1",
         title="a_title",
         description="a_description",
+        reference="a_reference",
         type="a_type",
         cmd="a_cmd",
         expected="a_expected",
@@ -26,6 +27,7 @@ def test_check_model_init():
     assert check.id == "1"
     assert check.title == "a_title"
     assert check.description == "a_description"
+    assert check.reference == "a_reference"
     assert check.type == "a_type"
     assert check.cmd == "a_cmd"
     assert check.expected == "a_expected"

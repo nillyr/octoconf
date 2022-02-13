@@ -17,6 +17,7 @@ class CheckResultJsonEncoder(json.JSONEncoder):
                 "id": o.id,
                 "title": o.title,
                 "description": o.description if o.description is not None else "",
+                "reference": o.reference,
                 "type": o.type,
                 "cmd": o.cmd,
                 "expected": o.expected,
