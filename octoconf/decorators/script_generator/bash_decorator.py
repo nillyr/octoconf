@@ -17,13 +17,6 @@ class BashDecorator(Decorator):
             prolog = '''#!/bin/bash
 
 # Prolog
-echo \"[*] Permission check...\"
-if [[ $(/usr/bin/id -u) -ne 0 ]]; then
-    echo "This script must be run as root."
-    exit
-fi
-echo \"[+] OK!\"
-
 echo \"[*] Preparation...\"
 BASEDIR=$(/usr/bin/mktemp -d)
 CHECKSDIR=\"${BASEDIR}\"/checks

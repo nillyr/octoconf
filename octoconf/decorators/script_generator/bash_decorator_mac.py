@@ -17,14 +17,6 @@ class BashDecoratorMAC(Decorator):
             prolog = '''#!/bin/bash
 
 # Prolog
-echo \"[*] Permission check...\"
-/usr/bin/id -Gn $USER | /usr/bin/grep -q -w admin
-if [ $? -ne 0 ]; then
-    echo "You must be in the admin group to run this script."
-    exit
-fi
-echo \"[+] OK!\"
-
 echo \"[*] Preparation...\"
 BASEDIR=$(/usr/bin/mktemp -d)
 CHECKSDIR=\"${BASEDIR}\"/checks

@@ -17,14 +17,6 @@ class BatchDecorator(Decorator):
             prolog = """REM Prolog
 
 @@echo off
-echo [*] Permission check...
-net sessions >nul 2>&1
-if errorlevel 1 (
-    echo This script must be run as an administrator.
-    exit /b
-)
-echo [+] OK!
-
 echo [*] Preparation...
 set basedir=Audit_Windows_%COMPUTERNAME%
 set checksdir=%basedir%\\checks
