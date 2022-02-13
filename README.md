@@ -1,4 +1,4 @@
-# octoreconf
+# octoconf
 
 <p align="center">
   <img width="200" height="200" src="ressources/logo.png">
@@ -14,7 +14,7 @@
 Tool dedicated to the realization of configuration audits of various systems via semi-automated analysis of the collected security configurations.
 
 ```
-        ,'""`.       octoreconf 1.4.0rc1
+        ,'""`.       octoconf 1.4.0rc1
        / _  _ \
        |(@)(@)|      Tool for semi-automatic verification
        )  __  (      of security configurations.
@@ -49,11 +49,11 @@ Documentation can be generated with `pandoc` with `make doc`. The chosen format 
 
 ```bash
 # Generate a collection script
-octoreconf checklist generate -c windows/windows10-desktop -l powershell -p windows -o windows10.ps1
+octoconf checklist generate -c windows/windows10-desktop -l powershell -p windows -o windows10.ps1
 # Run the script on the targeted host (admin)
 powershell.exe -nop -exec bypass .\windows10.ps1
 # Retrieve audit evidence and then analyze
-octoreconf analyze -c windows/windows10-desktop -a Audit[...].zip
+octoconf analyze -c windows/windows10-desktop -a Audit[...].zip
 ```
 
 ## Disclaimer

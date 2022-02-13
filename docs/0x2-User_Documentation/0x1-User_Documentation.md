@@ -7,21 +7,21 @@ Two installation methods of the tool are available.
 From the "compiled" version:
 
 ```bash
-# Get the latest version of the tool at https://github.com/Nillyr/octoreconf/releases
-python3 -m venv octoreconf
+# Get the latest version of the tool at https://github.com/Nillyr/octoconf/releases
+python3 -m venv octoconf
 # Activate the venv
 # Install wheel
-python -m pip install octoreconf-<version>.whl
+python -m pip install octoconf-<version>.whl
 # or
-python -m pip install octoreconf-<version>.tar.gz
+python -m pip install octoconf-<version>.tar.gz
 ```
 
 Directly from the sources:
 
 ```bash
 # Clone the repo with submodules
-git clone --recurse-submodules https://github.com/Nillyr/octoreconf.git
-cd octoreconf
+git clone --recurse-submodules https://github.com/Nillyr/octoconf.git
+cd octoconf
 # Install on Linux/Unix
 bash ./setup.sh
 # Install on Windows
@@ -32,8 +32,8 @@ bash ./setup.sh
 
 ```bash
 # Make sure you have clone the repo with submodules
-# git clone --recurse-submodules https://github.com/Nillyr/octoreconf.git
-cd octoreconf
+# git clone --recurse-submodules https://github.com/Nillyr/octoconf.git
+cd octoconf
 make
 ```
 
@@ -51,9 +51,9 @@ Finally, an XLSX file is generated presenting the results graphically. JSON and 
 
 ```bash
 # Launch the audit
-octoreconf audit -c your-checklist.yaml -o ouput_dir/
+octoconf audit -c your-checklist.yaml -o ouput_dir/
 # Launch the audit and specify the language to use in the output file (xlsx)
-octoreconf audit -c your-checklist.yaml -o ouput_dir/ -l en
+octoconf audit -c your-checklist.yaml -o ouput_dir/ -l en
 ```
 
 ### Analyze
@@ -66,13 +66,13 @@ Allows an analysis of the results of the checks based on a checklist.
 
 ```bash
 # (tag.gz format) Launch the analyze
-octoreconf analyze -a archive.tar.gz -c your-checklist.yaml
+octoconf analyze -a archive.tar.gz -c your-checklist.yaml
 # (tag.gz format) Launch the analyze and specify the language to use in the output file (xlsx)
-octoreconf analyze -a archive.tar.gz -c your-checklist.yaml -l en
+octoconf analyze -a archive.tar.gz -c your-checklist.yaml -l en
 # (zip format) Launch the analyze
-octoreconf analyze -a archive.zip -c your-checklist.yaml
+octoconf analyze -a archive.zip -c your-checklist.yaml
 # (zip format) Launch the analyze and specify the language to use in the output file (xlsx)
-octoreconf analyze -a archive.zip -c your-checklist.yaml -l en
+octoconf analyze -a archive.zip -c your-checklist.yaml -l en
 ```
 
 ### Script generation
@@ -83,13 +83,13 @@ Allows to generate from a checklist passed in argument a collection script in th
 
 ```bash
 # Linux
-octoreconf checklist generate -c linux/ubuntu20-04 -l bash -p linux -o ubuntu20-04.sh
+octoconf checklist generate -c linux/ubuntu20-04 -l bash -p linux -o ubuntu20-04.sh
 # UNIX macOS
-octoreconf checklist generate -c unix/macOS11 -l bash -p mac -o macOS11.sh
+octoconf checklist generate -c unix/macOS11 -l bash -p mac -o macOS11.sh
 # Windows (Batch)
-octoreconf checklist generate -c windows/windows10 -l batch -p windows -o windows10.bat
+octoconf checklist generate -c windows/windows10 -l batch -p windows -o windows10.bat
 # Windows (Powershell)
-octoreconf checklist generate -c windows/windows10 -l powershell -p windows -o windows10.ps1
+octoconf checklist generate -c windows/windows10 -l powershell -p windows -o windows10.ps1
 ```
 
 ### Report generation
@@ -100,9 +100,9 @@ This use case can be called automatically as a chain of other use cases or indep
 
 ```bash
 # Launch the report generation
-octoreconf report -i 20211006115003_results.json
+octoconf report -i 20211006115003_results.json
 # Launch the report generation and specify the language to use in the output file
-octoreconf report -i 20211006115003_results.json -l en
+octoconf report -i 20211006115003_results.json -l en
 ```
 
 ## Existing checklists
@@ -113,9 +113,9 @@ When checklists are made public and are contained in the tool, it is then possib
 
 ```bash
 # No filter
-octoreconf checklist list
+octoconf checklist list
 # Filter on desktop category
-octoreconf checklist list -c desktop
+octoconf checklist list -c desktop
 ```
 
 _Note: It is also possible to use your own checklist by providing the path to it._
@@ -190,7 +190,7 @@ The basic template is as follows:
 ### Usage exemple with your checklist
 
 ```bash
-octoreconf checklist generate -c <path/to/my/checklist.yaml> -l <lang> -p <platform> -o <script name>
+octoconf checklist generate -c <path/to/my/checklist.yaml> -l <lang> -p <platform> -o <script name>
 ```
 
 ## Checklists tranlation

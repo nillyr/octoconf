@@ -1,6 +1,6 @@
 # @copyright Copyright (c) 2021-2022 Nicolas GRELLETY
 # @license https://opensource.org/licenses/GPL-3.0 GNU GPLv3
-# @link https://github.com/Nillyr/octoreconf
+# @link https://github.com/Nillyr/octoconf
 # @since 1.0.0b
 
 #!/usr/bin/env python
@@ -12,8 +12,8 @@ import sys
 
 import inject
 
-sys.path.append("../octoreconf/")
-from octoreconf.adapters import (
+sys.path.append("../octoconf/")
+from octoconf.adapters import (
     ArchiveAdapter,
     CheckerAdapter,
     ChecklistAdapter,
@@ -21,9 +21,9 @@ from octoreconf.adapters import (
     LanguageFactory,
     ReportGeneratorAdapter,
 )
-from octoreconf.components.translators.deepl_translator.deepl_translator import DeepL
-from octoreconf.interactors import *
-from octoreconf.ports import (
+from octoconf.components.translators.deepl_translator.deepl_translator import DeepL
+from octoconf.interactors import *
+from octoconf.ports import (
     IArchive,
     IChecker,
     IChecklist,
@@ -32,8 +32,8 @@ from octoreconf.ports import (
     IReportGenerator,
     ITranslator,
 )
-from octoreconf.utils import *
-from octoreconf.__init__ import __version__
+from octoconf.utils import *
+from octoconf.__init__ import __version__
 
 
 def checklist_to_path(func):
@@ -58,7 +58,7 @@ def checklist_to_path(func):
 
 def default_parse_args(args):
     if args.version:
-        print(f"octoreconf {__version__}")
+        print(f"octoconf {__version__}")
     sys.exit(0)
 
 
@@ -163,7 +163,7 @@ def parse_args() -> argparse.Namespace:
     p = argparse.ArgumentParser(
         formatter_class=argparse.RawDescriptionHelpFormatter,
         description="""
-        ,'""`.       octoreconf {}
+        ,'""`.       octoconf {}
        / _  _ \\
        |(@)(@)|      Tool for semi-automatic verification
        )  __  (      of security configurations.

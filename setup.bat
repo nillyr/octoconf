@@ -1,6 +1,6 @@
 REM @copyright Copyright (c) 2021-2022 Nicolas GRELLETY
 REM @license https://opensource.org/licenses/GPL-3.0 GNU GPLv3
-REM @link https://github.com/Nillyr/octoreconf
+REM @link https://github.com/Nillyr/octoconf
 REM @since 1.0.0b
 
 @echo off

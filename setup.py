@@ -2,17 +2,17 @@ import os
 
 from setuptools import setup, find_packages
 
-from octoreconf.__init__ import __version__
+from octoconf.__init__ import __version__
 
 current_dir = os.path.abspath(os.path.dirname(__file__))
 with open(os.path.join(current_dir, "requirements.txt"), "r") as f:
     requirements = f.readlines()
 
 setup(
-    name="octoreconf",
+    name="octoconf",
     version=__version__,
     description="Tool for semi-automatic verification of security configurations.",
-    url="https://github.com/Nillyr/octoreconf",
+    url="https://github.com/Nillyr/octoconf",
     author="Nicolas GRELLETY",
     author_email="ngy.cs@protonmail.com",
     license="MIT",
@@ -24,7 +24,7 @@ setup(
     },
     entry_points={
         "console_scripts": [
-            "octoreconf=console.cli:cli",
+            "octoconf=console.cli:cli",
         ],
     },
 )

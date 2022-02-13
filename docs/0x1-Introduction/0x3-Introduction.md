@@ -1,6 +1,6 @@
 # Introduction
 
-Octoreconf is a tool for semi-automated security configuration audits. This tool is only dependent on the checklist provided to it.
+octoconf is a tool for semi-automated security configuration audits. This tool is only dependent on the checklist provided to it.
 
 However, the audit feature has only been tested on linux, mac and windows platforms.
 

@@ -1,7 +1,7 @@
 BUILD_DIR := build
 DIST_DIR := dist
 COV_DIR := htmlcov
-TEST_DIR := octoreconf_tests/.ignore/pytest
+TEST_DIR := octoconf_tests/.ignore/pytest
 
 default: clean test wheel sdist doc
 
@@ -25,7 +25,7 @@ coverage:
 	coverage html
 
 doc:
-	pandoc -o $(DIST_DIR)/octoreconf.pdf docs/title.txt \
+	pandoc -o $(DIST_DIR)/octoconf.pdf docs/title.txt \
 	docs/0x1-Introduction/0x1-Table_of_contents.md \
 	docs/0x1-Introduction/0x2-License.md \
 	docs/0x1-Introduction/0x3-Introduction.md \
