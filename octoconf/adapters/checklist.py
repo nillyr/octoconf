@@ -224,7 +224,6 @@ class ChecklistAdapter(IChecklist):
         """
         checklist = self._checklist
         for result in results:
-            ic(result)
             cat_id, checkpoint_id, check_id = (
                 int(result.id.split(".")[0]),
                 int(result.id.split(".")[1]),
