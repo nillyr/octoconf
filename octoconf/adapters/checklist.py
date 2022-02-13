@@ -100,7 +100,6 @@ class ChecklistAdapter(IChecklist):
         """
         categories_list = []
         for category in self._checklist["categories"][0]:
-            categories_list = []
             checkpoints_list = []
             for checkpoint in category["checkpoints"]:
                 checks_list = []
