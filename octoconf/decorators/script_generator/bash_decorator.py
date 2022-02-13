@@ -22,7 +22,7 @@ BASEDIR=$(/usr/bin/mktemp -d)
 CHECKSDIR=\"${BASEDIR}\"/checks
 /usr/bin/mkdir -p \"${CHECKSDIR}\"
 
-echo `date` >> \"${BASEDIR}\"/timestamp.log
+echo `date` >> \"${BASEDIR}\"/timestamp.txt
 exec 2>/dev/null
 
 # Configuration collection
@@ -32,7 +32,7 @@ echo \"[*] Beginning of the collection...\"'''
             epilog = '''
 # Epilog
 echo \"[*] Finishing...\"
-echo `date` >> \"${BASEDIR}\"/timestamp.log
+echo `date` >> \"${BASEDIR}\"/timestamp.txt
 /usr/bin/tar zcf \"${BASEDIR##*/}\".tar.gz -C \"${BASEDIR}\" .
 /bin/rm -rf \"${BASEDIR}\"
 echo \"[+] Done!\"'''

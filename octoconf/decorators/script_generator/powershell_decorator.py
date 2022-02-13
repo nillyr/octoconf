@@ -24,7 +24,7 @@ New-Item -ItemType directory -Path $basedir
 $checksdir = "$basedir\checks"
 New-Item -ItemType directory -Path $checksdir
 
-date >> $basedir\\timestamp.log
+date >> $basedir\\timestamp.txt
 
 # Configuration collection
 Write-Output "[*] Beginning of the collection..."
@@ -33,7 +33,7 @@ Write-Output "[*] Beginning of the collection..."
             content.extend(func(*args, **kwargs))
             epilog = """# Epilog
 Write-Output "[*] Finishing..."
-date >> $basedir\\timestamp.log
+date >> $basedir\\timestamp.txt
 Write-Output "[+] Done!"
 """
             content.append(epilog)

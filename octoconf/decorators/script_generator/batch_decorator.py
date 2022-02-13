@@ -23,7 +23,7 @@ set checksdir=%basedir%\\checks
 mkdir %basedir%
 mkdir %checksdir%
 
-echo %time% >> %basedir%\\timestamp.log
+echo %time% >> %basedir%\\timestamp.txt
 
 REM Configuration collection
 echo [*] Beginning of the collection...
@@ -33,7 +33,7 @@ echo [*] Beginning of the collection...
             epilog = """
 REM Epilog
 echo [*] Finishing...
-echo %time% >> %basedir%\\timestamp.log
+echo %time% >> %basedir%\\timestamp.txt
 
 echo [+] Done!
 exit /b"""
