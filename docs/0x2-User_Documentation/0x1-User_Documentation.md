@@ -51,9 +51,9 @@ Finally, an XLSX file is generated presenting the results graphically. JSON and 
 
 ```bash
 # Launch the audit
-octoreconf audit -c checklists.hjson -o ouput_dir/
+octoreconf audit -c your-checklist.yaml -o ouput_dir/
 # Launch the audit and specify the language to use in the output file (xlsx)
-octoreconf audit -c checklists.hjson -o ouput_dir/ -l en
+octoreconf audit -c your-checklist.yaml -o ouput_dir/ -l en
 ```
 
 ### Analyze
@@ -66,13 +66,13 @@ Allows an analysis of the results of the checks based on a checklist.
 
 ```bash
 # (tag.gz format) Launch the analyze
-octoreconf analyze -a archive.tar.gz -c checklist.yaml
+octoreconf analyze -a archive.tar.gz -c your-checklist.yaml
 # (tag.gz format) Launch the analyze and specify the language to use in the output file (xlsx)
-octoreconf analyze -a archive.tar.gz -c checklist.yaml -l en
+octoreconf analyze -a archive.tar.gz -c your-checklist.yaml -l en
 # (zip format) Launch the analyze
-octoreconf analyze -a archive.zip -c checklist.yaml
+octoreconf analyze -a archive.zip -c your-checklist.yaml
 # (zip format) Launch the analyze and specify the language to use in the output file (xlsx)
-octoreconf analyze -a archive.zip -c checklist.yaml -l en
+octoreconf analyze -a archive.zip -c your-checklist.yaml -l en
 ```
 
 ### Script generation
@@ -83,13 +83,13 @@ Allows to generate from a checklist passed in argument a collection script in th
 
 ```bash
 # Linux
-octoreconf checklist generate -c desktop/ubuntu20-04 -l bash -p linux -o ubuntu20-04.sh
-# macOS
-octoreconf checklist generate -c desktop/macOS11 -l bash -p mac -o macOS11.sh
+octoreconf checklist generate -c linux/ubuntu20-04 -l bash -p linux -o ubuntu20-04.sh
+# UNIX macOS
+octoreconf checklist generate -c unix/macOS11 -l bash -p mac -o macOS11.sh
 # Windows (Batch)
-octoreconf checklist generate -c desktop/windows10 -l batch -p windows -o windows10.bat
+octoreconf checklist generate -c windows/windows10 -l batch -p windows -o windows10.bat
 # Windows (Powershell)
-octoreconf checklist generate -c desktop/windows10 -l powershell -p windows -o windows10.ps1
+octoreconf checklist generate -c windows/windows10 -l powershell -p windows -o windows10.ps1
 ```
 
 ### Report generation
@@ -107,7 +107,7 @@ octoreconf report -i 20211006115003_results.json -l en
 
 ## Existing checklists
 
-The tool uses the [octochecklists](https://github.com/Nillyr/octochecklists) submodule which can contain publicly available checklists.
+The tool uses the [octochecklists](https://github.com/Nillyr/octochecklists) submodule which _can_ contain publicly available checklists.
 
 When checklists are made public and are contained in the tool, it is then possible to list them:
 
@@ -117,6 +117,8 @@ octoreconf checklist list
 # Filter on desktop category
 octoreconf checklist list -c desktop
 ```
+
+_Note: It is also possible to use your own checklist by providing the path to it._
 
 ## Creating your checklists
 
@@ -183,6 +185,12 @@ The basic template is as follows:
       # Optional value. String (multiline possible)
       see_also: https://www.my-reference.com/
 
+```
+
+### Usage exemple with your checklist
+
+```bash
+octoreconf checklist generate -c <path/to/my/checklist.yaml> -l <lang> -p <platform> -o <script name>
 ```
 
 ## Checklists tranlation
