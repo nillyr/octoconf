@@ -5,7 +5,6 @@
 
 import os
 import re
-from threading import Lock
 
 
 class ChecklistsLoader:
@@ -14,16 +13,14 @@ class ChecklistsLoader:
     """
 
     _instance = None
-    _lock: Lock = Lock()
     _checklists: dict = dict()
 
     def __new__(cls):
         """
         Use of a singleton
         """
-        with cls._lock:
-            if cls._instance is None:
-                cls._instance = super().__new__(cls)
+        if cls._instance is None:
+            cls._instance = super().__new__(cls)
         return cls._instance
 
     def __call__(self) -> None:
