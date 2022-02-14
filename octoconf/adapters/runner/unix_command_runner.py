@@ -25,6 +25,8 @@ class UnixCommandRunner(ICommandRunner):
         """
         # ignore cmd_type
         _ = cmd_type
+        # Specify locale
+        cmd = "export LANG=en_US.UTF-8; " + cmd
         # When the collection commands are run, the output is redirected to a file. No need to have it. On the other hand, when the checks are performed, stdout is needed
         popen_stdout = PIPE if is_check else DEVNULL
         try:
