@@ -1,9 +1,13 @@
 {
-"python.formatting.provider": "black",
-"python.pythonPath": "venv/bin/python",
-"python.testing.pytestArgs": [
-    "tests"
-],
-"python.testing.unittestEnabled": false,
-"python.testing.pytestEnabled": true
+    "editor.tabSize":4,
+    "editor.wordWrapColumn": 80,
+    "editor.wordWrap": "wordWrapColumn",
+    "files.eol": "\n",
+    "files.insertFinalNewline": true,
+    "python.formatting.provider": "black",
+    "python.pythonPath": "venv/bin/python",
+    "python.testing.pytestArgs": [
+    ],
+    "python.testing.unittestEnabled": false,
+    "python.testing.pytestEnabled": true
 }
