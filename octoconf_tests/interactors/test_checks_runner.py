@@ -54,6 +54,10 @@ def test_checks_runner_file_creation(setup, checklist_path, output_path):
     """
     This test alone verifies that the spaces in the category title have been substituted and that the output path has been modified without error. It also allows you to check that the command (cmd + pattern + path + file) has been carried out correctly.
     """
+    # Load user defined configuration
+    cfg = Config()
+    cfg()
+
     uc = ChecksRunnerInteractor()
     uc.execute(checklist_path, output_path)
 

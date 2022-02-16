@@ -1,4 +1,5 @@
 chardet==4.0.0
+configparser==5.2.0
 dicttoxml==1.7.4
 icecream==2.1.1
 Inject==4.3.1

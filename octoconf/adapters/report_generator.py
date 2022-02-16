@@ -3,25 +3,12 @@
 # @link https://github.com/Nillyr/octoconf
 # @since 1.0.0b
 
-import json
-
 from icecream import ic
 import xlsxwriter
 
 from octoconf.ports import IReportGenerator
-from octoconf.utils import const, global_values
-
-
-const.COLORS = {
-    "WHITE": "FFFFFF",
-    "DARK_BLUE": "333E4E",
-    "LIGHT_BLUE": "8496AF",
-    "LIGHT_ORANGE": "F5B76C",
-    "REGULAR_BLUE": "2C68C4",
-    "REGULAR_GREEN": "009644",
-    "REGULAR_ORANGE": "F1992D",
-    "REGULAR_RED": "C51718",
-}
+from octoconf.utils import global_values
+from octoconf.utils.config import Config
 
 
 class ReportGeneratorAdapter(IReportGenerator):
@@ -29,8 +16,13 @@ class ReportGeneratorAdapter(IReportGenerator):
     Generates a report in Excel format (xlsx).
     """
 
-    def __init__(self):
+    _config = None
+
+    def __init__(self) -> None:
         self._synthesis = dict()
+        # There is no need to load the configuration.
+        # This is done when the tool / unit test is launched.
+        self._config = Config()
 
     def _get_category_format(self, workbook: xlsxwriter.workbook.Workbook):
         """
@@ -42,8 +34,10 @@ class ReportGeneratorAdapter(IReportGenerator):
                 "border": 1,
                 "align": "center",
                 "valign": "vcenter",
-                "font_color": const.COLORS["WHITE"],
-                "fg_color": const.COLORS["DARK_BLUE"],
+                "font_color": self._config.get_config("report_colors", "font_color"),
+                "fg_color": self._config.get_config(
+                    "report_colors", "category_foreground_color"
+                ),
             }
         )
 
@@ -56,8 +50,10 @@ class ReportGeneratorAdapter(IReportGenerator):
                 "border": 1,
                 "align": "center",
                 "valign": "vcenter",
-                "font_color": const.COLORS["WHITE"],
-                "fg_color": const.COLORS["LIGHT_BLUE"],
+                "font_color": self._config.get_config("report_colors", "font_color"),
+                "fg_color": self._config.get_config(
+                    "report_colors", "checkpoint_foreground_color"
+                ),
             }
         )
 
@@ -68,13 +64,13 @@ class ReportGeneratorAdapter(IReportGenerator):
         Definition of the style to be applied.
         """
         if severity == "info":
-            font_color = const.COLORS["REGULAR_BLUE"]
+            font_color = self._config.get_config("severity_colors", "s_info")
         elif severity == "low":
-            font_color = const.COLORS["LIGHT_ORANGE"]
+            font_color = self._config.get_config("severity_colors", "s_low")
         elif severity == "medium":
-            font_color = const.COLORS["REGULAR_ORANGE"]
+            font_color = self._config.get_config("severity_colors", "s_medium")
         else:
-            font_color = const.COLORS["REGULAR_RED"]
+            font_color = self._config.get_config("severity_colors", "s_high")
 
         return workbook.add_format(
             {
@@ -108,7 +104,7 @@ class ReportGeneratorAdapter(IReportGenerator):
                 "border": 1,
                 "align": "center",
                 "valign": "vcenter",
-                "font_color": const.COLORS["REGULAR_GREEN"],
+                "font_color": self._config.get_config("status_colors", "success"),
             }
         )
 
@@ -122,7 +118,7 @@ class ReportGeneratorAdapter(IReportGenerator):
                 "border": 1,
                 "align": "center",
                 "valign": "vcenter",
-                "font_color": const.COLORS["REGULAR_RED"],
+                "font_color": self._config.get_config("status_colors", "failed"),
             }
         )
 
@@ -136,7 +132,7 @@ class ReportGeneratorAdapter(IReportGenerator):
                 "border": 1,
                 "align": "center",
                 "valign": "vcenter",
-                "font_color": const.COLORS["REGULAR_ORANGE"],
+                "font_color": self._config.get_config("status_colors", "to_be_defined"),
             }
         )
 
