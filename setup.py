@@ -12,7 +12,7 @@ setup(
     name="octoconf",
     version=__version__,
     description="Tool for semi-automatic verification of security configurations.",
-    url="https://github.com/Nillyr/octoconf",
+    url="https://github.com/nillyr/octoconf",
     author="Nicolas GRELLETY",
     author_email="ngy.cs@protonmail.com",
     license="MIT",

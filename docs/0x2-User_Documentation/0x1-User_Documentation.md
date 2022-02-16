@@ -7,7 +7,7 @@ Two installation methods of the tool are available.
 From the "compiled" version:
 
 ```bash
-# Get the latest version of the tool at https://github.com/Nillyr/octoconf/releases
+# Get the latest version of the tool at https://github.com/nillyr/octoconf/releases
 python3 -m venv octoconf
 # Activate the venv
 # Install wheel
@@ -20,9 +20,9 @@ Directly from the sources:
 
 ```bash
 # If and only if submodules are set to public, clone the repo with submodules
-git clone --recurse-submodules https://github.com/Nillyr/octoconf.git
+git clone --recurse-submodules https://github.com/nillyr/octoconf.git
 # Else
-git clone https://github.com/Nillyr/octoconf.git
+git clone https://github.com/nillyr/octoconf.git
 cd octoconf
 # Install on Linux/Unix
 bash ./setup.sh
@@ -181,7 +181,7 @@ octoconf checklist generate -c <path/to/my/checklist.yaml> -l <lang> -p <platfor
 
 ## Existing checklists
 
-The tool uses the [octochecklists](https://github.com/Nillyr/octochecklists) submodule which _can_ contain publicly available checklists.
+The tool uses the [octochecklists](https://github.com/nillyr/octochecklists) submodule which _can_ contain publicly available checklists.
 
 When checklists are made public and are contained in the tool, it is then possible to list them:
 

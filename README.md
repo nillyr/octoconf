@@ -66,15 +66,15 @@ octoconf analyze -c ./windows10-desktop.yaml -a Audit[...].zip
 
 ## Maintainer
 
-- [Nicolas GRELLETY](https://github.com/Nillyr)
+- [Nicolas GRELLETY](https://github.com/nillyr)
 
 ## Authors
 
-- [Nicolas GRELLETY](https://github.com/Nillyr)
+- [Nicolas GRELLETY](https://github.com/nillyr)
 
 ## Copyright and license
 
-Copyright (c) 2021-2022 Nicolas GRELLETY
+Copyright (c) 2021-2022 [Nicolas GRELLETY](https://github.com/nillyr)
 
 This software is licensed under GNU GPLv3 license. See `LICENSE` file in the root folder of the project.
 

@@ -3,7 +3,7 @@ name: bug_report
 about: Oops!... Something is broken :'(
 title: "[BUG] FIXME_NAME"
 labels: bug
-assignees: Nillyr
+assignees: nillyr
 
 ---
 
