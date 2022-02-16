@@ -17,7 +17,7 @@ class Locale:
 
     _basedir = os.path.abspath(os.path.dirname(__file__))
 
-    def __init__(self, lang: str):
+    def __init__(self, lang: str = "EN"):
         self._dict = dict()
         self._pofilename = f"{lang.lower()}_{lang.upper()}.po"
         self._parse_po_file()
