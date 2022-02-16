@@ -353,6 +353,10 @@ def dependency_injection_configuration(binder):
 def cli():
     try:
         # Configuration steps
+        # Load user defined configuration file
+        cfg = Config()
+        cfg()
+        # DIP
         inject.configure(dependency_injection_configuration)
         global checklist_loader
         checklist_loader = ChecklistsLoader()
