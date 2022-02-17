@@ -11,4 +11,3 @@ PyYAML==6.0
 requests==2.26.0
 sty==1.0.0rc1
 XlsxWriter==3.0.1
-wheel
