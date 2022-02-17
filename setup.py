@@ -24,7 +24,7 @@ setup(
     author="Nicolas GRELLETY",
     author_email="ngy.cs@protonmail.com",
     license="MIT",
-    python_requires=">=3.7",
+    python_requires=">=3.8",
     install_requires=requirements,
     packages=find_packages(),
     package_data={
