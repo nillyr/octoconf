@@ -62,7 +62,7 @@ to_be_defined = F1992D
     def _load_configuration(self) -> None:
         basedir = Path.home() / ".config" / "octoconf"
         cfg_file = Path(basedir / self._filename)
-        if not cfg_file.exists():
+        if not cfg_file.is_file():
             basedir.mkdir(parents=True, exist_ok=True)
             self._init_configuration_file(str(cfg_file))
 
