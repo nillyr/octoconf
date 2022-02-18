@@ -12,9 +12,9 @@ if errorlevel 1 (
 
 echo [+] Found Python
 
-python --version | findstr /R "[3]\.[7-9]" >nul 2>&1
+python --version | findstr /R "[3]\.[8-9]" >nul 2>&1
 if errorlevel 1 (
-  echo [x] The minimum required version of python is python3.7 >&2
+  echo [x] The minimum required version of python is python3.8 >&2
   exit /b
 )
 
@@ -38,6 +38,7 @@ if errorlevel 1 (
 
 set pythonvenv=.\venv\Scripts\python.exe
 %pythonvenv% -m pip install --upgrade pip
+%pythonvenv% -m pip install setuptools wheel
 
 echo [*] Installing the prerequisites...
 %pythonvenv% -m pip install --no-cache-dir -r requirements-dev.txt
