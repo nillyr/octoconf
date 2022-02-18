@@ -3,35 +3,24 @@
 # @link https://github.com/nillyr/octoconf
 # @since 1.0.0b
 
-import os
 import sys
+from pathlib import Path
 
 import configparser
 
 
-class Config(configparser.ConfigParser):
+class Config:
     """
     This class enables the collection of the configuration defined by the user. If the configuration file is missing, it is created.
     """
 
-    _instance = None
-    _already_loaded = False
-    _filename = "octoconf.ini"
+    def __init__(self) -> None:
+        self._cfg_parser = configparser.ConfigParser()
+        self._filename = "octoconf.ini"
+        self._load_configuration()
 
-    def __new__(cls):
-        if cls._instance is None:
-            cls._instance = super().__new__(cls)
-        return cls._instance
-
-    def __call__(self) -> None:
-        if not self._already_loaded:
-            self._load_configuration()
-            self._already_loaded = not self._already_loaded
-        return
-
-    def _init_configuration_file(self, path, config_file) -> None:
-        os.makedirs(path, exist_ok=True)
-        with open(os.path.join(path, config_file), "w") as cfg_file:
+    def _init_configuration_file(self, filename: str) -> None:
+        with open(filename, "w") as cfg_file:
             content = """[DEFAULT]
 # report colors
 font_color = FFFFFF
@@ -71,20 +60,22 @@ to_be_defined = F1992D
             cfg_file.write(content)
 
     def _load_configuration(self) -> None:
-        basedir = os.path.abspath(
-            os.path.join(os.path.dirname(__file__), "../../.config/")
-        )
-        config_file = os.path.abspath(os.path.join(basedir, self._filename))
-        if not os.path.isfile(config_file):
-            self._init_configuration_file(basedir, config_file)
+        basedir = Path.home() / ".config" / "octoconf"
+        cfg_file = Path(basedir / self._filename)
+        if not cfg_file.exists():
+            basedir.mkdir(parents=True, exist_ok=True)
+            self._init_configuration_file(str(cfg_file))
 
-        self.read(config_file)
+        self._cfg_parser.read(str(cfg_file))
 
-    def get_config(self, section, option) -> str:
+    def get_config(self, section: str, option: str) -> str:
         try:
-            return self.get(section, option)
+            return self._cfg_parser.get(section, option)
         except:
             print(
                 f"Error! No option '{option}' in section '{section}'", file=sys.stderr
             )
             return ""
+
+
+sys.modules[__name__] = Config()

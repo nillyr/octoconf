@@ -61,10 +61,6 @@ def test_checks_runner_file_creation(setup, checklist_path, output_path):
         # In the meantime ignore this test...
         assert True == True
     else:
-        # Load user defined configuration
-        cfg = Config()
-        cfg()
-
         uc = ChecksRunnerInteractor()
         uc.execute(checklist_path, output_path)
 
