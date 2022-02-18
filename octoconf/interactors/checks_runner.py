@@ -94,7 +94,7 @@ class ChecksRunnerInteractor:
                 "cmd": check.cmd,
                 "expected": check.expected,
                 "verification_type": check.verification_type,
-                "cmd_output": cmd_output,
+                "cmd_output": cmd_output if cmd_output is not None else "",
                 "severity": check.severity,
                 "recommendation_on_failed": check.recommendation_on_failed,
                 "see_also": check.see_also if check.see_also is not None else None,

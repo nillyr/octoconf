@@ -4,6 +4,7 @@
 # @since 1.0.0b
 
 import json
+import sys
 from xml.dom.minidom import parseString
 
 import dicttoxml
@@ -30,19 +31,23 @@ class ReportGeneratorInteractor:
         print("[+] Done")
 
     def _write_xml_file(self, filename, data) -> None:
-        filename += ".xml"
-        print(f"[*] Exporting results in XML format (path: {filename})")
-        xml = dicttoxml.dicttoxml(
-            data,
-            attr_type=True,
-            custom_root="octoconf-results",
-            item_func=lambda x: x,
-        )
-        dom = parseString(xml)
-        xml_data = dom.toprettyxml()
-        with open(filename, "w") as xml_file:
-            xml_file.write(xml_data)
-        print("[+] Done")
+        # This method doesn't work with python 3.10 (because of dicttoxml)
+        try:
+            filename += ".xml"
+            print(f"[*] Exporting results in XML format (path: {filename})")
+            xml = dicttoxml.dicttoxml(
+                data,
+                attr_type=True,
+                custom_root="octoconf-results",
+                item_func=lambda x: x,
+            )
+            dom = parseString(xml)
+            xml_data = dom.toprettyxml()
+            with open(filename, "w") as xml_file:
+                xml_file.write(xml_data)
+            print("[+] Done")
+        except:
+            print("[x] Error", file=sys.stderr)
 
     def execute(self, user_input, is_file: bool = False):
         if is_file:

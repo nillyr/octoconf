@@ -21,7 +21,7 @@ def unix_content():
     return [
         {
             "category_id": 1,
-            "category_name": "a categegory with space",
+            "category_name": "a category with space",
             "checks_cmds": [["1.1.1", "whoami"], ["1.1.2", "id"]],
             "collection_cmds": ["ls -al > ls.txt"],
         }
@@ -33,7 +33,7 @@ def windows_content():
     return [
         {
             "category_id": 1,
-            "category_name": "a categegory with space",
+            "category_name": "a category with space",
             "checks_cmds": [["1.1.1", "whoami /all"], ["1.1.2", "net users"]],
             "collection_cmds": ["dir > dir.txt"],
         }
@@ -45,7 +45,7 @@ def windows_powershell_cmdlet_content_1():
     return [
         {
             "category_id": 1,
-            "category_name": "a categegory with space",
+            "category_name": "a category with space",
             "checks_cmds": [["1.1.1", "whoami /all"], ["1.1.2", "net users"]],
             "collection_cmds": ["dir | Out-File -Encoding utf8 -FilePath dir.txt"],
         }
@@ -57,7 +57,7 @@ def windows_powershell_cmdlet_content_2():
     return [
         {
             "category_id": 1,
-            "category_name": "a categegory with space",
+            "category_name": "a category with space",
             "checks_cmds": [["1.1.1", "whoami /all"], ["1.1.2", "net users"]],
             "collection_cmds": [
                 "dir | Out-File -Encoding utf8 -Append -FilePath dir.txt"
@@ -71,7 +71,7 @@ def windows_powershell_cmdlet_content_3():
     return [
         {
             "category_id": 1,
-            "category_name": "a categegory with space",
+            "category_name": "a category with space",
             "checks_cmds": [["1.1.1", "whoami /all"], ["1.1.2", "net users"]],
             "collection_cmds": [
                 "dir | Out-File -Encoding utf8 -Append -FilePath dir.txt"
@@ -85,13 +85,13 @@ def collect_only_and_not_only():
     return [
         {
             "category_id": 1,
-            "category_name": "a categegory with space",
+            "category_name": "a category with space",
             "checks_cmds": [["1.1.1", ""]],
             "collection_cmds": ["dir > dir.txt"],
         },
         {
             "category_id": 2,
-            "category_name": "a categegory with space",
+            "category_name": "a category with space",
             "checks_cmds": [["2.1.1", "whoami /all"]],
             "collection_cmds": ["net user > net_user.txt"],
         },
@@ -100,7 +100,7 @@ def collect_only_and_not_only():
 
 def test_write_script_for_linux(unix_content):
     # fmt:off
-    expected_output = '\nCATEGORY="a_categegory_with_space"\necho "[*] Running \\"${CATEGORY}\\" collection commands..."\n/bin/mkdir -p "${BASEDIR}"/"${CATEGORY}"/\nls -al >> "${BASEDIR}"/"${CATEGORY}"/ls.txt\n'
+    expected_output = '\nCATEGORY="a_category_with_space"\necho "[*] Running \\"${CATEGORY}\\" collection commands..."\n/bin/mkdir -p "${BASEDIR}"/"${CATEGORY}"/\nls -al >> "${BASEDIR}"/"${CATEGORY}"/ls.txt\n'
     # fmt:on
 
     linux_sh = LinuxBashScript()
@@ -111,7 +111,7 @@ def test_write_script_for_linux(unix_content):
 
 def test_write_script_for_mac(unix_content):
     # fmt:off
-    expected_output = '\nCATEGORY="a_categegory_with_space"\necho "[*] Running \\"${CATEGORY}\\" collection commands..."\n/bin/mkdir -p "${BASEDIR}"/"${CATEGORY}"/\nls -al >> "${BASEDIR}"/"${CATEGORY}"/ls.txt\n'
+    expected_output = '\nCATEGORY="a_category_with_space"\necho "[*] Running \\"${CATEGORY}\\" collection commands..."\n/bin/mkdir -p "${BASEDIR}"/"${CATEGORY}"/\nls -al >> "${BASEDIR}"/"${CATEGORY}"/ls.txt\n'
     # fmt:on
 
     mac_sh = MacOSBashScript()
@@ -122,7 +122,7 @@ def test_write_script_for_mac(unix_content):
 
 def test_write_script_for_windows_batch(windows_content):
     # fmt:off
-    expected_output = '\nset category=a_categegory_with_space\necho [*] Running %category% collection commands...\nmkdir %basedir%\\%category%\ndir > %basedir%\\%category%\\dir.txt\r\n'
+    expected_output = '\nset category=a_category_with_space\necho [*] Running %category% collection commands...\nmkdir %basedir%\\%category%\ndir > %basedir%\\%category%\\dir.txt\r\n'
     # fmt:on
 
     windows_batch = WindowsBatchScript()
@@ -133,7 +133,7 @@ def test_write_script_for_windows_batch(windows_content):
 
 def test_write_script_for_windows_powershell(windows_content):
     # fmt:off
-    expected_output = '\n$category="a_categegory_with_space"\nWrite-Output "[*] Running $category collection commands..."\nNew-Item -ItemType directory -Path $basedir\\$category\ndir > $basedir\\$category\\dir.txt\r\n'
+    expected_output = '\n$category="a_category_with_space"\nWrite-Output "[*] Running $category collection commands..."\nNew-Item -ItemType directory -Path $basedir\\$category\ndir > $basedir\\$category\\dir.txt\r\n'
     # fmt:on
 
     windows_ps1 = WindowsPowershellScript()
@@ -146,7 +146,7 @@ def test_write_script_for_windows_powershell_cmdlet_1(
     windows_powershell_cmdlet_content_1,
 ):
     # fmt:off
-    expected_output = '\n$category="a_categegory_with_space"\nWrite-Output "[*] Running $category collection commands..."\nNew-Item -ItemType directory -Path $basedir\\$category\ndir | Out-File -Encoding utf8 -FilePath $basedir\\$category\\dir.txt\r\n'
+    expected_output = '\n$category="a_category_with_space"\nWrite-Output "[*] Running $category collection commands..."\nNew-Item -ItemType directory -Path $basedir\\$category\ndir | Out-File -Encoding utf8 -FilePath $basedir\\$category\\dir.txt\r\n'
     # fmt:on
 
     windows_ps1 = WindowsPowershellScript()
@@ -161,7 +161,7 @@ def test_write_script_for_windows_powershell_cmdlet_2(
     windows_powershell_cmdlet_content_2,
 ):
     # fmt:off
-    expected_output = '\n$category="a_categegory_with_space"\nWrite-Output "[*] Running $category collection commands..."\nNew-Item -ItemType directory -Path $basedir\\$category\ndir | Out-File -Encoding utf8 -Append -FilePath $basedir\\$category\\dir.txt\r\n'
+    expected_output = '\n$category="a_category_with_space"\nWrite-Output "[*] Running $category collection commands..."\nNew-Item -ItemType directory -Path $basedir\\$category\ndir | Out-File -Encoding utf8 -Append -FilePath $basedir\\$category\\dir.txt\r\n'
     # fmt:on
 
     windows_ps1 = WindowsPowershellScript()
@@ -176,7 +176,7 @@ def test_write_script_for_windows_powershell_cmdlet_3(
     windows_powershell_cmdlet_content_3,
 ):
     # fmt:off
-    expected_output = '\n$category="a_categegory_with_space"\nWrite-Output "[*] Running $category collection commands..."\nNew-Item -ItemType directory -Path $basedir\\$category\ndir | Out-File -Encoding utf8 -Append -FilePath $basedir\\$category\\dir.txt\r\n'
+    expected_output = '\n$category="a_category_with_space"\nWrite-Output "[*] Running $category collection commands..."\nNew-Item -ItemType directory -Path $basedir\\$category\ndir | Out-File -Encoding utf8 -Append -FilePath $basedir\\$category\\dir.txt\r\n'
     # fmt:on
 
     windows_ps1 = WindowsPowershellScript()
@@ -243,7 +243,7 @@ def test_write_check_with_collect_only_and_not_only_powershell(
     collect_only_and_not_only,
 ):
     # fmt:off
-    expected_output = '\n$category="a_categegory_with_space"\nWrite-Output "[*] Running $category collection commands..."\nNew-Item -ItemType directory -Path $basedir\\$category\ndir > $basedir\\$category\\dir.txt\r\n'
+    expected_output = '\n$category="a_category_with_space"\nWrite-Output "[*] Running $category collection commands..."\nNew-Item -ItemType directory -Path $basedir\\$category\ndir > $basedir\\$category\\dir.txt\r\n'
     # fmt:on
 
     windows_ps1 = WindowsPowershellScript()
@@ -263,7 +263,7 @@ def test_write_check_with_collect_only_and_not_only_powershell(
 
 def test_write_check_with_collect_only_and_not_only_batch(collect_only_and_not_only):
     # fmt:off
-    expected_output = '\nset category=a_categegory_with_space\necho [*] Running %category% collection commands...\nmkdir %basedir%\\%category%\ndir > %basedir%\\%category%\\dir.txt\r\n'
+    expected_output = '\nset category=a_category_with_space\necho [*] Running %category% collection commands...\nmkdir %basedir%\\%category%\ndir > %basedir%\\%category%\\dir.txt\r\n'
     # fmt:on
 
     windows_batch = WindowsBatchScript()
@@ -281,7 +281,7 @@ def test_write_check_with_collect_only_and_not_only_batch(collect_only_and_not_o
 
 def test_write_check_with_collect_only_and_not_only_linux(collect_only_and_not_only):
     # fmt:off
-    expected_output = '\nCATEGORY="a_categegory_with_space"\necho "[*] Running \\"${CATEGORY}\\" collection commands..."\n/bin/mkdir -p "${BASEDIR}"/"${CATEGORY}"/\ndir >> "${BASEDIR}"/"${CATEGORY}"/dir.txt\n'
+    expected_output = '\nCATEGORY="a_category_with_space"\necho "[*] Running \\"${CATEGORY}\\" collection commands..."\n/bin/mkdir -p "${BASEDIR}"/"${CATEGORY}"/\ndir >> "${BASEDIR}"/"${CATEGORY}"/dir.txt\n'
     # fmt:on
 
     linux_sh = LinuxBashScript()
@@ -297,7 +297,7 @@ def test_write_check_with_collect_only_and_not_only_linux(collect_only_and_not_o
 
 def test_write_check_with_collect_only_and_not_only_mac(collect_only_and_not_only):
     # fmt:off
-    expected_output = '\nCATEGORY="a_categegory_with_space"\necho "[*] Running \\"${CATEGORY}\\" collection commands..."\n/bin/mkdir -p "${BASEDIR}"/"${CATEGORY}"/\ndir >> "${BASEDIR}"/"${CATEGORY}"/dir.txt\n'
+    expected_output = '\nCATEGORY="a_category_with_space"\necho "[*] Running \\"${CATEGORY}\\" collection commands..."\n/bin/mkdir -p "${BASEDIR}"/"${CATEGORY}"/\ndir >> "${BASEDIR}"/"${CATEGORY}"/dir.txt\n'
     # fmt:on
 
     mac_sh = MacOSBashScript()
