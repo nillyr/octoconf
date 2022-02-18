@@ -5,10 +5,9 @@
 
 import json
 import sys
-from xml.dom.minidom import parseString
 
-import dicttoxml
 import inject
+from json2xml import json2xml
 
 from octoconf.ports import IReportGenerator
 from octoconf.utils import timestamp
@@ -24,27 +23,22 @@ class ReportGeneratorInteractor:
         self._report_generator = report_generator
 
     def _write_json_file(self, filename, data) -> None:
-        filename += ".json"
-        print(f"[*] Exporting results in JSON format (path: {filename})")
-        with open(filename, "w") as json_file:
-            json.dump(data, json_file)
-        print("[+] Done")
+        try:
+            filename += ".json"
+            print(f"[*] Exporting results in JSON format (path: {filename})")
+            with open(filename, "w") as json_file:
+                json.dump(data, json_file)
+            print("[+] Done")
+        except:
+            print("[x] Error", file=sys.stderr)
 
     def _write_xml_file(self, filename, data) -> None:
-        # This method doesn't work with python 3.10 (because of dicttoxml)
         try:
             filename += ".xml"
             print(f"[*] Exporting results in XML format (path: {filename})")
-            xml = dicttoxml.dicttoxml(
-                data,
-                attr_type=True,
-                custom_root="octoconf-results",
-                item_func=lambda x: x,
-            )
-            dom = parseString(xml)
-            xml_data = dom.toprettyxml()
+            xml = json2xml.Json2xml(data, pretty=True).to_xml()
             with open(filename, "w") as xml_file:
-                xml_file.write(xml_data)
+                xml_file.write(xml)
             print("[+] Done")
         except:
             print("[x] Error", file=sys.stderr)
