@@ -36,7 +36,13 @@ class ReportGeneratorInteractor:
         try:
             filename += ".xml"
             print(f"[*] Exporting results in XML format (path: {filename})")
-            xml = json2xml.Json2xml(data, pretty=True).to_xml()
+            xml = json2xml.Json2xml(
+                data,
+                wrapper="octoconf-results",
+                item_wrap=False,
+                attr_type=False,
+                pretty=True,
+            ).to_xml()
             with open(filename, "w") as xml_file:
                 xml_file.write(xml)
             print("[+] Done")
