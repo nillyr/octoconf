@@ -7,7 +7,7 @@
 
 <p align="center">
   <img src="https://img.shields.io/badge/python-3.8+-blue.svg">
-  <img src="https://img.shields.io/badge/platform-macOS%2FLinux%2FWindows-blue.svg">
+  <img src="https://img.shields.io/badge/platform-Linux%2FmacOS%2FWindows-blue.svg">
   <img src="https://github.com/nillyr/octoconf/actions/workflows/tests.yml/badge.svg">
   <img src="https://img.shields.io/badge/coverage-80%25-green.svg">
 </p>
