@@ -39,12 +39,13 @@ optional arguments:
 
 ## Prerequisites
 
-- Python 3.7+
+- Python 3.8+
 - pip
 
 ## Documentation
 
-Documentation can be generated with `pandoc` with `make doc`. The chosen format is `pdf`.
+- Documentation can be found in the [wiki](https://github.com/nillyr/octoconf/wiki).
+- Documentation can be generated with `pandoc` with `make doc`. The chosen format is `pdf`.
 
 ## Quick usage
 
