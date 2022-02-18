@@ -3,10 +3,12 @@ name: tests
 on:
   push:
     paths-ignore:
+      - '.vscode/**'
       - 'docs/**'
       - 'ressources/**'
   pull_request:
     paths-ignore:
+      - '.vscode/**'
       - 'docs/**'
       - 'ressources/**'
 
