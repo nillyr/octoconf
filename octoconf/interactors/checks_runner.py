@@ -67,7 +67,7 @@ class ChecksRunnerInteractor:
                 collection_cmd["collection_cmd"],
                 self._checklist.get_executable(collection_cmd["collection_cmd_type"]),
             )
-            if cmd_type == None or len(cmd) == 0:
+            if cmd_type is None or len(cmd) == 0:
                 continue
 
             _ = self._runner.exec(
@@ -80,7 +80,7 @@ class ChecksRunnerInteractor:
         results = []
         for check in checks:
             cmd_type = self._checklist.get_executable(check.type)
-            if cmd_type == None or len(check.cmd) == 0:
+            if cmd_type is None or len(check.cmd) == 0:
                 cmd_output = ""
             else:
                 cmd_output = self._runner.exec(check.cmd, cmd_type, True)
