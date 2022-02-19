@@ -56,6 +56,9 @@ coverage.xml
 octoconf_tests/.ignore/
 octoconf_tests/interactors/archive/tryme
 
+# Snyk files
+.dccache
+
 # Translations
 *.mo
 *.pot
