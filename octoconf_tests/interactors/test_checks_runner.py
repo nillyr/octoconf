@@ -13,7 +13,9 @@ import pytest
 sys.path.append("../octoconf/")
 from octoconf.adapters import CheckerAdapter, ChecklistAdapter, CommandRunnerFactory
 from octoconf.adapters.report_generator import ReportGeneratorAdapter
+from octoconf.interactors.check_output import CheckOutputInteractor
 from octoconf.interactors.checks_runner import ChecksRunnerInteractor
+from octoconf.interactors.report_generator import ReportGeneratorInteractor
 from octoconf.ports import (
     IChecker,
     IChecklist,
@@ -63,5 +65,8 @@ def test_checks_runner_file_creation(setup, checklist_path, output_path):
     else:
         uc = ChecksRunnerInteractor()
         uc.execute(checklist_path, output_path)
+        results = ChecksRunnerInteractor().execute(checklist_path, output_path)
+        results = CheckOutputInteractor().execute(results)
+        ReportGeneratorInteractor().execute(results, is_file=False)
 
         assert Path(output_path + "pytest_category/whoami.txt").exists()
