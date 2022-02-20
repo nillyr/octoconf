@@ -31,7 +31,7 @@ class UnixCommandRunner(ICommandRunner):
         popen_stdout = PIPE if is_check else DEVNULL
         try:
             stdout = self.run(cmd, popen_stdout)
-            return ic(str(stdout.decode("utf-8")))
+            return ic(str(stdout.decode("utf-8")).rstrip())
         except AttributeError:
             # This case occurs when popen_stdout is set to DEVNULL
             return ""
