@@ -9,8 +9,7 @@ current_dir = os.path.abspath(os.path.dirname(__file__))
 
 # Quick and dirty fix because tox doesn't like from octoconf.[...]
 with open(os.path.join(current_dir, "octoconf/__init__.py"), "r") as f:
-    version = f.readlines()[0].replace("__version__ = ", "").replace('"', "")
-
+    version = f.readlines()[0].replace("__version__ = ", "").replace('"', "").rstrip()
 
 with open(os.path.join(current_dir, "requirements.txt"), "r") as f:
     requirements = f.readlines()
