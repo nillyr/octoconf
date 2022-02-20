@@ -69,8 +69,9 @@ def parse_analyze_args(args):
 
     global_values.set_localize(args.language)
     print("[*] Launching the archive analysis...")
-    uc = CheckArchiveInteractor()
-    return uc.execute(args.checklist, args.archive)
+    results = CheckArchiveInteractor().execute(args.checklist, args.archive)
+    results = CheckOutputInteractor().execute(results)
+    return ReportGeneratorInteractor().execute(results, is_file=False)
 
 
 @checklist_to_path
@@ -80,8 +81,9 @@ def parse_audit_args(args):
 
     global_values.set_localize(args.language)
     print("[*] Launching the audit...")
-    uc = ChecksRunnerInteractor()
-    return uc.execute(args.checklist, args.output)
+    results = ChecksRunnerInteractor().execute(args.checklist, args.output)
+    results = CheckOutputInteractor().execute(results)
+    return ReportGeneratorInteractor().execute(results, is_file=False)
 
 
 @checklist_to_path
@@ -106,8 +108,7 @@ def parse_checklist_args(args) -> int:
             "platform": args.platform,
         }
         print("[*] Launching the script generation...")
-        uc = CollectionScriptRetrievalInteractor()
-        uc.execute(opts)
+        CollectionScriptRetrievalInteractor().execute(opts)
         print(f"[+] The generated script has been put here: {args.output}")
         print("[+] Done")
         return 0
@@ -120,8 +121,7 @@ def parse_checklist_args(args) -> int:
             "target_lang": args.target_lang,
         }
         print("[*] Launching the checklist translation...")
-        translator = ChecklistTranslatorInteractor()
-        translator.execute(opts)
+        ChecklistTranslatorInteractor().execute(opts)
         print("[+] Done")
         return 0
     elif _.get("checklist"):
@@ -155,8 +155,7 @@ def parse_report_args(args):
         debug.set_debug(True)
 
     global_values.set_localize(args.language)
-    uc = ReportGeneratorInteractor()
-    return uc.execute(args.input, is_file=True)
+    return ReportGeneratorInteractor().execute(args.input, is_file=True)
 
 
 def parse_args() -> argparse.Namespace:

@@ -102,4 +102,4 @@ class ChecksRunnerInteractor:
 
             results.append(CheckResult(**check_result))
         print("[+] Done")
-        return CheckOutputInteractor().execute(ic(results))
+        return ic(results)

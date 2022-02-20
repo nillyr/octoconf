@@ -65,4 +65,4 @@ class CheckArchiveInteractor:
                         else None,
                     }
                 results.append(CheckResult(**check_result))
-        return CheckOutputInteractor().execute(ic(results))
+        return ic(results)

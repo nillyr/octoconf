@@ -36,4 +36,4 @@ class CheckOutputInteractor:
             )
         json_results = self._checklist.get_json_reporting(ic(results))
         json_results = self._checklist.remove_ignore_tag(json_results)
-        return ReportGeneratorInteractor().execute(json_results, is_file=False)
+        return ic(json_results)
