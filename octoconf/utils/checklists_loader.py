@@ -33,7 +33,7 @@ class ChecklistsLoader:
         base_dir = os.path.abspath(os.path.join(os.path.dirname(__file__), ".."))
         checklists_dir = os.path.join(base_dir, "checklists/checklists")
 
-        regex_yaml_file = r"^.+(?<=\.yaml)$"
+        regex_yaml_file = r"^.+((?<=\.yml)|(?<=\.yaml))$"
         for root, _, files in os.walk(checklists_dir, topdown=False):
             for file in files:
                 if re.search(regex_yaml_file, file, re.IGNORECASE | re.MULTILINE):
