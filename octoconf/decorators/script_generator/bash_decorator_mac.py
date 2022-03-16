@@ -20,7 +20,7 @@ class BashDecoratorMAC(Decorator):
 echo \"[*] Preparation...\"
 BASEDIR=$(/usr/bin/mktemp -d)
 CHECKSDIR=\"${BASEDIR}\"/checks
-/usr/bin/mkdir -p \"${CHECKSDIR}\"
+/bin/mkdir -p \"${CHECKSDIR}\"
 
 /bin/date >> \"${BASEDIR}\"/timestamp.log
 
