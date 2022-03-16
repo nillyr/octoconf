@@ -3,7 +3,6 @@
 # @link https://github.com/nillyr/octoconf
 # @since 1.0.0b
 
-import os
 import sys
 
 import pytest
@@ -30,9 +29,8 @@ def test_extract_checks_files_only_from_nothing():
 def test_extract_checks_files_only_from_tar_gz(tar_gz_archive):
     a_path = ArchiveAdapter().extract(tar_gz_archive)
     extracted = []
-    for _, _, files in os.walk(a_path):
-        for file in files:
-            extracted.append(file)
+    for file in a_path.glob("**/*.txt"):
+        extracted.append(str(file.name))
 
     assert "1.1.1.txt" in extracted
     assert "1.1.2.txt" in extracted
@@ -41,9 +39,8 @@ def test_extract_checks_files_only_from_tar_gz(tar_gz_archive):
 def test_extract_checks_files_only_from_zip(zip_archive):
     a_path = ArchiveAdapter().extract(zip_archive)
     extracted = []
-    for _, _, files in os.walk(a_path):
-        for file in files:
-            extracted.append(file)
+    for file in a_path.glob("**/*.txt"):
+        extracted.append(str(file.name))
 
     assert "1.1.1.txt" in extracted
     assert "1.1.2.txt" in extracted

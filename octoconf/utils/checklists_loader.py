@@ -3,7 +3,7 @@
 # @link https://github.com/nillyr/octoconf
 # @since 1.0.0b
 
-import os
+from pathlib import Path
 import re
 
 
@@ -30,25 +30,24 @@ class ChecklistsLoader:
         """
         Browse the checklist folder and add the checklists to the dictionary.
         """
-        base_dir = os.path.abspath(os.path.join(os.path.dirname(__file__), ".."))
-        checklists_dir = os.path.join(base_dir, "checklists/checklists")
+        base_dir = Path(__file__).resolve().parent.parent
+        checklists_dir = base_dir / "checklists/checklists"
 
         regex_yaml_file = r"^.+((?<=\.yml)|(?<=\.yaml))$"
-        for root, _, files in os.walk(checklists_dir, topdown=False):
-            for file in files:
-                if re.search(regex_yaml_file, file, re.IGNORECASE | re.MULTILINE):
-                    checklist_category = os.path.basename(root)
-                    checklist_name = file.split(".")[0]
-                    checklist_path = os.path.join(root, file)
-                    if checklist_category in self._checklists.keys():
-                        self._checklists[checklist_category].update(
-                            {checklist_name: checklist_path}
-                        )
-                    else:
-                        self._checklists[checklist_category] = {}
-                        self._checklists[checklist_category][
-                            checklist_name
-                        ] = checklist_path
+        for file in checklists_dir.glob("**/*"):
+            if re.search(regex_yaml_file, str(file), re.IGNORECASE | re.MULTILINE):
+                checklist_category = file.parent.name
+                checklist_name = file.name.split(".")[0]
+                checklist_path = str(file)
+                if checklist_category in self._checklists.keys():
+                    self._checklists[checklist_category].update(
+                        {checklist_name: checklist_path}
+                    )
+                else:
+                    self._checklists[checklist_category] = {}
+                    self._checklists[checklist_category][
+                        checklist_name
+                    ] = checklist_path
 
     def _filter_dict(self, d, f) -> dict:
         """

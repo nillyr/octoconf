@@ -3,7 +3,6 @@
 # @link https://github.com/nillyr/octoconf
 # @since 1.0.0b
 
-import os
 from pathlib import Path
 import tarfile
 import zipfile
@@ -26,7 +25,7 @@ class ArchiveAdapter(IArchive):
         Generator method indicating the files to be extracted only (for tar.gz archives).
         """
         for tarinfo in members:
-            if "checks" in os.path.splitext(tarinfo.name)[0]:
+            if "checks" in str(Path(tarinfo.name).parent):
                 yield tarinfo
 
     def extract(self, archive) -> Path:
@@ -38,8 +37,8 @@ class ArchiveAdapter(IArchive):
         if not path.exists():
             return
 
-        while path != path.with_suffix(""):
-            path = path.with_suffix("")
+        # where to extract files
+        path = path.parent
 
         try:
             if tarfile.is_tarfile(archive):
@@ -58,8 +57,12 @@ class ArchiveAdapter(IArchive):
         except:
             pass
 
-        for root, _, _ in os.walk(path):
-            if "checks" in root:
-                path = Path(root)
+        for file in path.glob("**/*.txt"):
+            if "checks" in str(file):
+                path = file.parent
+                break
+
+        else:
+            return
 
         return ic(path)

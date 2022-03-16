@@ -3,13 +3,10 @@
 # @link https://github.com/nillyr/octoconf
 # @since 1.0.0b
 
-import os
-
 import chardet
 from icecream import ic
 import inject
 
-from octoconf.interactors.check_output import CheckOutputInteractor
 from octoconf.models import CheckResult
 from octoconf.ports import IArchive, IChecklist
 
@@ -32,37 +29,34 @@ class CheckArchiveInteractor:
             return
 
         results = []
-        for _, _, files in os.walk(extract_path):
+        for file in extract_path.glob("**/*.txt"):
             check_result = []
-            for file in files:
-                filename = file.rsplit(".", 1)[0]
-                check = self._checklist.get_check(categories, filename)
-                if check is None:
-                    continue
-                with open(str(extract_path) + "/" + file, "rb") as check_output:
-                    raw = check_output.read()
-                    encoding = chardet.detect(raw)["encoding"]
-                    if not encoding:
-                        # This case can be seen when using the powershell Out-File cmdlet (utf8noBom)
-                        encoding = "UTF-8-SIG"
-                    content = raw.decode(encoding)
+            filename = file.name.rsplit(".", 1)[0]
+            check = self._checklist.get_check(categories, filename)
+            if check is None:
+                continue
+            with open(str(file), "rb") as check_output:
+                raw = check_output.read()
+                encoding = chardet.detect(raw)["encoding"]
+                if not encoding:
+                    # This case can be seen when using the powershell Out-File cmdlet (utf8noBom)
+                    encoding = "UTF-8-SIG"
+                content = raw.decode(encoding)
 
-                    check_result = {
-                        "id": filename,
-                        "title": check.title,
-                        "description": check.description
-                        if check.description is not None
-                        else None,
-                        "type": check.type,
-                        "cmd": check.cmd,
-                        "expected": check.expected,
-                        "verification_type": check.verification_type,
-                        "cmd_output": content,
-                        "severity": check.severity,
-                        "recommendation_on_failed": check.recommendation_on_failed,
-                        "see_also": check.see_also
-                        if check.see_also is not None
-                        else None,
-                    }
-                results.append(CheckResult(**check_result))
+                check_result = {
+                    "id": filename,
+                    "title": check.title,
+                    "description": check.description
+                    if check.description is not None
+                    else None,
+                    "type": check.type,
+                    "cmd": check.cmd,
+                    "expected": check.expected,
+                    "verification_type": check.verification_type,
+                    "cmd_output": content,
+                    "severity": check.severity,
+                    "recommendation_on_failed": check.recommendation_on_failed,
+                    "see_also": check.see_also if check.see_also is not None else None,
+                }
+            results.append(CheckResult(**check_result))
         return ic(results)

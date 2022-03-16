@@ -3,8 +3,8 @@
 # @link https://github.com/nillyr/octoconf
 # @since 1.0.0b
 
+from pathlib import Path
 import sys
-import os
 
 import polib
 
@@ -15,7 +15,7 @@ class Locale:
     It takes as argument the ISO 639-1 code. See also: https://en.wikipedia.org/wiki/List_of_ISO_639-1_codes
     """
 
-    _basedir = os.path.abspath(os.path.dirname(__file__))
+    _basedir = Path(__file__).resolve().parent
 
     def __init__(self, lang: str = "EN"):
         self._dict = dict()
@@ -26,7 +26,7 @@ class Locale:
         """
         Parse the ".po" file of the language chosen by the user and populate the dictionary.
         """
-        path = os.path.join(self._basedir, self._pofilename)
+        path = str(self._basedir / self._pofilename)
         try:
             pofile = polib.pofile(path, encoding="utf-8")
             for entry in pofile:
