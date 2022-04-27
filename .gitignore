@@ -55,6 +55,7 @@ coverage.xml
 # Tests
 octoconf_tests/.ignore/
 octoconf_tests/interactors/archive/tryme
+octoconf_tests/interactors/archive/_data
 
 # Snyk files
 .dccache
