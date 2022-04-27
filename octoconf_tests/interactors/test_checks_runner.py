@@ -59,12 +59,10 @@ def test_checks_runner_file_creation(setup, checklist_path, output_path):
     """
 
     if platform.system() == "Windows":
-        # TODO: add windows checklist with BATCH_EXEC or AUDIT_POWERSHELL
+        # TODO: add windows checklist with AUDIT_POWERSHELL
         # In the meantime ignore this test...
         assert True == True
     else:
-        uc = ChecksRunnerInteractor()
-        uc.execute(checklist_path, output_path)
         results = ChecksRunnerInteractor().execute(checklist_path, output_path)
         results = CheckOutputInteractor().execute(results)
         ReportGeneratorInteractor().execute(results, is_file=False)

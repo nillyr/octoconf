@@ -265,7 +265,7 @@ def parse_args() -> argparse.Namespace:
     gen_script_parser.add_argument(
         "-l",
         "--language",
-        choices=("bash", "batch", "powershell"),
+        choices=("bash", "powershell"),
         default="bash",
         required=True,
         help="script language",

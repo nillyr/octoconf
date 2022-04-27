@@ -7,7 +7,6 @@ import sys
 
 from octoconf.adapters.script_generator.linux_bash_script import LinuxBashScript
 from octoconf.adapters.script_generator.macos_bash_script import MacOSBashScript
-from octoconf.adapters.script_generator.windows_batch_script import WindowsBatchScript
 from octoconf.adapters.script_generator.windows_powershell_script import (
     WindowsPowershellScript,
 )
@@ -24,7 +23,7 @@ class LanguageFactory(ILanguageFactory):
         try:
             if language_name == "bash":
                 return UnixScriptFactory.write_script_for(platform, language_name)
-            if language_name in ("batch", "powershell"):
+            if language_name == "powershell":
                 return WindowsScriptFactory.write_script_for(platform, language_name)
             raise NotImplementedError("Error: not implemented platform or language")
         except NotImplementedError as _err:
@@ -52,8 +51,6 @@ class WindowsScriptFactory:
     def write_script_for(platform, language_name):
         # Unused arg: platform
         try:
-            if language_name == "batch":
-                return WindowsBatchScript()
             if language_name == "powershell":
                 return WindowsPowershellScript()
             raise NotImplementedError("Error: not implemented language")

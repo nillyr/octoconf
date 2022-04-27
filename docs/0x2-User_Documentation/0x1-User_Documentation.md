@@ -50,8 +50,6 @@ Allows to generate from a checklist passed in argument a collection script in th
 octoconf checklist generate -c ./ubuntu20-04.yaml -l bash -p linux -o ubuntu20-04.sh
 # UNIX macOS
 octoconf checklist generate -c ./macOS11.yaml -l bash -p mac -o macOS11.sh
-# Windows (Batch)
-octoconf checklist generate -c ./windows10-desktop.yaml -l batch -p windows -o windows10.bat
 # Windows (Powershell)
 octoconf checklist generate -c ./windows10-desktop.yaml -l powershell -p windows -o windows10.ps1
 ```
@@ -138,7 +136,6 @@ The basic template is as follows:
     collection_cmd: command > output_file.txt
     # Optionnal value (must be present if collection_cmd is defined)
     #   - AUDIT_POWERSHELL = powershell.exe
-    #   - BATCH_EXEC = cmd.exe
     #   - CMD_EXEC = /bin/bash
     collection_cmd_type: CMD_EXEC
     # Possible values: true | false

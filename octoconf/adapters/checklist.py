@@ -41,7 +41,6 @@ class ChecklistAdapter(IChecklist):
 
         # WINDOWS
         AUDIT_POWERSHELL = "powershell.exe"
-        BATCH_EXEC = "cmd.exe"
         # UNIX
         CMD_EXEC = "/bin/bash"
 
@@ -71,8 +70,6 @@ class ChecklistAdapter(IChecklist):
         """
         if cmd_type == "AUDIT_POWERSHELL":
             return self.CmdType.AUDIT_POWERSHELL.value
-        if cmd_type == "BATCH_EXEC":
-            return self.CmdType.BATCH_EXEC.value
         if cmd_type == "CMD_EXEC":
             return self.CmdType.CMD_EXEC.value
         return

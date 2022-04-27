@@ -10,7 +10,6 @@ import pytest
 sys.path.append("../octoconf/")
 from octoconf.adapters.script_generator.linux_bash_script import LinuxBashScript
 from octoconf.adapters.script_generator.macos_bash_script import MacOSBashScript
-from octoconf.adapters.script_generator.windows_batch_script import WindowsBatchScript
 from octoconf.adapters.script_generator.windows_powershell_script import (
     WindowsPowershellScript,
 )
@@ -120,17 +119,6 @@ def test_write_script_for_mac(unix_content):
     assert expected_output in cmds
 
 
-def test_write_script_for_windows_batch(windows_content):
-    # fmt:off
-    expected_output = '\nset category=a_category_with_space\necho [*] Running %category% collection commands...\nmkdir %basedir%\\%category%\ndir > %basedir%\\%category%\\dir.txt\r\n'
-    # fmt:on
-
-    windows_batch = WindowsBatchScript()
-    cmds = windows_batch.write_script(windows_content, windows_batch.write_checks_cmds)
-
-    assert expected_output in cmds
-
-
 def test_write_script_for_windows_powershell(windows_content):
     # fmt:off
     expected_output = '\n$category="a_category_with_space"\nWrite-Output "[*] Running $category collection commands..."\nNew-Item -ItemType directory -Path $basedir\\$category\ndir > $basedir\\$category\\dir.txt\r\n'
@@ -211,18 +199,6 @@ def test_write_checks_cmds_for_mac(unix_content):
     assert output == expected_output
 
 
-def test_write_checks_cmds_for_windows_batch(windows_content):
-    checkdir = "%checksdir%"
-    expected_output = []
-    expected_output.append("\r\nREM Checks\r\n")
-    expected_output.append("whoami /all >> %checksdir%\\1.1.1.txt\r\n")
-    expected_output.append("net users >> %checksdir%\\1.1.2.txt\r\n")
-
-    output = WindowsBatchScript().write_checks_cmds(checkdir, windows_content, [])
-
-    assert output == expected_output
-
-
 def test_write_checks_cmds_for_windows_powershell(windows_content):
     checkdir = "$checksdir"
     expected_output = []
@@ -255,24 +231,6 @@ def test_write_check_with_collect_only_and_not_only_powershell(
         " | Out-File -Encoding utf8 -Append -FilePath $checksdir\\1.1.1.txt\r\n"
     )
     expected_check_cmd = "whoami /all | Out-File -Encoding utf8 -Append -FilePath $checksdir\\2.1.1.txt\r\n"
-
-    assert expected_output in cmds
-    assert expected_absent_check_cmd not in cmds
-    assert expected_check_cmd in cmds
-
-
-def test_write_check_with_collect_only_and_not_only_batch(collect_only_and_not_only):
-    # fmt:off
-    expected_output = '\nset category=a_category_with_space\necho [*] Running %category% collection commands...\nmkdir %basedir%\\%category%\ndir > %basedir%\\%category%\\dir.txt\r\n'
-    # fmt:on
-
-    windows_batch = WindowsBatchScript()
-    cmds = windows_batch.write_script(
-        collect_only_and_not_only, windows_batch.write_checks_cmds
-    )
-
-    expected_absent_check_cmd = " >> %checksdir%\\1.1.1.txt\r\n"
-    expected_check_cmd = "whoami /all >> %checksdir%\\2.1.1.txt\r\n"
 
     assert expected_output in cmds
     assert expected_absent_check_cmd not in cmds
