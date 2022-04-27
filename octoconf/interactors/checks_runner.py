@@ -48,10 +48,13 @@ class ChecksRunnerInteractor:
         )
         path.mkdir(parents=True, exist_ok=True)
         replace_path = path / Path(output_file).name
+        # Add quotes in the event there is a space in the path
         return ic(
             re.split(regex_pattern, cmd)[0]
             + re.search(regex_pattern, cmd).group(0)
+            + '"'
             + str(replace_path)
+            + '"'
         )
 
     def execute(self, checklist, output_directory):
