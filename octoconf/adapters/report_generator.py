@@ -3,7 +3,7 @@
 # @link https://github.com/nillyr/octoconf
 # @since 1.0.0b
 
-from icecream import ic
+from typing import List
 import xlsxwriter
 
 from octoconf.ports import IReportGenerator
@@ -19,7 +19,7 @@ class ReportGeneratorAdapter(IReportGenerator):
     _config = None
 
     def __init__(self) -> None:
-        self._synthesis = dict()
+        self._synthesis: List = []
 
     def _get_category_format(self, workbook: xlsxwriter.workbook.Workbook):
         """
@@ -146,7 +146,6 @@ class ReportGeneratorAdapter(IReportGenerator):
                 "A1:E1", category["name"], self._get_category_format(workbook)
             )
             checkpoint_row = 2
-            nb_success, nb_failed, nb_na = 0, 0, 0
             for checkpoint in category["checkpoints"]:
                 worksheet.write(
                     f"A{checkpoint_row}",
@@ -182,21 +181,18 @@ class ReportGeneratorAdapter(IReportGenerator):
                                 global_values.localize.gettext("success"),
                                 self._get_success_result_format(workbook),
                             )
-                            nb_success += 1
                         elif check["result"] == False:
                             worksheet.write(
                                 f"E{check_row}",
                                 global_values.localize.gettext("failed"),
                                 self._get_failed_result_format(workbook),
                             )
-                            nb_failed += 1
                         else:
                             worksheet.write(
                                 f"E{check_row}",
                                 global_values.localize.gettext("na"),
                                 self._get_uncertain_result_format(workbook),
                             )
-                            nb_na += 1
                         check_row += 1
                         checkpoint_row = check_row
                     else:
@@ -205,15 +201,10 @@ class ReportGeneratorAdapter(IReportGenerator):
                             global_values.localize.gettext("na"),
                             self._get_uncertain_result_format(workbook),
                         )
-                        nb_na += 1
                         check_row += 1
                         checkpoint_row = check_row
 
-            self._synthesis[category["name"]] = {
-                "SUCCESS": nb_success,
-                "FAILED": nb_failed,
-                "N/A": nb_na,
-            }
+            self._synthesis.append(category["name"])
 
     # fmt:off
     def _generate_synthesis(self,
@@ -235,42 +226,33 @@ class ReportGeneratorAdapter(IReportGenerator):
         worksheet.write("G2", f"% {global_values.localize.gettext('percent')}", self._get_checkpoint_format(workbook))
 
         row = 2
-        for key, value in self._synthesis.items():
+        for key in self._synthesis:
             row += 1
-            ic(key, value["SUCCESS"], value["FAILED"], value["N/A"])
             worksheet.merge_range(
                 f"A{row}:C{row}",
                 key,
                 self._get_check_format(workbook),
             )
-            worksheet.write(
+            worksheet.write_formula(
                 f"D{row}",
-                value["SUCCESS"],
+                f"=COUNTIF($'{key}'.E:E,\"{global_values.localize.gettext('success')}\")",
                 self._get_check_format(workbook),
             )
-            worksheet.write(
+            worksheet.write_formula(
                 f"E{row}",
-                value["FAILED"],
+                f"=COUNTIF($'{key}'.E:E,\"{global_values.localize.gettext('failed')}\")",
                 self._get_check_format(workbook),
             )
-            worksheet.write(
+            worksheet.write_formula(
                 f"F{row}",
-                value["N/A"],
+                f"=COUNTIF($'{key}'.E:E,\"{global_values.localize.gettext('na')}\")",
                 self._get_check_format(workbook),
             )
-            try:
-                worksheet.write(
-                    f"G{row}",
-                    (value["SUCCESS"] * 100)
-                    / (value["SUCCESS"] + value["FAILED"] + value["N/A"]),
-                    self._get_check_format(workbook),
-                )
-            except ZeroDivisionError:
-                worksheet.write(
-                    f"G{row}",
-                    0,
-                    self._get_check_format(workbook),
-                )
+            worksheet.write_formula(
+                f"G{row}",
+                f"=(D{row}*100)/SUM(D{row}:F{row})",
+                self._get_check_format(workbook),
+            )
         return row
 
     #fmt:off
