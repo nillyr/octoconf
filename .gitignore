@@ -57,6 +57,11 @@ octoconf_tests/.ignore/
 octoconf_tests/interactors/archive/tryme
 octoconf_tests/interactors/archive/_data
 
+# Generated data
+*_results.json
+*_results.xlsx
+*_results.xml
+
 # Snyk files
 .dccache
 
