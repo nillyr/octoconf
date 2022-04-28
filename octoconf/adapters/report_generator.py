@@ -3,6 +3,8 @@
 # @link https://github.com/nillyr/octoconf
 # @since 1.0.0b
 
+import re
+
 from typing import List
 import xlsxwriter
 
@@ -139,7 +141,14 @@ class ReportGeneratorAdapter(IReportGenerator):
         """
         for category in data["categories"][0]:
             # It is not possible to use a worksheet's title > 31 chars, so we need to slice
-            worksheet = workbook.add_worksheet(name=category["name"][0:31])
+            category_name = re.sub(
+                "(</?x>)|[^a-zàâçéèêëîïôûù0-9]",
+                "_",
+                category["name"][0:31],
+                0,
+                re.IGNORECASE,
+            )
+            worksheet = workbook.add_worksheet(name=category_name)
             worksheet.set_column("A:E", 20)
             worksheet.set_row(0, 25)
             worksheet.merge_range(
@@ -204,7 +213,7 @@ class ReportGeneratorAdapter(IReportGenerator):
                         check_row += 1
                         checkpoint_row = check_row
 
-            self._synthesis.append(category["name"])
+            self._synthesis.append(category_name)
 
     # fmt:off
     def _generate_synthesis(self,
@@ -229,28 +238,34 @@ class ReportGeneratorAdapter(IReportGenerator):
         for key in self._synthesis:
             row += 1
             worksheet.merge_range(
-                f"A{row}:C{row}",
+                xlsxwriter.utility.xl_range(row - 1, 0, row - 1, 2),
                 key,
                 self._get_check_format(workbook),
             )
+            range = f"{key}!{xlsxwriter.utility.xl_range(0, 4, 1048575, 4)}"
+            criteria = '"'+global_values.localize.gettext('success')+'"'
             worksheet.write_formula(
-                f"D{row}",
-                f"=COUNTIF($'{key}'.E:E,\"{global_values.localize.gettext('success')}\")",
+                xlsxwriter.utility.xl_rowcol_to_cell(row - 1, 3),
+                '=COUNTIF(%s,%s)' % (range, criteria),
                 self._get_check_format(workbook),
             )
+            criteria = '"'+global_values.localize.gettext('failed')+'"'
             worksheet.write_formula(
-                f"E{row}",
-                f"=COUNTIF($'{key}'.E:E,\"{global_values.localize.gettext('failed')}\")",
+                xlsxwriter.utility.xl_rowcol_to_cell(row - 1, 4),
+                '=COUNTIF(%s,%s)' % (range, criteria),
                 self._get_check_format(workbook),
             )
+            criteria = '"'+global_values.localize.gettext('na')+'"'
             worksheet.write_formula(
-                f"F{row}",
-                f"=COUNTIF($'{key}'.E:E,\"{global_values.localize.gettext('na')}\")",
+                xlsxwriter.utility.xl_rowcol_to_cell(row - 1, 5),
+                '=COUNTIF(%s,%s)' % (range, criteria),
                 self._get_check_format(workbook),
             )
+            numerator_range = xlsxwriter.utility.xl_rowcol_to_cell(row - 1, 3)
+            denominator_range = xlsxwriter.utility.xl_range(row - 1, 3, row - 1, 5)
             worksheet.write_formula(
-                f"G{row}",
-                f"=(D{row}*100)/SUM(D{row}:F{row})",
+                xlsxwriter.utility.xl_rowcol_to_cell(row - 1, 6),
+                "=(%s*100/SUM(%s))" % (numerator_range, denominator_range),
                 self._get_check_format(workbook),
             )
         return row
@@ -259,6 +274,7 @@ class ReportGeneratorAdapter(IReportGenerator):
     def _generate_charts(self,
                             workbook: xlsxwriter.workbook.Workbook,
                             worksheet: xlsxwriter.worksheet.Worksheet,
+                            worksheet_name: str,
                             last_row: int):
     #fmt:on
         """
@@ -269,9 +285,9 @@ class ReportGeneratorAdapter(IReportGenerator):
         radar_chart.set_title({"name": global_values.localize.gettext("cov_summary")})
         radar_chart.add_series(
             {
-                "name": f"={global_values.localize.gettext('summary')}!$G$2",
-                "categories": f"={global_values.localize.gettext('summary')}!$A$3:$A${last_row}",
-                "values": f"={global_values.localize.gettext('summary')}!$G$3:$G${last_row}",
+                "name": f"={worksheet_name}!$G$2",
+                "categories": f"={worksheet_name}!$A$3:$A${last_row}",
+                "values": f"={worksheet_name}!$G$3:$G${last_row}",
                 "fill": {"color": "green"},
             }
         )
@@ -284,25 +300,25 @@ class ReportGeneratorAdapter(IReportGenerator):
         column_chart.set_y_axis({"name": global_values.localize.gettext("nb_checks")})
         column_chart.add_series(
             {
-                "name": f"={global_values.localize.gettext('summary')}!$D$2",
-                "categories": f"={global_values.localize.gettext('summary')}!$A$3:$A${last_row}",
-                "values": f"={global_values.localize.gettext('summary')}!$D$3:$D${last_row}",
+                "name": f"={worksheet_name}!$D$2",
+                "categories": f"={worksheet_name}!$A$3:$A${last_row}",
+                "values": f"={worksheet_name}!$D$3:$D${last_row}",
                 "fill": {"color": "green"},
             }
         )
         column_chart.add_series(
             {
-                "name": f"={global_values.localize.gettext('summary')}!$E$2",
-                "categories": f"={global_values.localize.gettext('summary')}!$A$3:$A${last_row}",
-                "values": f"={global_values.localize.gettext('summary')}!$E$3:$E${last_row}",
+                "name": f"={worksheet_name}!$E$2",
+                "categories": f"={worksheet_name}!$A$3:$A${last_row}",
+                "values": f"={worksheet_name}!$E$3:$E${last_row}",
                 "fill": {"color": "red"},
             }
         )
         column_chart.add_series(
             {
-                "name": f"={global_values.localize.gettext('summary')}!$F$2",
-                "categories": f"={global_values.localize.gettext('summary')}!$A$3:$A${last_row}",
-                "values": f"={global_values.localize.gettext('summary')}!$F$3:$F${last_row}",
+                "name": f"={worksheet_name}!$F$2",
+                "categories": f"={worksheet_name}!$A$3:$A${last_row}",
+                "values": f"={worksheet_name}!$F$3:$F${last_row}",
                 "fill": {"color": "blue"},
             }
         )
@@ -315,8 +331,13 @@ class ReportGeneratorAdapter(IReportGenerator):
         Conducts the various methods of the class allowing the generation of the report.
         """
         workbook = xlsxwriter.Workbook(filename + ".xlsx")
-        worksheet = workbook.add_worksheet(name=global_values.localize.gettext("summary"))
+        worksheet_name = global_values.localize.gettext("summary")
+        worksheet = workbook.add_worksheet(name=worksheet_name)
+        # Write all results (one sheet per category)
         self._write_results(workbook, data)
+        # Create the synthesis
         last_row = self._generate_synthesis(workbook, worksheet)
-        self._generate_charts(workbook, worksheet, last_row)
+        # Add charts to the synthesis
+        self._generate_charts(workbook, worksheet, worksheet_name, last_row)
+        # Close the document
         workbook.close()
