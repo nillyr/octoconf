@@ -4,6 +4,21 @@ msgstr "Synthèse"
 msgid "categories"
 msgstr "Catégories"
 
+msgid "level"
+msgstr "Niveau"
+
+msgid "minimal"
+msgstr "Minimal"
+
+msgid "intermediate"
+msgstr "Intermédiaire"
+
+msgid "reinforced"
+msgstr "Renforcé"
+
+msgid "elevated"
+msgstr "Élevé"
+
 msgid "severity"
 msgstr "Sévérité"
 

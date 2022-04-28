@@ -33,6 +33,12 @@ s_low = F5B76C
 s_medium = F1992D
 s_high = C51718
 
+# level
+lvl_minimal = C51718
+lvl_intermediate = F1992D
+lvl_reinforced = FFCC00
+lvl_elevated = 009644
+
 # status
 success = 009644
 failed = C51718
@@ -50,6 +56,13 @@ to_be_defined = F1992D
 #s_low =
 #s_medium =
 #s_high =
+
+[level_colors]
+# level
+#lvl_minimal =
+#lvl_intermediate =
+#lvl_reinforced =
+#lvl_high =
 
 [status_colors]
 # Hexadecimal values only

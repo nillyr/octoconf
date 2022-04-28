@@ -81,6 +81,29 @@ class ReportGeneratorAdapter(IReportGenerator):
             }
         )
 
+    def _get_level_format(self, level: str, workbook: xlsxwriter.workbook.Workbook):
+        """
+        Definition of the style to be applied.
+        """
+        if level == "elevated":
+            font_color = config.get_config("level_colors", "lvl_elevated")
+        elif level == "reinforced":
+            font_color = config.get_config("level_colors", "lvl_reinforced")
+        elif level == "intermediate":
+            font_color = config.get_config("level_colors", "lvl_intermediate")
+        else:
+            font_color = config.get_config("level_colors", "lvl_minimal")
+
+        return workbook.add_format(
+            {
+                "bold": 1,
+                "border": 1,
+                "align": "center",
+                "valign": "vcenter",
+                "font_color": font_color,
+            }
+        )
+
     def _get_check_format(self, workbook: xlsxwriter.workbook.Workbook):
         """
         Definition of the style to be applied.
@@ -149,16 +172,16 @@ class ReportGeneratorAdapter(IReportGenerator):
                 re.IGNORECASE,
             )
             worksheet = workbook.add_worksheet(name=category_name)
-            worksheet.set_column("A:E", 20)
+            worksheet.set_column("A:F", 20)
             worksheet.set_row(0, 25)
             worksheet.merge_range(
-                "A1:E1", category["name"], self._get_category_format(workbook)
+                "A1:F1", category["name"], self._get_category_format(workbook)
             )
             checkpoint_row = 2
             for checkpoint in category["checkpoints"]:
                 worksheet.write(
                     f"A{checkpoint_row}",
-                    global_values.localize.gettext("severity"),
+                    global_values.localize.gettext("level"),
                     self._get_checkpoint_format(workbook),
                 )
                 worksheet.merge_range(
@@ -171,12 +194,22 @@ class ReportGeneratorAdapter(IReportGenerator):
                     global_values.localize.gettext("result"),
                     self._get_checkpoint_format(workbook),
                 )
+                worksheet.write(
+                    f"F{checkpoint_row}",
+                    global_values.localize.gettext("severity"),
+                    self._get_checkpoint_format(workbook),
+                )
                 check_row = checkpoint_row + 1
                 for check in checkpoint["checks"]:
                     worksheet.write(
-                        f"A{check_row}",
+                        f"F{check_row}",
                         global_values.localize.gettext(check["severity"]),
                         self._get_severity_result_format(check["severity"], workbook),
+                    )
+                    worksheet.write(
+                        f"A{check_row}",
+                        global_values.localize.gettext(check["level"]),
+                        self._get_level_format(check["level"], workbook),
                     )
                     worksheet.merge_range(
                         f"B{check_row}:D{check_row}",

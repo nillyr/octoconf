@@ -18,4 +18,5 @@
       expected: .*
       verification_type: CHECK_REGEX
       severity: high
+      level: elevated
       recommendation_on_failed: a <x>reco</x> here

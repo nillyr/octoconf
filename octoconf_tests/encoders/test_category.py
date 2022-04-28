@@ -28,6 +28,7 @@ def check_result():
             cmd_output="a_cmd_output",
             result=True,
             severity="a_severity",
+            level="a_level",
             recommendation_on_failed="a_recommendation_on_failed",
             see_also="a_see_also",
         )
@@ -79,6 +80,7 @@ def test_serialize_category(checkpoints):
                 "cmd_output": "a_cmd_output",
                 "result": true,
                 "severity": "a_severity",
+                "level": "a_level",
                 "recommendation_on_failed": "a_recommendation_on_failed",
                 "see_also": "a_see_also"
             }}]

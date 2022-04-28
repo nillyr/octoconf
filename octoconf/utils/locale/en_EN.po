@@ -1,8 +1,23 @@
 msgid "summary"
 msgstr "Summary"
 
+msgid "level"
+msgstr "Level"
+
 msgid "categories"
 msgstr "Categories"
+
+msgid "minimal"
+msgstr "Minimal"
+
+msgid "intermediate"
+msgstr "Intermediate"
+
+msgid "reinforced"
+msgstr "Reinforced"
+
+msgid "elevated"
+msgstr "Elevated"
 
 msgid "severity"
 msgstr "Severity"

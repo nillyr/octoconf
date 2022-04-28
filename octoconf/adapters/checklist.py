@@ -88,6 +88,7 @@ class ChecklistAdapter(IChecklist):
             verification_type="",
             result=False,
             severity="info",
+            level="minimal",
             recommendation_on_failed="",
         )
 
