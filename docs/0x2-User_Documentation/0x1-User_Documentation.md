@@ -165,6 +165,12 @@ The basic template is as follows:
       #   - low
       #   - info
       severity: high
+      # Possible values:
+      #   - minimal
+      #   - intermediate
+      #   - reinforced
+      #   - elevated
+      level: elevated
       recommendation_on_failed: a <x>reco</x> here
       # Optional value. String
       see_also: https://www.your-reference.com/
