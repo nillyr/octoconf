@@ -47,11 +47,11 @@ Allows to generate from a checklist passed in argument a collection script in th
 
 ```bash
 # Linux
-octoconf checklist generate -c ./ubuntu20-04.yaml -l bash -p linux -o ubuntu20-04.sh
+octoconf checklist generate -c ./ubuntu20-04.yaml -p linux -o ubuntu20-04.sh
 # UNIX macOS
-octoconf checklist generate -c ./macOS11.yaml -l bash -p mac -o macOS11.sh
+octoconf checklist generate -c ./macOS11.yaml -p mac -o macOS11.sh
 # Windows (Powershell)
-octoconf checklist generate -c ./windows10-desktop.yaml -l powershell -p windows -o windows10.ps1
+octoconf checklist generate -c ./windows10-desktop.yaml -p windows -o windows10.ps1
 ```
 
 ### Analyze

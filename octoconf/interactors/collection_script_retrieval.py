@@ -23,11 +23,11 @@ class CollectionScriptRetrievalInteractor:
         self._factory = factory
 
     def execute(self, args):
-        checklist, output, language, platform = ic(args.values())
+        checklist, output, platform = ic(args.values())
 
         self._checklist.parse_checklist(checklist)
         commands = self._checklist.get_commands()
-        script = self._factory.get_language(platform, language)
+        script = self._factory.get_language(platform)
 
         with open(output, "w", newline=self._newline(platform)) as file:
             content = script.write_script(commands, script.write_checks_cmds)

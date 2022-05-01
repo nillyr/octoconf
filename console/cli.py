@@ -104,7 +104,6 @@ def parse_checklist_args(args) -> int:
         opts = {
             "checklist": args.checklist,
             "output": args.output,
-            "language": args.language,
             "platform": args.platform,
         }
         print("[*] Launching the script generation...")
@@ -261,14 +260,6 @@ def parse_args() -> argparse.Namespace:
         "--checklist",
         required=True,
         help="checklist",
-    )
-    gen_script_parser.add_argument(
-        "-l",
-        "--language",
-        choices=("bash", "powershell"),
-        default="bash",
-        required=True,
-        help="script language",
     )
     gen_script_parser.add_argument(
         "-p",

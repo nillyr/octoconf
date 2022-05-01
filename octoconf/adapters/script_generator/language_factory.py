@@ -19,41 +19,15 @@ class LanguageFactory(ILanguageFactory):
     """
 
     @staticmethod
-    def get_language(platform, language_name):
+    def get_language(platform):
         try:
-            if language_name == "bash":
-                return UnixScriptFactory.write_script_for(platform, language_name)
-            if language_name == "powershell":
-                return WindowsScriptFactory.write_script_for(platform, language_name)
-            raise NotImplementedError("Error: not implemented platform or language")
-        except NotImplementedError as _err:
-            print(_err, file=sys.stderr)
-        return None
-
-
-class UnixScriptFactory:
-    @staticmethod
-    def write_script_for(platform, language_name):
-        # Unused arg: language_name
-        try:
-            if platform == "linux":
+            if platform.lower() == "linux":
                 return LinuxBashScript()
-            if platform == "mac":
-                return MacOSBashScript()
-            raise NotImplementedError("Error: not implemented language")
-        except NotImplementedError as _err:
-            print(_err, file=sys.stderr)
-        return None
-
-
-class WindowsScriptFactory:
-    @staticmethod
-    def write_script_for(platform, language_name):
-        # Unused arg: platform
-        try:
-            if language_name == "powershell":
+            if platform.lower() == "mac":
+               return MacOSBashScript()
+            if platform.lower() == "windows":
                 return WindowsPowershellScript()
-            raise NotImplementedError("Error: not implemented language")
+            raise NotImplementedError(f"Error: no language implemented for platform {platform}")
         except NotImplementedError as _err:
             print(_err, file=sys.stderr)
         return None

@@ -54,7 +54,7 @@ optional arguments:
 
 ```bash
 # Generate a collection script
-octoconf checklist generate -c ./windows10-desktop.yaml -l powershell -p windows -o windows10.ps1
+octoconf checklist generate -c ./windows10-desktop.yaml -p windows -o windows10.ps1
 # Run the script on the targeted host (admin)
 powershell.exe -nop -exec bypass .\windows10.ps1
 # Retrieve audit evidence and then analyze
