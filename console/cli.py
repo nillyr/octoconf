@@ -265,7 +265,7 @@ def parse_args() -> argparse.Namespace:
         "-p",
         "--platform",
         required=True,
-        choices=("mac", "linux", "windows"),
+        choices=("mac", "gnu/linux", "linux", "windows"),
         help="targeted platform",
     )
     gen_script_parser.add_argument(

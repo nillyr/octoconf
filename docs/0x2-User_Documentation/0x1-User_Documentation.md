@@ -24,7 +24,7 @@ git clone --recurse-submodules https://github.com/nillyr/octoconf.git
 # Else
 git clone https://github.com/nillyr/octoconf.git
 cd octoconf
-# Install on Linux/Unix
+# Install on GNU/Linux
 bash ./setup.sh
 # Install on Windows
 .\setup.bat
@@ -46,8 +46,8 @@ Allows to generate from a checklist passed in argument a collection script in th
 #### Command examples: Script generation
 
 ```bash
-# Linux
-octoconf checklist generate -c ./ubuntu20-04.yaml -p linux -o ubuntu20-04.sh
+# GNU/Linux
+octoconf checklist generate -c ./ubuntu20-04.yaml -p gnu/linux -o ubuntu20-04.sh
 # UNIX macOS
 octoconf checklist generate -c ./macOS11.yaml -p mac -o macOS11.sh
 # Windows (Powershell)

@@ -21,7 +21,7 @@ class LanguageFactory(ILanguageFactory):
     @staticmethod
     def get_language(platform):
         try:
-            if platform.lower() == "linux":
+            if platform.lower() in ("gnu/linux", "linux"):
                 return LinuxBashScript()
             if platform.lower() == "mac":
                return MacOSBashScript()
