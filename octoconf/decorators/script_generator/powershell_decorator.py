@@ -19,7 +19,7 @@ class PowershellDecorator(Decorator):
 #Requires -version 2
 
 Write-Output "[*] Preparation..."
-$basedir = "$pwd\Audit_$env:COMPUTERNAME_$(get-date -f yyyyMMdd-hhmmss)"
+$basedir = "$pwd\Audit_$($env:COMPUTERNAME)_$(get-date -f yyyyMMdd-hhmmss)"
 New-Item -ItemType directory -Path $basedir
 $checksdir = "$basedir\checks"
 New-Item -ItemType directory -Path $checksdir
@@ -34,6 +34,13 @@ Write-Output "[*] Beginning of the collection..."
             epilog = """# Epilog
 Write-Output "[*] Finishing..."
 date >> $basedir\\timestamp.txt
+try {
+    Get-Command Compress-Archive | Out-Null
+    Compress-Archive -Path ($basedir) -DestinationPath "$($basedir).zip"
+    Write-Output "[+] Archive created!"
+} catch {
+    Write-Error "[x] Compress-Archive command not found!"
+}
 Write-Output "[+] Done!"
 """
             content.append(epilog)
