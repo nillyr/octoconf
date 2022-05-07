@@ -7,6 +7,8 @@ from abc import ABCMeta, abstractmethod
 from pathlib import PurePosixPath
 import re
 
+from icecream import ic
+
 from octoconf.adapters.redirector_regex.redirector_regex import RedirectorRegex
 
 
@@ -32,11 +34,21 @@ class IUnixScript(metaclass=ABCMeta):
         """
         This method puts the audit proofs in the folder corresponding to the current category. Since the user is not aware of the folder automatically created during the tests, it is not possible to specify the exact path for the output of the files in the checklist.
         """
-        output_file = re.split(IUnixScript._regex_pattern, cmd)[-1].strip()
-        path = basedir / PurePosixPath(output_file).parent
-        replace_path = path / PurePosixPath(output_file).name
-        return (
-            re.split(IUnixScript._regex_pattern, cmd)[0]
-            + IUnixScript._pattern
-            + str(replace_path)
-        )
+        # output_file = re.split(IUnixScript._regex_pattern, cmd)[-1].strip()
+        # path = basedir / PurePosixPath(output_file).parent
+        # replace_path = path / PurePosixPath(output_file).name
+        # return (
+        #     re.split(IUnixScript._regex_pattern, cmd)[0]
+        #     + IUnixScript._pattern
+        #     + str(replace_path)
+        # )
+
+        cmd_elt = list(filter(None, re.split(IUnixScript._regex_pattern, cmd)))
+        for index in range(1, len(cmd_elt), 2):
+            path = basedir / PurePosixPath(cmd_elt[index]).parent
+            cmd_elt[index] = IUnixScript._pattern + str(
+                path / PurePosixPath(cmd_elt[index]).name
+            )
+            ic(cmd_elt[index])
+
+        return ic("".join(cmd_elt))

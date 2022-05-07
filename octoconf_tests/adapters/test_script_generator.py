@@ -28,6 +28,18 @@ def unix_content():
 
 
 @pytest.fixture
+def unix_content_with_multiple_output():
+    return [
+        {
+            "category_id": 1,
+            "category_name": "a category with space",
+            "checks_cmds": [["1.1.1", "whoami"], ["1.1.2", "id"]],
+            "collection_cmds": ["[[ -f file.conf ]] && cat file.conf > dummy_1.txt; cat file2.conf >> dummy-2.txt"],
+        }
+    ]
+
+
+@pytest.fixture
 def windows_content():
     return [
         {
@@ -104,6 +116,17 @@ def test_write_script_for_linux(unix_content):
 
     linux_sh = LinuxBashScript()
     cmds = linux_sh.write_script(unix_content, linux_sh.write_checks_cmds)
+
+    assert expected_output in cmds
+
+
+def test_write_script_for_linux_with_multiple_output(unix_content_with_multiple_output):
+    # fmt:off
+    expected_output = '\nCATEGORY="a_category_with_space"\necho "[*] Running \\"${CATEGORY}\\" collection commands..."\n/bin/mkdir -p "${BASEDIR}"/"${CATEGORY}"/\n[[ -f file.conf ]] && cat file.conf >> "${BASEDIR}"/"${CATEGORY}"/dummy_1.txt; cat file2.conf >> "${BASEDIR}"/"${CATEGORY}"/dummy-2.txt\n'
+    # fmt:on
+
+    linux_sh = LinuxBashScript()
+    cmds = linux_sh.write_script(unix_content_with_multiple_output, linux_sh.write_checks_cmds)
 
     assert expected_output in cmds
 

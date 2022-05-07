@@ -32,7 +32,7 @@ class UnixOutputRedirectorRegexCB(IOutputRedirectorRegexBuilder):
         Set of supported redirections.
         """
 
-        DEFAULT = r"\s*>+\s*"
+        DEFAULT = r"\s*>+\s*([a-zA-Z0-9.\-_]+)(?#(;|&&)"
 
     _instance = None
     _product = None
