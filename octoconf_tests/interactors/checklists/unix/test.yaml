@@ -20,3 +20,22 @@
       severity: high
       level: elevated
       recommendation_on_failed: a <x>reco</x> here
+  - id: 2
+    title: a <x>random</x> title 2
+    description: >
+      a <x>random</x> description
+    collection_cmd: '[[ -d "/tmp" ]] && echo "hello" > /tmp/dummy_1.txt; cat /tmp/dummy_1.txt > /tmp/dummy-2.txt'
+    collection_cmd_type: CMD_EXEC
+    collect_only: false
+    checks:
+    - id: 1
+      title: a random title
+      description: >
+        a <x>random</x> description
+      type: CMD_EXEC
+      cmd: whoami
+      expected: .*
+      verification_type: CHECK_REGEX
+      severity: high
+      level: elevated
+      recommendation_on_failed: a <x>reco</x> here

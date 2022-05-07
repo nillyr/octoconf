@@ -17,6 +17,7 @@ from octoconf.ports import IChecklist
 from octoconf.ports.runner.command_runner_abstract_factory import (
     ICommandRunnerFactory,
 )
+from octoconf.ports.script_generator import IUnixScript, IWindowsScript
 
 
 class ChecksRunnerInteractor:
@@ -41,40 +42,42 @@ class ChecksRunnerInteractor:
         )
 
         regex_pattern = RedirectorRegex.get_redirector_regex(platform.system())
-        # TODO: improve behavior for windows based system
-        # reason: change in regex_pattern for linux
         if platform.system() in ("Darwin", "Linux", "Unix"):
-            cmd_elt = list(filter(None, re.split(regex_pattern, cmd)))
-            for index in range(1, len(cmd_elt), 2):
-                path = (
-                    Path.cwd()
-                    / basedir
-                    / category.replace(" ", "_")
-                    / Path(cmd_elt[index]).parent
-                )
-                path.mkdir(parents=True, exist_ok=True)
-                replace_path = path / Path(cmd_elt[index]).name
-                cmd_elt[index] = " > " + '"' + str(replace_path) + '"'
-
-            return ic("".join(cmd_elt))
+            redirector = IUnixScript._pattern
         else:
-            output_file = re.split(regex_pattern, cmd)[-1].strip()
+            redirector = IWindowsScript._powershell_pattern
+
+        cmd_elt = list(filter(None, re.split(regex_pattern, cmd)))
+        for index in range(1, len(cmd_elt), 2):
             path = (
                 Path.cwd()
                 / basedir
                 / category.replace(" ", "_")
-                / Path(output_file).parent
+                / Path(cmd_elt[index]).parent
             )
             path.mkdir(parents=True, exist_ok=True)
-            replace_path = path / Path(output_file).name
-            # Add quotes in the event there is a space in the path
-            return ic(
-                re.split(regex_pattern, cmd)[0]
-                + re.search(regex_pattern, cmd).group(0)
-                + '"'
-                + str(replace_path)
-                + '"'
-            )
+            replace_path = path / Path(cmd_elt[index]).name
+            cmd_elt[index] = redirector + '"' + str(replace_path) + '"'
+
+        return ic("".join(cmd_elt))
+        # else:
+        #     output_file = re.split(regex_pattern, cmd)[-1].strip()
+        #     path = (
+        #         Path.cwd()
+        #         / basedir
+        #         / category.replace(" ", "_")
+        #         / Path(output_file).parent
+        #     )
+        #     path.mkdir(parents=True, exist_ok=True)
+        #     replace_path = path / Path(output_file).name
+        #     # Add quotes in the event there is a space in the path
+        #     return ic(
+        #         re.split(regex_pattern, cmd)[0]
+        #         + re.search(regex_pattern, cmd).group(0)
+        #         + '"'
+        #         + str(replace_path)
+        #         + '"'
+        #     )
 
     def execute(self, checklist, output_directory):
         """
