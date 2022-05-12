@@ -40,7 +40,7 @@ class MacOSBashScript(IUnixScript):
             str = """
 CATEGORY=\"{0}\"
 echo "[*] Running {1} collection commands..."
-/bin/mkdir -p {2}
+mkdir -p {2}
 """.format(
                 re.sub(
                     "(</?x>)|[^a-zàâçéèêëîïôûù0-9]",

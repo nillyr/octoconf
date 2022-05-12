@@ -18,11 +18,12 @@ class BashDecorator(Decorator):
 
 # Prolog
 echo \"[*] Preparation...\"
-BASEDIR=$(/usr/bin/mktemp -d)
+BASEDIR="$(pwd)/audit_$(hostname)_$(date '+%Y%m%d-%H%M%S')"
+mkdir -p \"${BASEDIR}\"
 CHECKSDIR=\"${BASEDIR}\"/checks
-/usr/bin/mkdir -p \"${CHECKSDIR}\"
+mkdir -p \"${CHECKSDIR}\"
 
-echo `date` >> \"${BASEDIR}\"/timestamp.txt
+date >> \"${BASEDIR}\"/timestamp.txt
 exec 2>/dev/null
 
 # Configuration collection
@@ -32,9 +33,9 @@ echo \"[*] Beginning of the collection...\"'''
             epilog = '''
 # Epilog
 echo \"[*] Finishing...\"
-echo `date` >> \"${BASEDIR}\"/timestamp.txt
-/usr/bin/tar zcf \"${BASEDIR##*/}\".tar.gz -C \"${BASEDIR}\" .
-/bin/rm -rf \"${BASEDIR}\"
+date >> \"${BASEDIR}\"/timestamp.txt
+tar zcf \"${BASEDIR##*/}\".tar.gz -C \"${BASEDIR}\" .
+rm -rf \"${BASEDIR}\"
 echo \"[+] Done!\"'''
             content.append(epilog)
             return content
