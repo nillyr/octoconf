@@ -16,14 +16,23 @@ class BashDecorator(Decorator):
             content = []
             prolog = '''#!/bin/bash
 
+[ "${EUID}" -eq 0 ] || echo "[x] This script must be run as 'root'"; exit 1;
+
 # Prolog
 echo \"[*] Preparation...\"
 BASEDIR="$(pwd)/audit_$(hostname)_$(date '+%Y%m%d-%H%M%S')"
 mkdir -p \"${BASEDIR}\"
 CHECKSDIR=\"${BASEDIR}\"/checks
 mkdir -p \"${CHECKSDIR}\"
+METADATA=\"${BASEDIR}\"/metadata
+mkdir -p \"${METADATA}\"
 
-date >> \"${BASEDIR}\"/timestamp.txt
+# Standard system information
+date >> \"${METADATA}\"/timestamp.txt
+lsb_release -a > \"${METADATA}\"/distribution_information.txt
+uname -a > \"${METADATA}\"/system_information.txt
+for keyword in system-manufacturer system-product-name bios-release-date bios-version; do echo "$keyword = " $(dmidecode -s $keyword) >> \"${METADATA}\"/smbios_information.txt; done
+
 exec 2>/dev/null
 
 # Configuration collection
@@ -33,7 +42,7 @@ echo \"[*] Beginning of the collection...\"'''
             epilog = '''
 # Epilog
 echo \"[*] Finishing...\"
-date >> \"${BASEDIR}\"/timestamp.txt
+date >> \"${METADATA}\"/timestamp.txt
 tar zcf \"${BASEDIR##*/}\".tar.gz -C \"${BASEDIR}\" .
 rm -rf \"${BASEDIR}\"
 echo \"[+] Done!\"'''
