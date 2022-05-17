@@ -16,7 +16,10 @@ class BashDecorator(Decorator):
             content = []
             prolog = '''#!/bin/bash
 
-[ "${EUID}" -eq 0 ] || echo "[x] This script must be run as 'root'"; exit 1;
+if [[ ! "${EUID}" -eq 0 ]]; then
+    echo "[x] This script must be run as 'root'"
+    exit 1
+fi
 
 # Prolog
 echo \"[*] Preparation...\"
@@ -27,13 +30,13 @@ mkdir -p \"${CHECKSDIR}\"
 METADATA=\"${BASEDIR}\"/metadata
 mkdir -p \"${METADATA}\"
 
+exec 2>/dev/null
+
 # Standard system information
 date >> \"${METADATA}\"/timestamp.txt
 lsb_release -a > \"${METADATA}\"/distribution_information.txt
 uname -a > \"${METADATA}\"/system_information.txt
 for keyword in system-manufacturer system-product-name bios-release-date bios-version; do echo "$keyword = " $(dmidecode -s $keyword) >> \"${METADATA}\"/smbios_information.txt; done
-
-exec 2>/dev/null
 
 # Configuration collection
 echo \"[*] Beginning of the collection...\"'''

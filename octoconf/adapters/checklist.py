@@ -162,7 +162,7 @@ class ChecklistAdapter(IChecklist):
             )
         except IndexError as _err:
             print(
-                f"Error: Check not found. Are you using the correct checklist?{_err}",
+                f"Error: Check not found. Are you using the correct checklist? {_err}. Requested values: {category_id, checkpoint_id, check_id}",
                 file=sys.stderr,
             )
             pass
