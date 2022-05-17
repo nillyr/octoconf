@@ -16,6 +16,12 @@ class BashDecoratorMAC(Decorator):
             content = []
             prolog = '''#!/bin/bash
 
+id -Gn $USER | /usr/bin/grep -q -w admin
+if [ $? -ne 0 ]; then
+  echo "[x] You must be in the admin group to run this script."
+  exit
+fi
+
 # Prolog
 echo \"[*] Preparation...\"
 BASEDIR="$(pwd)/audit_$(hostname)_$(date '+%Y%m%d-%H%M%S')"
