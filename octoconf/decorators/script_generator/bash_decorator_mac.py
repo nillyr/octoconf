@@ -16,7 +16,7 @@ class BashDecoratorMAC(Decorator):
             content = []
             prolog = '''#!/bin/bash
 
-id -Gn $USER | /usr/bin/grep -q -w admin
+id -Gn $USER | grep -q -w admin
 if [ $? -ne 0 ]; then
   echo "[x] You must be in the admin group to run this script."
   exit
