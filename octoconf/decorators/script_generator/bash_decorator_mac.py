@@ -29,6 +29,8 @@ mkdir -p \"${BASEDIR}\"
 CHECKSDIR=\"${BASEDIR}\"/checks
 mkdir -p \"${CHECKSDIR}\"
 
+exec 2>\"${BASEDIR}\"/stderr.txt
+
 date >> \"${BASEDIR}\"/timestamp.log
 
 # Configuration collection

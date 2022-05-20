@@ -30,7 +30,7 @@ mkdir -p \"${CHECKSDIR}\"
 METADATA=\"${BASEDIR}\"/metadata
 mkdir -p \"${METADATA}\"
 
-exec 2>/dev/null
+exec 2>\"${BASEDIR}\"/stderr.txt
 
 # Standard system information
 date >> \"${METADATA}\"/timestamp.txt
