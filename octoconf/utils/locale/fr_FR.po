@@ -22,9 +22,6 @@ msgstr "Élevé"
 msgid "severity"
 msgstr "Sévérité"
 
-# msgid "high"
-# msgstr "Haute"
-
 msgid "medium"
 msgstr "Moyenne"
 

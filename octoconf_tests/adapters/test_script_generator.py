@@ -14,7 +14,6 @@ from octoconf.adapters.script_generator.windows_powershell_script import (
     WindowsPowershellScript,
 )
 
-
 @pytest.fixture
 def unix_content():
     return [

@@ -22,9 +22,6 @@ msgstr "High"
 msgid "severity"
 msgstr "Severity"
 
-#msgid "high"
-#msgstr "High"
-
 msgid "medium"
 msgstr "Medium"
 
