@@ -85,12 +85,12 @@ class ReportGeneratorAdapter(IReportGenerator):
         """
         Definition of the style to be applied.
         """
-        if level == "elevated":
-            font_color = config.get_config("level_colors", "lvl_elevated")
-        elif level == "reinforced":
-            font_color = config.get_config("level_colors", "lvl_reinforced")
-        elif level == "intermediate":
-            font_color = config.get_config("level_colors", "lvl_intermediate")
+        if level == "high":
+            font_color = config.get_config("level_colors", "lvl_high")
+        elif level == "enhanced":
+            font_color = config.get_config("level_colors", "lvl_enhanced")
+        elif level == "intermediary":
+            font_color = config.get_config("level_colors", "lvl_intermediary")
         else:
             font_color = config.get_config("level_colors", "lvl_minimal")
 

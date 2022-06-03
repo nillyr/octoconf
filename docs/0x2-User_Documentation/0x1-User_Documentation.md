@@ -167,10 +167,14 @@ The basic template is as follows:
       severity: high
       # Possible values:
       #   - minimal
-      #   - intermediate
-      #   - reinforced
-      #   - elevated
-      level: elevated
+      #      - To be implemented on every system.
+      #   - intermediary
+      #      - Generally applies to services protected by several layers of higher-level security.
+      #   - enhanced
+      #      - Generally applies to systems exposed to non-authenticated flows.
+      #   - high
+      #      - Applies to systems hosting sensitive data accessible from non-authenticated or poorly controlled networks
+      level: high
       recommendation_on_failed: a <x>reco</x> here
       # Optional value. String
       see_also: https://www.your-reference.com/

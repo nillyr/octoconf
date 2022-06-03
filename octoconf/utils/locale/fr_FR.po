@@ -10,20 +10,20 @@ msgstr "Niveau"
 msgid "minimal"
 msgstr "Minimal"
 
-msgid "intermediate"
+msgid "intermediary"
 msgstr "Intermédiaire"
 
-msgid "reinforced"
+msgid "enhanced"
 msgstr "Renforcé"
 
-msgid "elevated"
+msgid "high"
 msgstr "Élevé"
 
 msgid "severity"
 msgstr "Sévérité"
 
-msgid "high"
-msgstr "Haute"
+# msgid "high"
+# msgstr "Haute"
 
 msgid "medium"
 msgstr "Moyenne"

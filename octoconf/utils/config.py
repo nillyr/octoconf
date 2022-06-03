@@ -35,9 +35,9 @@ s_high = C51718
 
 # level
 lvl_minimal = C51718
-lvl_intermediate = F1992D
-lvl_reinforced = FFCC00
-lvl_elevated = 009644
+lvl_intermediary = F1992D
+lvl_enhanced = FFCC00
+lvl_high = 009644
 
 # status
 success = 009644
@@ -60,8 +60,8 @@ to_be_defined = F1992D
 [level_colors]
 # level
 #lvl_minimal =
-#lvl_intermediate =
-#lvl_reinforced =
+#lvl_intermediary =
+#lvl_enhanced =
 #lvl_high =
 
 [status_colors]
