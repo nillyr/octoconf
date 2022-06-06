@@ -35,8 +35,11 @@ exec 2>\"${BASEDIR}\"/stderr.txt
 # Standard system information
 date >> \"${METADATA}\"/timestamp.txt
 lsb_release -a > \"${METADATA}\"/distribution_information.txt
+{ cat /etc/issue; cat /etc/os-release; } > \"${METADATA}\"/release.txt
 uname -a > \"${METADATA}\"/system_information.txt
 for keyword in system-manufacturer system-product-name bios-release-date bios-version; do echo "$keyword = " $(dmidecode -s $keyword) >> \"${METADATA}\"/smbios_information.txt; done
+hostnamectl > \"${METADATA}\"/hostnamectl
+env > \"${METADATA}\"/env.txt
 
 # Configuration collection
 echo \"[*] Beginning of the collection...\"'''
