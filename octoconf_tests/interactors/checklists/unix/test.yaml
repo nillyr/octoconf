@@ -17,8 +17,27 @@
       cmd: whoami
       expected: .*
       verification_type: CHECK_REGEX
-      severity: high
-      level: elevated
+      level: minimal
+      recommendation_on_failed: a <x>reco</x> here
+    - id: 2
+      title: a random title 2
+      description: >
+        a <x>random</x> description
+      type: CMD_EXEC
+      cmd: whoami
+      expected: .*
+      verification_type: CHECK_REGEX
+      level: intermediary
+      recommendation_on_failed: a <x>reco</x> here
+    - id: 3
+      title: a random title 3
+      description: >
+        a <x>random</x> description
+      type: CMD_EXEC
+      cmd: whoami
+      expected: .*
+      verification_type: CHECK_REGEX
+      level: enhanced
       recommendation_on_failed: a <x>reco</x> here
   - id: 2
     title: a <x>random</x> title 2
@@ -36,6 +55,5 @@
       cmd: whoami
       expected: .*
       verification_type: CHECK_REGEX
-      severity: high
-      level: elevated
+      level: high
       recommendation_on_failed: a <x>reco</x> here

@@ -27,12 +27,6 @@ font_color = FFFFFF
 category_foreground_color = 333E4E
 checkpoint_foreground_color = 8496AF
 
-# severity
-s_info = 2C68C4
-s_low = F5B76C
-s_medium = F1992D
-s_high = C51718
-
 # level
 lvl_minimal = C51718
 lvl_intermediary = F1992D
@@ -49,13 +43,6 @@ to_be_defined = F1992D
 #font_color =
 #category_foreground_color =
 #checkpoint_foreground_color =
-
-[severity_colors]
-# Hexadecimal values only
-#s_info =
-#s_low =
-#s_medium =
-#s_high =
 
 [level_colors]
 # level

@@ -19,18 +19,6 @@ msgstr "Renforcé"
 msgid "high"
 msgstr "Élevé"
 
-msgid "severity"
-msgstr "Sévérité"
-
-msgid "medium"
-msgstr "Moyenne"
-
-msgid "low"
-msgstr "Basse"
-
-msgid "info"
-msgstr "Info"
-
 msgid "success"
 msgstr "Succès"
 

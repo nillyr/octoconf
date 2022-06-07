@@ -23,7 +23,6 @@ class Check(BaseModel):
     verification_type: str
     cmd_output: Optional[str]
     result: Optional[bool]
-    severity: str
     level: str = "minimal"
     recommendation_on_failed: str
     see_also: Optional[str]
@@ -40,7 +39,6 @@ class CheckResult(BaseModel):
     verification_type: str
     cmd_output: str = ""
     result: bool = False
-    severity: str
     level: str = "minimal"
     recommendation_on_failed: str
     see_also: Optional[str]

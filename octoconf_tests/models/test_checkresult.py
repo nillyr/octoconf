@@ -20,7 +20,6 @@ def test_checkresult_model_init():
         verification_type="a_verification_type",
         cmd_output="a_cmd_output",
         result=True,
-        severity="a_severity",
         level="a_level",
         recommendation_on_failed="a_recommendation_on_failed",
         see_also="a_see_also",
@@ -35,7 +34,6 @@ def test_checkresult_model_init():
     assert check_result.verification_type == "a_verification_type"
     assert check_result.cmd_output == "a_cmd_output"
     assert check_result.result == True
-    assert check_result.severity == "a_severity"
     assert check_result.level == "a_level"
     assert check_result.recommendation_on_failed == "a_recommendation_on_failed"
     assert check_result.see_also == "a_see_also"

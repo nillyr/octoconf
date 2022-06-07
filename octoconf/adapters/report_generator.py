@@ -56,31 +56,6 @@ class ReportGeneratorAdapter(IReportGenerator):
             }
         )
 
-    def _get_severity_result_format(
-        self, severity: str, workbook: xlsxwriter.workbook.Workbook
-    ):
-        """
-        Definition of the style to be applied.
-        """
-        if severity == "info":
-            font_color = config.get_config("severity_colors", "s_info")
-        elif severity == "low":
-            font_color = config.get_config("severity_colors", "s_low")
-        elif severity == "medium":
-            font_color = config.get_config("severity_colors", "s_medium")
-        else:
-            font_color = config.get_config("severity_colors", "s_high")
-
-        return workbook.add_format(
-            {
-                "bold": 1,
-                "border": 1,
-                "align": "center",
-                "valign": "vcenter",
-                "font_color": font_color,
-            }
-        )
-
     def _get_level_format(self, level: str, workbook: xlsxwriter.workbook.Workbook):
         """
         Definition of the style to be applied.
@@ -158,26 +133,49 @@ class ReportGeneratorAdapter(IReportGenerator):
             }
         )
 
+    def _define_conditional_formatting(self, workbook: xlsxwriter.workbook.Workbook, worksheet: xlsxwriter.workbook.Worksheet, range):
+        worksheet.conditional_format(range,
+            {'type': 'text',
+                'criteria': 'containing',
+                'value': global_values.localize.gettext("success"),
+                'format': self._get_success_result_format(workbook)
+            })
+        worksheet.conditional_format(range,
+            {'type': 'text',
+                'criteria': 'containing',
+                'value': global_values.localize.gettext("failed"),
+                'format': self._get_failed_result_format(workbook)
+            })
+        worksheet.conditional_format(range,
+            {'type': 'text',
+                'criteria': 'containing',
+                'value': global_values.localize.gettext("na"),
+                'format': self._get_uncertain_result_format(workbook)
+            })
+
     def _write_results(self, workbook: xlsxwriter.workbook.Workbook, data: list):
         """
         Add the results obtained during the verification for each of the checks.
         """
         for category in data["categories"][0]:
             # It is not possible to use a worksheet's title > 31 chars, so we need to slice
+            regex = r"(</?x>)|[^a-zàâçéèêëîïôûù0-9\s]"
             category_name = re.sub(
-                "(</?x>)|[^a-zàâçéèêëîïôûù0-9]",
-                "_",
+                regex,
+                "",
                 category["name"][0:31],
                 0,
                 re.IGNORECASE,
             )
             worksheet = workbook.add_worksheet(name=category_name)
-            worksheet.set_column("A:F", 20)
+            worksheet.set_column("A:E", 20)
             worksheet.set_row(0, 25)
             worksheet.merge_range(
-                "A1:F1", category["name"], self._get_category_format(workbook)
+                "A1:E1", category["name"], self._get_category_format(workbook)
             )
             checkpoint_row = 2
+            range = xlsxwriter.utility.xl_range(0, 4, 1048575, 4)
+            self._define_conditional_formatting(workbook, worksheet, range)
             for checkpoint in category["checkpoints"]:
                 worksheet.write(
                     f"A{checkpoint_row}",
@@ -194,18 +192,12 @@ class ReportGeneratorAdapter(IReportGenerator):
                     global_values.localize.gettext("result"),
                     self._get_checkpoint_format(workbook),
                 )
-                worksheet.write(
-                    f"F{checkpoint_row}",
-                    global_values.localize.gettext("severity"),
-                    self._get_checkpoint_format(workbook),
-                )
                 check_row = checkpoint_row + 1
                 for check in checkpoint["checks"]:
-                    worksheet.write(
-                        f"F{check_row}",
-                        global_values.localize.gettext(check["severity"]),
-                        self._get_severity_result_format(check["severity"], workbook),
-                    )
+                    # Set data validation on result's cell
+                    worksheet.data_validation(f"E{check_row}", {'validate': 'list',
+                                  'source': [global_values.localize.gettext("success"), global_values.localize.gettext("failed"), global_values.localize.gettext("na")]})
+
                     worksheet.write(
                         f"A{check_row}",
                         global_values.localize.gettext(check["level"]),
@@ -268,14 +260,16 @@ class ReportGeneratorAdapter(IReportGenerator):
         worksheet.write("G2", f"% {global_values.localize.gettext('percent')}", self._get_checkpoint_format(workbook))
 
         row = 2
-        for key in self._synthesis:
+        for category in self._synthesis:
             row += 1
+            # A - C
             worksheet.merge_range(
                 xlsxwriter.utility.xl_range(row - 1, 0, row - 1, 2),
-                key,
+                category,
                 self._get_check_format(workbook),
             )
-            range = f"{key}!{xlsxwriter.utility.xl_range(0, 4, 1048575, 4)}"
+            # range = the col with the success/failed/na status (E) for each category
+            range = f"'{category}'!{xlsxwriter.utility.xl_range(0, 4, 1048575, 4)}"
             criteria = '"'+global_values.localize.gettext('success')+'"'
             worksheet.write_formula(
                 xlsxwriter.utility.xl_rowcol_to_cell(row - 1, 3),
@@ -294,8 +288,11 @@ class ReportGeneratorAdapter(IReportGenerator):
                 '=COUNTIF(%s,%s)' % (range, criteria),
                 self._get_check_format(workbook),
             )
+            # Success col = D => col 3
             numerator_range = xlsxwriter.utility.xl_rowcol_to_cell(row - 1, 3)
-            denominator_range = xlsxwriter.utility.xl_range(row - 1, 3, row - 1, 5)
+            # Success col = D => col 3; Failed col = E => col 4 => range 3-4
+            # N/A status is out
+            denominator_range = xlsxwriter.utility.xl_range(row - 1, 3, row - 1, 4)
             worksheet.write_formula(
                 xlsxwriter.utility.xl_rowcol_to_cell(row - 1, 6),
                 "=(%s*100/SUM(%s))" % (numerator_range, denominator_range),

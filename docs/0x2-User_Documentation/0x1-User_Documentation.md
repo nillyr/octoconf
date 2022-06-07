@@ -160,12 +160,6 @@ The basic template is as follows:
       #   - CHECK_REGEX   expects a python regular expression
       verification_type: CHECK_REGEX
       # Possible values:
-      #   - high
-      #   - medium
-      #   - low
-      #   - info
-      severity: high
-      # Possible values:
       #   - minimal
       #      - To be implemented on every system.
       #   - intermediary

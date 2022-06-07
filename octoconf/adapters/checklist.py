@@ -87,7 +87,6 @@ class ChecklistAdapter(IChecklist):
             expected="FIXME",
             verification_type="",
             result=False,
-            severity="info",
             level="minimal",
             recommendation_on_failed="",
         )

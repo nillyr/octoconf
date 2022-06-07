@@ -19,18 +19,6 @@ msgstr "Enhanced"
 msgid "high"
 msgstr "High"
 
-msgid "severity"
-msgstr "Severity"
-
-msgid "medium"
-msgstr "Medium"
-
-msgid "low"
-msgstr "Low"
-
-msgid "info"
-msgstr "Info"
-
 msgid "success"
 msgstr "Success"
 
