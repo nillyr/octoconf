@@ -36,6 +36,7 @@ class MacOSBashScript(IUnixScript):
         Adds to the collection script the set of commands for collecting proofs to perform manual verifications.
         """
         cmds, str = ([], "")
+        regex = r"(</?x>)|[^a-zàâçéèêëîïôûù0-9\-]"
         for i in range(len(content)):
             str = """
 CATEGORY=\"{0}\"
@@ -43,7 +44,7 @@ echo "[*] Running {1} collection commands..."
 mkdir -p {2}
 """.format(
                 re.sub(
-                    "(</?x>)|[^a-zàâçéèêëîïôûù0-9]",
+                    regex,
                     "_",
                     content[i]["category_name"],
                     0,

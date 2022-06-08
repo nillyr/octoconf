@@ -25,21 +25,23 @@ fi
 echo \"[*] Preparation...\"
 BASEDIR="$(pwd)/audit_$(hostname)_$(date '+%Y%m%d-%H%M%S')"
 mkdir -p \"${BASEDIR}\"
-CHECKSDIR=\"${BASEDIR}\"/checks
+METADATADIR=\"${BASEDIR}\"/00_Metadata
+mkdir -p \"${METADATADIR}\"
+CHECKSDIR=\"${BASEDIR}\"/10_Checks
 mkdir -p \"${CHECKSDIR}\"
-METADATA=\"${BASEDIR}\"/metadata
-mkdir -p \"${METADATA}\"
 
 exec 2>\"${BASEDIR}\"/stderr.txt
 
 # Standard system information
-date >> \"${METADATA}\"/timestamp.txt
-lsb_release -a > \"${METADATA}\"/distribution_information.txt
-{ cat /etc/issue; cat /etc/os-release; } > \"${METADATA}\"/release.txt
-uname -a > \"${METADATA}\"/system_information.txt
-for keyword in system-manufacturer system-product-name bios-release-date bios-version; do echo "$keyword = " $(dmidecode -s $keyword) >> \"${METADATA}\"/smbios_information.txt; done
-hostnamectl > \"${METADATA}\"/hostnamectl
-env > \"${METADATA}\"/env.txt
+date >> \"${METADATADIR}\"/timestamp.txt
+lsb_release -a > \"${METADATADIR}\"/distribution_information.txt
+{ cat /etc/issue; cat /etc/os-release; } > \"${METADATADIR}\"/release.txt
+uname -a > \"${METADATADIR}\"/system_information.txt
+for keyword in system-manufacturer system-product-name bios-release-date bios-version; do echo "$keyword = " $(dmidecode -s $keyword) >> \"${METADATADIR}\"/smbios_information.txt; done
+systemd-detect-virt > \"${METADATADIR}\"/virtualization.txt
+lshw -class system > \"${METADATADIR}\"/lshw.txt
+hostnamectl > \"${METADATADIR}\"/hostnamectl
+env > \"${METADATADIR}\"/env.txt
 
 # Configuration collection
 echo \"[*] Beginning of the collection...\"'''
@@ -48,7 +50,7 @@ echo \"[*] Beginning of the collection...\"'''
             epilog = '''
 # Epilog
 echo \"[*] Finishing...\"
-date >> \"${METADATA}\"/timestamp.txt
+date >> \"${METADATADIR}\"/timestamp.txt
 tar zcf \"${BASEDIR##*/}\".tar.gz -C \"${BASEDIR}\" .
 rm -rf \"${BASEDIR}\"
 echo \"[+] Done!\"'''

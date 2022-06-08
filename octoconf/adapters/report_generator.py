@@ -159,7 +159,7 @@ class ReportGeneratorAdapter(IReportGenerator):
         """
         for category in data["categories"][0]:
             # It is not possible to use a worksheet's title > 31 chars, so we need to slice
-            regex = r"(</?x>)|[^a-zàâçéèêëîïôûù0-9\s]"
+            regex = r"(</?x>)|[^a-zàâçéèêëîïôûù0-9\s\-]"
             category_name = re.sub(
                 regex,
                 "",

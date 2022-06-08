@@ -36,6 +36,7 @@ class WindowsPowershellScript(IWindowsScript):
         Adds to the collection script the set of commands for collecting proofs to perform manual verifications.
         """
         cmds, str = ([], "")
+        regex = r"(</?x>)|[^a-zàâçéèêëîïôûù0-9\-]"
         for i in range(len(content)):
             str = """
 $category=\"{0}\"
@@ -43,7 +44,7 @@ Write-Output "[*] Running {1} collection commands..."
 New-Item -ItemType directory -Path $basedir\\$category
 """.format(
                 re.sub(
-                    "(</?x>)|[^a-zàâçéèêëîïôûù0-9]",
+                    regex,
                     "_",
                     content[i]["category_name"],
                     0,

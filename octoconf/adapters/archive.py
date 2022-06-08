@@ -25,7 +25,7 @@ class ArchiveAdapter(IArchive):
         Generator method indicating the files to be extracted only (for tar.gz archives).
         """
         for tarinfo in members:
-            if "checks" in str(Path(tarinfo.name).parent):
+            if "10_checks" in str(Path(tarinfo.name).parent).lower():
                 yield tarinfo
 
     def extract(self, archive) -> Path:
@@ -49,7 +49,7 @@ class ArchiveAdapter(IArchive):
                 with zipfile.ZipFile(archive, "r") as zip_file:
                     files = zip_file.namelist()
                     for file in files:
-                        if "checks" in file:
+                        if "10_checks" in file.lower():
                             zip_file.extract(file, path)
                 zip_file.close()
             else:
@@ -58,7 +58,7 @@ class ArchiveAdapter(IArchive):
             pass
 
         for file in path.glob("**/*.txt"):
-            if "checks" in str(file):
+            if "10_checks" in str(file).lower():
                 path = file.parent
                 break
 

@@ -26,19 +26,18 @@ fi
 echo \"[*] Preparation...\"
 BASEDIR="$(pwd)/audit_$(hostname)_$(date '+%Y%m%d-%H%M%S')"
 mkdir -p \"${BASEDIR}\"
-CHECKSDIR=\"${BASEDIR}\"/checks
+METADATADIR=\"${BASEDIR}\"/00_Metadata
+mkdir -p \"${METADATADIR}\"
+CHECKSDIR=\"${BASEDIR}\"/10_Checks
 mkdir -p \"${CHECKSDIR}\"
-METADATA=\"${BASEDIR}\"/metadata
-mkdir -p \"${METADATA}\"
 
 exec 2>\"${BASEDIR}\"/stderr.txt
 
-
 # Standard system information
-date >> \"${METADATA}\"/timestamp.txt
-system_profiler > \"${METADATA}\"/system_profiler.txt
-uname -a > \"${METADATA}\"/system_information.txt
-env > \"${METADATA}\"/env.txt
+date >> \"${METADATADIR}\"/timestamp.txt
+system_profiler > \"${METADATADIR}\"/system_profiler.txt
+uname -a > \"${METADATADIR}\"/system_information.txt
+env > \"${METADATADIR}\"/env.txt
 
 # Configuration collection
 echo \"[*] Beginning of the collection...\"'''
@@ -47,7 +46,7 @@ echo \"[*] Beginning of the collection...\"'''
             epilog = '''
 # Epilog
 echo \"[*] Finishing...\"
-date >> \"${METADATA}\"/timestamp.txt
+date >> \"${METADATADIR}\"/timestamp.txt
 tar zcf \"${BASEDIR##*/}\".tar.gz -C \"${BASEDIR}\" .
 rm -rf \"${BASEDIR}\"
 echo \"[+] Done!\"'''

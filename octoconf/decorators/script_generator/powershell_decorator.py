@@ -21,10 +21,13 @@ class PowershellDecorator(Decorator):
 Write-Output "[*] Preparation..."
 $basedir = "$pwd\Audit_$($env:COMPUTERNAME)_$(get-date -f yyyyMMdd-hhmmss)"
 New-Item -ItemType directory -Path $basedir
-$checksdir = "$basedir\checks"
+$metadatadir = "$basedir\\00_Metadata"
+New-Item -ItemType directory -Path $metadatadir
+$checksdir = "$basedir\\10_Checks"
 New-Item -ItemType directory -Path $checksdir
 
-date >> $basedir\\timestamp.txt
+date >> $metadatadir\\timestamp.txt
+systeminfo >> $metadatadir\\systeminfo.txt
 
 # Configuration collection
 Write-Output "[*] Beginning of the collection..."
@@ -33,7 +36,7 @@ Write-Output "[*] Beginning of the collection..."
             content.extend(func(*args, **kwargs))
             epilog = """# Epilog
 Write-Output "[*] Finishing..."
-date >> $basedir\\timestamp.txt
+date >> $metadatadir\\timestamp.txt
 try {
     Get-Command Compress-Archive | Out-Null
     Compress-Archive -Path ($basedir) -DestinationPath "$($basedir).zip"
