@@ -65,6 +65,6 @@ def test_checks_runner_file_creation(setup, checklist_path, output_path):
     else:
         results = ChecksRunnerInteractor().execute(checklist_path, output_path)
         results = CheckOutputInteractor().execute(results)
-        ReportGeneratorInteractor().execute(results, is_file=False)
+        ReportGeneratorInteractor().execute(results, checklist_path, is_file=False)
 
         assert Path(output_path + "pytest_category/whoami.txt").exists()

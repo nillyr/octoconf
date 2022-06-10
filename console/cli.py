@@ -71,7 +71,7 @@ def parse_analyze_args(args):
     print("[*] Launching the archive analysis...")
     results = CheckArchiveInteractor().execute(args.checklist, args.archive)
     results = CheckOutputInteractor().execute(results)
-    return ReportGeneratorInteractor().execute(results, is_file=False)
+    return ReportGeneratorInteractor().execute(results, args.checklist, is_file=False)
 
 
 @checklist_to_path
@@ -83,7 +83,7 @@ def parse_audit_args(args):
     print("[*] Launching the audit...")
     results = ChecksRunnerInteractor().execute(args.checklist, args.output)
     results = CheckOutputInteractor().execute(results)
-    return ReportGeneratorInteractor().execute(results, is_file=False)
+    return ReportGeneratorInteractor().execute(results, args.checklist, is_file=False)
 
 
 @checklist_to_path

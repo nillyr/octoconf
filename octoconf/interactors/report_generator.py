@@ -49,14 +49,14 @@ class ReportGeneratorInteractor:
         except:
             print("[x] Error", file=sys.stderr)
 
-    def execute(self, user_input, is_file: bool = False):
+    def execute(self, user_input, checklist: str, is_file: bool = False):
         if is_file:
             with open(user_input, "r") as json_file:
                 json_results = json.loads(json_file.read())
         else:
             json_results = json.loads(user_input)
 
-        filename = self._report_generator.generate_report(json_results)
+        filename = self._report_generator.generate_report(json_results, checklist)
         self._write_json_file(filename, json_results)
         self._write_xml_file(filename, json_results)
 

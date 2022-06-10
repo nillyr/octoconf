@@ -42,3 +42,48 @@ msgstr "Conformité en fonction du niveau de durcissement"
 
 msgid "nb_checks"
 msgstr "Nombres de contrôles"
+
+msgid "metadata"
+msgstr "Métadonnées"
+
+msgid "metadata_header_title"
+msgstr "Informations générales - Audit de configuration"
+
+msgid "confidentiality"
+msgstr "Confidentialité"
+
+msgid "confidentiality_level"
+msgstr "Niveau de confidentialité"
+
+msgid "confidential"
+msgstr "Confidentiel"
+
+msgid "restricted"
+msgstr "Diffusion restreinte"
+
+msgid "secret"
+msgstr "Secret"
+
+msgid "top_secret"
+msgstr "Très secret"
+
+msgid "general_information"
+msgstr "Informations générales"
+
+msgid "date_of_completion"
+msgstr "Date de réalisation"
+
+msgid "used_checklist"
+msgstr "Checklist utilisée"
+
+msgid "tool_version"
+msgstr "Version de l'outil"
+
+msgid "online_tool_version"
+msgstr "Version en ligne"
+
+msgid "audited_equipment"
+msgstr "Équipement audité"
+
+msgid "hostname"
+msgstr "Nom d'hôte"

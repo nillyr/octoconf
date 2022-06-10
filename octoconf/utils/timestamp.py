@@ -12,3 +12,5 @@ Anonymous function to return a timestamp in YearMonthDayHourMinutesSeconds forma
 timestamp = lambda: datetime.datetime.fromtimestamp(time.time()).strftime(
     "%Y%m%d%H%M%S"
 )
+
+today = lambda: time.strftime("%A, %d %b %Y", time.localtime())

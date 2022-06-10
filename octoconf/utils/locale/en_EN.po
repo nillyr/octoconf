@@ -42,3 +42,48 @@ msgstr "Compliance in relation to the level of hardening"
 
 msgid "nb_checks"
 msgstr "Number of checks"
+
+msgid "metadata"
+msgstr "Metadata"
+
+msgid "metadata_header_title"
+msgstr "General information - Configuration audit"
+
+msgid "confidentiality"
+msgstr "Confidentiality"
+
+msgid "confidentiality_level"
+msgstr "Confidentiality level"
+
+msgid "confidential"
+msgstr "Confidential"
+
+msgid "restricted"
+msgstr "Restricted"
+
+msgid "secret"
+msgstr "Secret"
+
+msgid "top_secret"
+msgstr "Top secret"
+
+msgid "general_information"
+msgstr "General information"
+
+msgid "date_of_completion"
+msgstr "Date of completion"
+
+msgid "used_checklist"
+msgstr "Checklist used"
+
+msgid "tool_version"
+msgstr "Version of the tool"
+
+msgid "online_tool_version"
+msgstr "Online version"
+
+msgid "audited_equipment"
+msgstr "Audited equipment"
+
+msgid "hostname"
+msgstr "Hostname"
