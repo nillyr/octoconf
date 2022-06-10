@@ -47,11 +47,11 @@ Allows to generate from a checklist passed in argument a collection script in th
 
 ```bash
 # GNU/Linux
-octoconf checklist generate -c ./ubuntu20-04.yaml -p gnu/linux -o ubuntu20-04.sh
+octoconf checklist generate -c ./debian-based.yml -p gnu/linux -o audit-debian.sh
 # UNIX macOS
-octoconf checklist generate -c ./macOS11.yaml -p mac -o macOS11.sh
+octoconf checklist generate -c ./macOS.yml -p mac -o audit-macOS.sh
 # Windows (Powershell)
-octoconf checklist generate -c ./windows10-desktop.yaml -p windows -o windows10.ps1
+octoconf checklist generate -c ./windows10-desktop.yml -p windows -o audit-windows10.ps1
 ```
 
 ### Analyze
@@ -64,13 +64,13 @@ Allows an analysis of the results of the checks based on a checklist.
 
 ```bash
 # (tag.gz format) Launch the analyze
-octoconf analyze -a archive.tar.gz -c ./your-checklist.yaml
+octoconf analyze -a archive.tar.gz -c ./your-checklist.yml
 # (tag.gz format) Launch the analyze and specify the language to use in the output file (xlsx)
-octoconf analyze -a archive.tar.gz -c ./your-checklist.yaml -l en
+octoconf analyze -a archive.tar.gz -c ./your-checklist.yml -l en
 # (zip format) Launch the analyze
-octoconf analyze -a archive.zip -c ./your-checklist.yaml
+octoconf analyze -a archive.zip -c ./your-checklist.yml
 # (zip format) Launch the analyze and specify the language to use in the output file (xlsx)
-octoconf analyze -a archive.zip -c ./your-checklist.yaml -l en
+octoconf analyze -a archive.zip -c ./your-checklist.yml -l en
 ```
 
 ### Audit
@@ -85,9 +85,9 @@ Finally, an XLSX file is generated presenting the results graphically. JSON and 
 
 ```bash
 # Launch the audit
-octoconf audit -c ./your-checklist.yaml -o ouput_dir/
+octoconf audit -c ./your-checklist.yml -o ouput_dir/
 # Launch the audit and specify the language to use in the output file (xlsx)
-octoconf audit -c ./your-checklist.yaml -o ouput_dir/ -l en
+octoconf audit -c ./your-checklist.yml -o ouput_dir/ -l en
 ```
 
 ### Report generation
@@ -105,7 +105,7 @@ octoconf report -i 20211006115003_results.json -l en
 
 ## Creating your checklists
 
-The format chosen for the checklists is `yaml`.
+The format chosen for the checklists is `yaml` (`.yaml` or `.yml`).
 
 ### Checklist template
 
@@ -177,7 +177,7 @@ The basic template is as follows:
 ### Usage exemple with your checklist
 
 ```bash
-octoconf checklist generate -c <path/to/my/checklist.yaml> -l <lang> -p <platform> -o <script.extension>
+octoconf checklist generate -c <path/to/my/checklist.yml> -l <lang> -p <platform> -o <script.extension>
 ```
 
 ## Existing checklists

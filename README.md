@@ -54,11 +54,11 @@ optional arguments:
 
 ```bash
 # Generate a collection script
-octoconf checklist generate -c ./windows10-desktop.yaml -p windows -o windows10.ps1
+octoconf checklist generate -c ./debian-based.yml -p gnu/linux -o audit-debian.sh
 # Run the script on the targeted host (admin)
-powershell.exe -nop -exec bypass .\windows10.ps1
+chmod +x audit-debian.sh; ./audit-debian.sh
 # Retrieve audit evidence and then analyze
-octoconf analyze -c ./windows10-desktop.yaml -a Audit[...].zip
+octoconf analyze -c ./debian-based.yml -a audit_[...].zip
 ```
 
 ## Disclaimer
