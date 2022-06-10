@@ -23,9 +23,11 @@ class Config:
         with open(filename, "w") as cfg_file:
             content = """[DEFAULT]
 # report colors
-font_color = FFFFFF
-category_foreground_color = 333E4E
-checkpoint_foreground_color = 8496AF
+header_font_color = FFFFFF
+default_font_color = 000000
+default_background_color = FFFFFF
+header_background_color = 333E4E
+sub_header_background_color = 8496AF
 
 # level
 lvl_minimal = C51718
@@ -40,9 +42,11 @@ to_be_defined = F1992D
 
 [report_colors]
 # Hexadecimal values only
-#font_color =
-#category_foreground_color =
-#checkpoint_foreground_color =
+#header_font_color =
+#default_font_color =
+#default_background_color =
+#header_background_color =
+#sub_header_background_color =
 
 [level_colors]
 # level

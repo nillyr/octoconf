@@ -57,3 +57,62 @@
       verification_type: CHECK_REGEX
       level: high
       recommendation_on_failed: a <x>reco</x> here
+- id: 2
+  name: pytest <x>category</x> 2
+  checkpoints:
+  - id: 1
+    title: a <x>random</x> title
+    description: >
+      a <x>random</x> description
+    collection_cmd: whoami > whoami.txt
+    collection_cmd_type: CMD_EXEC
+    collect_only: false
+    checks:
+    - id: 1
+      title: a random title
+      description: >
+        a <x>random</x> description
+      type: CMD_EXEC
+      cmd: whoami
+      expected: .*
+      verification_type: CHECK_REGEX
+      level: minimal
+      recommendation_on_failed: a <x>reco</x> here
+    - id: 2
+      title: a random title 2
+      description: >
+        a <x>random</x> description
+      type: CMD_EXEC
+      cmd: whoami
+      expected: .*
+      verification_type: CHECK_REGEX
+      level: intermediary
+      recommendation_on_failed: a <x>reco</x> here
+    - id: 3
+      title: a random title 3
+      description: >
+        a <x>random</x> description
+      type: CMD_EXEC
+      cmd: whoami
+      expected: .*
+      verification_type: CHECK_REGEX
+      level: enhanced
+      recommendation_on_failed: a <x>reco</x> here
+  - id: 2
+    title: a <x>random</x> title 2
+    description: >
+      a <x>random</x> description
+    collection_cmd: '[[ -d "/tmp" ]] && echo "hello" > /tmp/dummy_1.txt; cat /tmp/dummy_1.txt > /tmp/dummy-2.txt'
+    collection_cmd_type: CMD_EXEC
+    collect_only: false
+    checks:
+    - id: 1
+      title: a random title
+      description: >
+        a <x>random</x> description
+      type: CMD_EXEC
+      cmd: whoami
+      expected: .*
+      verification_type: CHECK_REGEX
+      level: high
+      recommendation_on_failed: a <x>reco</x> here

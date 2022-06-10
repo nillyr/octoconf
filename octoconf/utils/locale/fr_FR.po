@@ -7,6 +7,9 @@ msgstr "Catégories"
 msgid "level"
 msgstr "Niveau"
 
+msgid "levels"
+msgstr "Niveaux"
+
 msgid "minimal"
 msgstr "Minimal"
 
@@ -34,8 +37,8 @@ msgstr "Pourcentage"
 msgid "result"
 msgstr "Résultat"
 
-msgid "cov_summary"
-msgstr "Synthèse de couverture de la configuration"
+msgid "compliance_chart_title"
+msgstr "Conformité en fonction du niveau de durcissement"
 
 msgid "nb_checks"
 msgstr "Nombres de contrôles"

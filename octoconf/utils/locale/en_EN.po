@@ -4,6 +4,9 @@ msgstr "Summary"
 msgid "level"
 msgstr "Level"
 
+msgid "levels"
+msgstr "Levels"
+
 msgid "categories"
 msgstr "Categories"
 
@@ -34,8 +37,8 @@ msgstr "Percent"
 msgid "result"
 msgstr "Result"
 
-msgid "cov_summary"
-msgstr "Configuration coverage summary"
+msgid "compliance_chart_title"
+msgstr "Compliance in relation to the level of hardening"
 
 msgid "nb_checks"
 msgstr "Number of checks"

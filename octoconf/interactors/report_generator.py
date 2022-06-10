@@ -56,7 +56,7 @@ class ReportGeneratorInteractor:
         else:
             json_results = json.loads(user_input)
 
-        filename = timestamp() + "_results"
+        filename = self._report_generator.generate_report(json_results)
         self._write_json_file(filename, json_results)
         self._write_xml_file(filename, json_results)
-        return self._report_generator.generate_report(json_results, filename)
+
