@@ -34,12 +34,9 @@ exec 2>\"${BASEDIR}\"/stderr.txt
 
 # Standard system information
 date >> \"${METADATADIR}\"/timestamp.txt
-lsb_release -a > \"${METADATADIR}\"/distribution_information.txt
-{ cat /etc/issue; cat /etc/os-release; cat /etc/debian_version; } > \"${METADATADIR}\"/release.txt
+cat /etc/*ease* > \"${METADATADIR}\"/release.txt
 uname -a > \"${METADATADIR}\"/system_information.txt
 for keyword in system-manufacturer system-product-name bios-release-date bios-version; do echo "$keyword = " $(dmidecode -s $keyword) >> \"${METADATADIR}\"/smbios_information.txt; done
-systemd-detect-virt > \"${METADATADIR}\"/virtualization.txt
-lshw -class system > \"${METADATADIR}\"/lshw.txt
 hostnamectl > \"${METADATADIR}\"/hostnamectl
 env > \"${METADATADIR}\"/env.txt
 
