@@ -38,15 +38,15 @@ msgid "result"
 msgstr "Résultat"
 
 msgid "compliance_chart_title"
-msgstr "Conformité en fonction du niveau de durcissement"
+msgstr "Niveau de conformité"
 
 msgid "nb_checks"
 msgstr "Nombres de contrôles"
 
-msgid "metadata"
-msgstr "Métadonnées"
+msgid "information"
+msgstr "Informations"
 
-msgid "metadata_header_title"
+msgid "information_header_title"
 msgstr "Informations générales - Audit de configuration"
 
 msgid "confidentiality"
@@ -54,18 +54,6 @@ msgstr "Confidentialité"
 
 msgid "confidentiality_level"
 msgstr "Niveau de confidentialité"
-
-msgid "confidential"
-msgstr "Confidentiel"
-
-msgid "restricted"
-msgstr "Diffusion restreinte"
-
-msgid "secret"
-msgstr "Secret"
-
-msgid "top_secret"
-msgstr "Très secret"
 
 msgid "general_information"
 msgstr "Informations générales"

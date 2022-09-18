@@ -29,11 +29,6 @@ default_background_color = FFFFFF
 header_background_color = 333E4E
 sub_header_background_color = 8496AF
 
-tlp_red = FF3300
-tlp_amber = FFC000
-tlp_green = 33FF00
-tlp_white = FFFFFF
-
 # level
 lvl_minimal = C51718
 lvl_intermediary = F1992D
@@ -52,12 +47,6 @@ to_be_defined = F1992D
 #default_background_color =
 #header_background_color =
 #sub_header_background_color =
-
-[tlp_colors]
-#tlp_red =
-#tlp_amber =
-#tlp_green =
-#tlp_white =
 
 [level_colors]
 # level

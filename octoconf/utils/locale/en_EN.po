@@ -38,15 +38,15 @@ msgid "result"
 msgstr "Result"
 
 msgid "compliance_chart_title"
-msgstr "Compliance in relation to the level of hardening"
+msgstr "Level of compliance"
 
 msgid "nb_checks"
 msgstr "Number of checks"
 
-msgid "metadata"
-msgstr "Metadata"
+msgid "information"
+msgstr "Information"
 
-msgid "metadata_header_title"
+msgid "information_header_title"
 msgstr "General information - Configuration audit"
 
 msgid "confidentiality"
@@ -54,18 +54,6 @@ msgstr "Confidentiality"
 
 msgid "confidentiality_level"
 msgstr "Confidentiality level"
-
-msgid "confidential"
-msgstr "Confidential"
-
-msgid "restricted"
-msgstr "Restricted"
-
-msgid "secret"
-msgstr "Secret"
-
-msgid "top_secret"
-msgstr "Top secret"
 
 msgid "general_information"
 msgstr "General information"

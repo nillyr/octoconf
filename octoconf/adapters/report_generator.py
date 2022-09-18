@@ -21,7 +21,7 @@ class ReportGeneratorAdapter(IReportGenerator):
 
     def __init__(self) -> None:
         self.wb = xlsxwriter.Workbook(self._filename + ".xlsx")
-        self._add_format("metadata_header", {
+        self._add_format("information_header", {
             "bold": 1,
             "border": 1,
             "align": "center",
@@ -121,45 +121,13 @@ class ReportGeneratorAdapter(IReportGenerator):
             "font_color": config.get_config("report_colors", "default_font_color"),
             "bg_color": config.get_config("report_colors", "default_background_color")
         })
-        self._add_format("confidentiality_level", {
-            "bold": 1,
+        self._add_format("regular", {
+            "bold": 0,
             "border": 1,
             "align": "left",
             "valign": "vcenter",
-            "font_color": config.get_config("status_colors", "failed"),
+            "font_color": config.get_config("report_colors", "default_font_color"),
             "bg_color": config.get_config("report_colors", "default_background_color")
-        })
-        self._add_format("tlp_red", {
-            "bold": 1,
-            "border": 1,
-            "align": "left",
-            "valign": "vcenter",
-            "font_color": config.get_config("tlp_colors", "tlp_red"),
-            "bg_color": config.get_config("report_colors", "default_background_color")
-        })
-        self._add_format("tlp_amber", {
-            "bold": 1,
-            "border": 1,
-            "align": "left",
-            "valign": "vcenter",
-            "font_color": config.get_config("tlp_colors", "tlp_amber"),
-            "bg_color": config.get_config("report_colors", "default_background_color")
-        })
-        self._add_format("tlp_green", {
-            "bold": 1,
-            "border": 1,
-            "align": "left",
-            "valign": "vcenter",
-            "font_color": config.get_config("tlp_colors", "tlp_green"),
-            "bg_color": config.get_config("report_colors", "default_background_color")
-        })
-        self._add_format("tlp_white", {
-            "bold": 1,
-            "border": 1,
-            "align": "left",
-            "valign": "vcenter",
-            "font_color": config.get_config("tlp_colors", "tlp_white"),
-            "bg_color": config.get_config("report_colors", "sub_header_background_color")
         })
 
     def _add_format(self, name:str, values: dict) -> None:
@@ -200,38 +168,6 @@ class ReportGeneratorAdapter(IReportGenerator):
             'format': self._get_format("na")
         })
         # fmt:on
-
-    def _add_tlp_conditional_format(self, ws: xlsxwriter.workbook.Worksheet, cell: str) -> None:
-        ws.conditional_format(cell, {
-            'type': 'text',
-            'criteria': 'containing',
-            'value': "TLP:RED",
-            'format': self._get_format("tlp_red")
-        })
-        ws.conditional_format(cell, {
-            'type': 'text',
-            'criteria': 'containing',
-            'value': "TLP:AMBER",
-            'format': self._get_format("tlp_amber")
-        })
-        ws.conditional_format(cell, {
-            'type': 'text',
-            'criteria': 'containing',
-            'value': "TLP:GREEN",
-            'format': self._get_format("tlp_green")
-        })
-        ws.conditional_format(cell, {
-            'type': 'text',
-            'criteria': 'containing',
-            'value': "TLP:WHITE",
-            'format': self._get_format("tlp_white")
-        })
-        ws.conditional_format(cell, {
-            'type': 'text',
-            'criteria': 'containing',
-            'value': global_values.localize.gettext("na"),
-            'format': self._get_format("na")
-        })
 
     def _write_checkpoints_results_on_worksheet(self, ws: xlsxwriter.workbook.Worksheet, checkpoints: list) -> None:
         checkpoint_row = 2
@@ -432,76 +368,56 @@ class ReportGeneratorAdapter(IReportGenerator):
 
         self._add_charts(ws, row + 1)
 
-    def _add_metadata_worksheet(self, checklist: str) -> None:
-        ws = self.wb.add_worksheet(name=global_values.localize.gettext("metadata"))
+    def _add_information_worksheet(self, checklist: str) -> None:
+        ws = self.wb.add_worksheet(name=global_values.localize.gettext("information"))
         ws.set_column("A:A", 2)
         ws.set_column("D:D", 100)
         # Title
-        ws.merge_range("B2:D7", global_values.localize.gettext("metadata_header_title"), self._get_format("metadata_header"))
+        ws.merge_range("B2:D7", global_values.localize.gettext("information_header_title"), self._get_format("information_header"))
 
         # Title
         ws.merge_range("B9:D9", global_values.localize.gettext("confidentiality"), self._get_format("sub_header"))
         # Key
         ws.merge_range("B10:C10", global_values.localize.gettext("confidentiality_level"), self._get_format("bold"))
         # Value
-        ws.data_validation("D10", {
-            'validate': 'list',
-            'source': [
-                global_values.localize.gettext("confidential"),
-                global_values.localize.gettext("restricted"),
-                global_values.localize.gettext("secret"),
-                global_values.localize.gettext("top_secret")
-            ]
-        })
-        ws.write("D10", global_values.localize.gettext("confidential"), self._get_format("confidentiality_level"))
-        # Key
-        ws.merge_range("B11:C11", "TLP", self._get_format("bold"))
-        # Value
-        self._add_tlp_conditional_format(ws, "D11")
-        ws.data_validation("D11", {
-            'validate': 'list',
-            'source': [
-                "TLP:RED",
-                "TLP:AMBER",
-                "TLP:GREEN",
-                "TLP:WHITE",
-                global_values.localize.gettext("na")
-            ]
-        })
-        ws.write("D11", global_values.localize.gettext("na"), self._get_format("tlp_amber"))
+        ws.write("D10", "FIXME", self._get_format("regular"))
 
         # Title
-        ws.merge_range("B13:D13", global_values.localize.gettext("general_information"), self._get_format("sub_header"))
+        ws.merge_range("B12:D12", global_values.localize.gettext("general_information"), self._get_format("sub_header"))
         # Key
-        ws.merge_range("B14:C14", global_values.localize.gettext("date_of_completion"), self._get_format("bold"))
+        ws.merge_range("B13:C13", global_values.localize.gettext("date_of_completion"), self._get_format("bold"))
         # Value
-        ws.write("D14", today(), self._get_format("bold"))
+        ws.write("D13", today(), self._get_format("regular"))
         # Key
-        ws.merge_range("B15:C15", global_values.localize.gettext("used_checklist"), self._get_format("bold"))
+        ws.merge_range("B14:C14", global_values.localize.gettext("used_checklist"), self._get_format("bold"))
         # Value
-        ws.write("D15", checklist, self._get_format("bold"))
+        ws.write("D14", checklist, self._get_format("regular"))
         # Key
-        ws.merge_range("B16:C16", global_values.localize.gettext("tool_version"), self._get_format("bold"))
+        ws.merge_range("B15:C15", global_values.localize.gettext("tool_version"), self._get_format("bold"))
         # Value
-        ws.write("D16", __version__, self._get_format("bold"))
+        ws.write("D15", __version__, self._get_format("regular"))
         # Key
-        ws.merge_range("B17:C17", global_values.localize.gettext("online_tool_version"), self._get_format("bold"))
+        ws.merge_range("B16:C16", global_values.localize.gettext("online_tool_version"), self._get_format("bold"))
         # Value
-        ws.write("D17", __url__, self._get_format("bold"))
+        ws.write("D16", __url__, self._get_format("regular"))
 
         # Title
-        ws.merge_range("B19:D19", global_values.localize.gettext("audited_equipment"), self._get_format("sub_header"))
+        ws.merge_range("B18:D18", global_values.localize.gettext("audited_equipment"), self._get_format("sub_header"))
         # Key
-        ws.merge_range("B20:C20", global_values.localize.gettext("hostname"), self._get_format("bold"))
+        ws.merge_range("B19:C19", global_values.localize.gettext("hostname"), self._get_format("bold"))
         # Value
-        ws.write("D20", "FIXME_HOSTNAME", self._get_format("bold"))
+        ws.write("D19", "FIXME", self._get_format("regular"))
         # Key
-        ws.merge_range("B21:C21", "Version", self._get_format("bold"))
+        ws.merge_range("B20:C20", "Version", self._get_format("bold"))
         # Value
-        ws.write("D21", "FIXME_VERSION", self._get_format("bold"))
+        ws.write("D20", "FIXME", self._get_format("regular"))
+        # Key
+        ws.merge_range("B21:C21", "FIXME", self._get_format("bold"))
+        # Value
+        ws.write("D21", "FIXME", self._get_format("regular"))
 
     def generate_report(self, data: list, checklist: str) -> str:
-        self._add_metadata_worksheet(checklist)
+        self._add_information_worksheet(checklist)
         self._add_synthesis_worksheet(data["categories"][0])
         self._write_results(data["categories"][0])
         self.wb.close()
