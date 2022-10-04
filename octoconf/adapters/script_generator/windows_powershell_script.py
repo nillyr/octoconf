@@ -41,7 +41,7 @@ class WindowsPowershellScript(IWindowsScript):
             str = """
 $category=\"{0}\"
 Write-Output "[*] Running {1} collection commands..."
-New-Item -ItemType directory -Path $basedir\\$category
+New-Item -ItemType Directory -Force -Path $basedir\\$category | Out-Null
 """.format(
                 re.sub(
                     regex,

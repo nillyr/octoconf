@@ -20,14 +20,17 @@ class PowershellDecorator(Decorator):
 
 Write-Output "[*] Preparation..."
 $basedir = "$pwd\Audit_$($env:COMPUTERNAME)_$(get-date -f yyyyMMdd-hhmmss)"
-New-Item -ItemType directory -Path $basedir
+New-Item -ItemType Directory -Force -Path $basedir | Out-Null
 $system_information_dir = "$basedir\\00_system_information"
-New-Item -ItemType directory -Path $system_information_dir
+New-Item -ItemType Directory -Force -Path $system_information_dir | Out-Null
 $checksdir = "$basedir\\10_octoconf_checks"
-New-Item -ItemType directory -Path $checksdir
+New-Item -ItemType Directory -Force -Path $checksdir | Out-Null
 
 date >> $system_information_dir\\timestamp.txt
-systeminfo >> $system_information_dir\\systeminfo.txt
+[System.Net.Dns]::GetHostName() >> $system_information_dir\\hostname.txt
+(Get-CimInstance Win32_OperatingSystem).Caption >> $system_information_dir\\os.txt
+(Get-CimInstance Win32_OperatingSystem).Version >> $system_information_dir\\os_version.txt
+
 
 # Configuration collection
 Write-Output "[*] Beginning of the collection..."

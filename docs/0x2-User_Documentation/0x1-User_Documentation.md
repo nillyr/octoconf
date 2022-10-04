@@ -47,7 +47,7 @@ Allows to generate from a checklist passed in argument a collection script in th
 
 ```bash
 # GNU/Linux
-octoconf checklist generate -c ./debian-based.yml -p gnu/linux -o audit-debian.sh
+octoconf checklist generate -c ./debian-based.yml -p linux -o audit-debian.sh
 # UNIX macOS
 octoconf checklist generate -c ./macOS.yml -p mac -o audit-macOS.sh
 # Windows (Powershell)

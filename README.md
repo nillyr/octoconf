@@ -54,7 +54,7 @@ optional arguments:
 
 ```bash
 # Generate a collection script
-octoconf checklist generate -c ./debian-based.yml -p gnu/linux -o audit-debian.sh
+octoconf checklist generate -c ./debian-based.yml -p linux -o audit-debian.sh
 # Run the script on the targeted host (admin)
 chmod +x audit-debian.sh; ./audit-debian.sh
 # Retrieve audit evidence and then analyze

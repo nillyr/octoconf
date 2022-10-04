@@ -15,7 +15,7 @@ class CollectionScriptRetrievalInteractor:
     Use case for creating, from a checklist, a script to collect the configuration of the system (or the application) to be audited.
     """
 
-    _newline = lambda _, x: "\n" if x in ("gnu/linux", "linux", "mac") else "\r\n"
+    _newline = lambda _, x: "\n" if x in ("linux", "mac") else "\r\n"
 
     @inject.autoparams("checklist", "factory")
     def __init__(self, checklist: IChecklist, factory: ILanguageFactory) -> None:
