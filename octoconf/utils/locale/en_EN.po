@@ -75,3 +75,9 @@ msgstr "Audited equipment"
 
 msgid "hostname"
 msgstr "Hostname"
+
+msgid "version"
+msgstr "Version"
+
+msgid "operating_system"
+msgstr "Système d'exploitation"

@@ -408,11 +408,11 @@ class ReportGeneratorAdapter(IReportGenerator):
         # Value
         ws.write("D19", "FIXME", self._get_format("regular"))
         # Key
-        ws.merge_range("B20:C20", "Version", self._get_format("bold"))
+        ws.merge_range("B20:C20", global_values.localize.gettext("operating_system"), self._get_format("bold"))
         # Value
         ws.write("D20", "FIXME", self._get_format("regular"))
         # Key
-        ws.merge_range("B21:C21", "FIXME", self._get_format("bold"))
+        ws.merge_range("B21:C21", global_values.localize.gettext("version"), self._get_format("bold"))
         # Value
         ws.write("D21", "FIXME", self._get_format("regular"))
 

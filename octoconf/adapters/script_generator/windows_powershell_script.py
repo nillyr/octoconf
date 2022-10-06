@@ -21,6 +21,7 @@ class WindowsPowershellScript(IWindowsScript):
         Adds to the collection script all the check commands allowing the analysis of the results by this tool.
         """
         cmds.append(IWindowsScript._newline + "# Checks" + IWindowsScript._newline)
+        cmds.append("Write-Output \"[*] Running Checks ...\"" + IWindowsScript._newline)
         for category in content:
             for check_cmds in category["checks_cmds"]:
                 output_file, cmd = check_cmds[0] + ".txt", check_cmds[1]
