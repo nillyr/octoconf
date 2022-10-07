@@ -21,6 +21,7 @@ class MacOSBashScript(IUnixScript):
         Adds to the collection script all the check commands allowing the analysis of the results by this tool.
         """
         cmds.append(IUnixScript._newline + "# Checks" + IUnixScript._newline)
+        cmds.append(IUnixScript._newline + "echo \"[*] Running Checks ...\"" + IUnixScript._newline)
         for category in content:
             for check_cmds in category["checks_cmds"]:
                 output_file, cmd = check_cmds[0] + ".txt", check_cmds[1]

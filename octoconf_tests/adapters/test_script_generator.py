@@ -202,6 +202,7 @@ def test_write_checks_cmds_for_linux(unix_content):
     checkdir = "${CHECKSDIR}"
     expected_output = []
     expected_output.append("\n# Checks\n")
+    expected_output.append("\necho \"[*] Running Checks ...\"\n")
     expected_output.append('whoami >> "${CHECKSDIR}"/1.1.1.txt\n')
     expected_output.append('id >> "${CHECKSDIR}"/1.1.2.txt\n')
 
@@ -214,6 +215,7 @@ def test_write_checks_cmds_for_mac(unix_content):
     checkdir = "${CHECKSDIR}"
     expected_output = []
     expected_output.append("\n# Checks\n")
+    expected_output.append("\necho \"[*] Running Checks ...\"\n")
     expected_output.append('whoami >> "${CHECKSDIR}"/1.1.1.txt\n')
     expected_output.append('id >> "${CHECKSDIR}"/1.1.2.txt\n')
 
@@ -226,6 +228,7 @@ def test_write_checks_cmds_for_windows_powershell(windows_content):
     checkdir = "$checksdir"
     expected_output = []
     expected_output.append("\r\n# Checks\r\n")
+    expected_output.append("Write-Output \"[*] Running Checks ...\"\r\n")
     expected_output.append(
         "whoami /all | Out-File -Encoding utf8 -Append -FilePath $checksdir\\1.1.1.txt\r\n"
     )
