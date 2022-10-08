@@ -34,6 +34,11 @@ exec 2>\"${BASEDIR}\"/stderr.txt
 
 # Standard system information
 date >> \"${SYSTEMINFORMATIONDIR}\"/timestamp.txt
+
+hostname -f > \"${SYSTEMINFORMATIONDIR}\"/hostname.txt
+lsb_release -d | awk -F: '{print $2}' | sed -r "s/\\t+//g" > \"${SYSTEMINFORMATIONDIR}\"/os.txt
+lsb_release -r | awk -F: '{print $2}' | sed -r "s/\\t+//g" > \"${SYSTEMINFORMATIONDIR}\"/os_version.txt
+
 cat /etc/*ease* > \"${SYSTEMINFORMATIONDIR}\"/release.txt
 uname -a > \"${SYSTEMINFORMATIONDIR}\"/system_information.txt
 for keyword in system-manufacturer system-product-name bios-release-date bios-version; do echo "$keyword = " $(dmidecode -s $keyword) >> \"${SYSTEMINFORMATIONDIR}\"/smbios_information.txt; done
