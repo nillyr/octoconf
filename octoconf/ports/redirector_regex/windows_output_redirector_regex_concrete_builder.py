@@ -33,12 +33,13 @@ class WindowsOutputRedirectorRegexCB(IOutputRedirectorRegexBuilder):
         Set of supported redirections.
         """
 
-        BASICS = r"\s*(([1-6]>\&[1-6]\s*)*|[1-6]|[\*])>+\s*(?<!2>)"
-        CMD_GPRESULT = r"\s*/H\s*"
-        CMD_SECEDIT = r"\s*/cfg\s*"
-        CMDLET_EXPORT_CSV = r"\s*\|\s*Export-CSV\s+(-[a-zA-Z]*\s*(?:utf8\s*)*)*"
-        CMDLET_OUT_FILE = r"\s*\|\s*Out-File\s+(-[a-zA-Z]*\s*(?:utf8\s*)*)*"
-        CMDLET_TEE_OBJECT = r"\s*\|\s*Tee-Object\s+(-((InputObject\s+[a-zA-Z0-9_-]*\s+)|([a-zA-Z]*\s*(?:utf8\s*)*)))*"
+        BASICS = r"\s*(?:([1-6]>\&[1-6]\s*)*|[1-6]|[\*])>+\s*(?<!2>)(?#;|&&)"
+        CMD_GPRESULT = r"\s*/H\s*(?#;|&&)"
+        CMD_SECEDIT = r"\s*/cfg\s*(?#;|&&)"
+        CMD_MSINFO32 = r"\s*/report\s*(?#;|&&)"
+        CMDLET_EXPORT_CSV = r"\s*\|\s*Export-CSV\s+(?:-[a-zA-Z]*\s*(?:utf8\s*)*)*(?#;|&&)"
+        CMDLET_OUT_FILE = r"\s*\|\s*Out-File\s+(?:-[a-zA-Z]*\s*(?:utf8\s*)*)*(?#;|&&)"
+        CMDLET_TEE_OBJECT = r"\s*\|\s*Tee-Object\s+(?:-(?:InputObject\s*|Variable\s*|[a-zA-Z\$])*\s*(?:utf8\s*)*)*(?#;|&&)"
 
     _instance = None
     _product = None

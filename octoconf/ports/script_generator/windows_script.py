@@ -7,6 +7,8 @@ from abc import ABCMeta, abstractmethod
 from pathlib import PureWindowsPath
 import re
 
+from icecream import ic
+
 from octoconf.adapters.redirector_regex.redirector_regex import RedirectorRegex
 
 
@@ -16,7 +18,6 @@ class IWindowsScript(metaclass=ABCMeta):
     """
 
     _newline = "\r\n"
-    _batch_pattern = " >> "
     _powershell_pattern = " | Out-File -Encoding utf8 -Append -FilePath "
     _regex_pattern = RedirectorRegex.get_redirector_regex("Windows")
 
@@ -33,11 +34,18 @@ class IWindowsScript(metaclass=ABCMeta):
         """
         This method puts the audit proofs in the folder corresponding to the current category. Since the user is not aware of the folder automatically created during the tests, it is not possible to specify the exact path for the output of the files in the checklist.
         """
-        output_file = re.split(IWindowsScript._regex_pattern, cmd)[-1].strip()
-        path = basedir / PureWindowsPath(output_file).parent
-        replace_path = path / PureWindowsPath(output_file).name
-        return (
-            re.split(IWindowsScript._regex_pattern, cmd)[0]
-            + re.search(IWindowsScript._regex_pattern, cmd).group(0)
-            + str(replace_path)
-        )
+
+        matches = re.finditer(IWindowsScript._regex_pattern, cmd)
+        redirectors = []
+        for _, match in enumerate(matches, start = 1):
+            redirectors.append(match.group())
+
+        cmd_elt = list(filter(None, re.split(IWindowsScript._regex_pattern, cmd)))
+        for index in range(1, len(cmd_elt)):
+            path = basedir / PureWindowsPath(cmd_elt[index]).parent
+            cmd_elt[index] = redirectors[index - 1] + str(
+                path / PureWindowsPath(cmd_elt[index]).name
+            )
+            ic(cmd_elt[index])
+
+        return ic("".join(cmd_elt))
