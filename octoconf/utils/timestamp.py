@@ -13,4 +13,4 @@ timestamp = lambda: datetime.datetime.fromtimestamp(time.time()).strftime(
     "%Y%m%d%H%M%S"
 )
 
-today = lambda: time.strftime("%A, %d %b %Y", time.localtime())
+today = lambda: time.strftime("%d/%m/%Y", time.localtime())

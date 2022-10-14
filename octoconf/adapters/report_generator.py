@@ -152,6 +152,30 @@ class ReportGeneratorAdapter(IReportGenerator):
         ws.conditional_format(range, {
             'type': 'text',
             'criteria': 'containing',
+            'value': global_values.localize.gettext("minimal"),
+            'format': self._get_format("minimal")
+        })
+        ws.conditional_format(range, {
+            'type': 'text',
+            'criteria': 'containing',
+            'value': global_values.localize.gettext("intermediary"),
+            'format': self._get_format("intermediary")
+        })
+        ws.conditional_format(range, {
+            'type': 'text',
+            'criteria': 'containing',
+            'value': global_values.localize.gettext("enhanced"),
+            'format': self._get_format("enhanced")
+        })
+        ws.conditional_format(range, {
+            'type': 'text',
+            'criteria': 'containing',
+            'value': global_values.localize.gettext("high"),
+            'format': self._get_format("high")
+        })
+        ws.conditional_format(range, {
+            'type': 'text',
+            'criteria': 'containing',
             'value': global_values.localize.gettext("success"),
             'format': self._get_format("success")
         })
@@ -190,6 +214,15 @@ class ReportGeneratorAdapter(IReportGenerator):
 
             check_row = checkpoint_row + 1
             for check in checkpoint["checks"]:
+                ws.data_validation(f"A{check_row}", {
+                    'validate': 'list',
+                    'source': [
+                        global_values.localize.gettext("minimal"),
+                        global_values.localize.gettext("intermediary"),
+                        global_values.localize.gettext("enhanced"),
+                        global_values.localize.gettext("high"),
+                    ]
+                })
                 ws.data_validation(f"E{check_row}", {
                     'validate': 'list',
                     'source': [
@@ -237,14 +270,20 @@ class ReportGeneratorAdapter(IReportGenerator):
                 re.IGNORECASE,
             )
             ws = self.wb.add_worksheet(name=category_name)
-            ws.set_column("A:E", 20)
+            ws.hide_gridlines(2)
+            ws.set_column("A:A", 15)
+            ws.set_column("B:D", 35)
+            ws.set_column("E:E", 15)
             ws.set_row(0, 25)
             ws.merge_range(
                 "A1:E1", category["name"], self._get_format("header")
             )
-            # Column 'E'
-            range = xlsxwriter.utility.xl_range(0, 4, 1048575, 4)
-            self._add_conditional_formatting(ws, range)
+            # Column 'A' (level)
+            range_a = xlsxwriter.utility.xl_range(0, 0, 1048575, 0)
+            self._add_conditional_formatting(ws, range_a)
+            # Column 'E' (result)
+            range_e = xlsxwriter.utility.xl_range(0, 4, 1048575, 4)
+            self._add_conditional_formatting(ws, range_e)
             # Write results in the worksheet and get nb of success/failed for stacked chart
             self._write_checkpoints_results_on_worksheet(ws, category["checkpoints"])
 
@@ -280,7 +319,8 @@ class ReportGeneratorAdapter(IReportGenerator):
             "gap":          20
         })
 
-        ws.insert_chart(f"A{last_row+5}", staked_chart_by_lvl)
+        # Do not stick the chart on the far left
+        ws.insert_chart(f"D{last_row+5}", staked_chart_by_lvl)
 
     def _add_synthesis_worksheet(self, categories: list) -> None:
         """
@@ -288,7 +328,8 @@ class ReportGeneratorAdapter(IReportGenerator):
         """
         ws = self.wb.add_worksheet(name=global_values.localize.gettext("summary"))
 
-        ws.set_column("A:K", 15)
+        ws.hide_gridlines(2)
+        ws.set_column("A:K", 20)
         ws.set_row(0, 25)
         ws.merge_range("A1:K1", global_values.localize.gettext("summary"), self._get_format("header"))
         ws.merge_range(
@@ -370,7 +411,10 @@ class ReportGeneratorAdapter(IReportGenerator):
 
     def _add_information_worksheet(self, checklist: str) -> None:
         ws = self.wb.add_worksheet(name=global_values.localize.gettext("information"))
+        ws.hide_gridlines(2)
         ws.set_column("A:A", 2)
+        ws.set_column("B:B", 12)
+        ws.set_column("C:C", 12)
         ws.set_column("D:D", 100)
         # Title
         ws.merge_range("B2:D7", global_values.localize.gettext("information_header_title"), self._get_format("information_header"))
