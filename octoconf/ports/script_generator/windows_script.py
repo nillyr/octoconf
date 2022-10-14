@@ -17,7 +17,7 @@ class IWindowsScript(metaclass=ABCMeta):
     Allows you to generate the collection script for the specified system.
     """
 
-    _newline = "\r\n"
+    _newline = "\n"
     _powershell_pattern = " | Out-File -Encoding utf8 -Append -FilePath "
     _regex_pattern = RedirectorRegex.get_redirector_regex("Windows")
 
@@ -41,11 +41,18 @@ class IWindowsScript(metaclass=ABCMeta):
             redirectors.append(match.group())
 
         cmd_elt = list(filter(None, re.split(IWindowsScript._regex_pattern, cmd)))
+
         for index in range(1, len(cmd_elt)):
-            path = basedir / PureWindowsPath(cmd_elt[index]).parent
-            cmd_elt[index] = redirectors[index - 1] + str(
-                path / PureWindowsPath(cmd_elt[index]).name
-            )
-            ic(cmd_elt[index])
+            # 0 out_file
+            # 1..n other commands if any
+            splited_cmd_elt = cmd_elt[index].split(sep=';', maxsplit=1)
+            out_file = splited_cmd_elt[0]
+            new_outfile_path = str(basedir / PureWindowsPath(out_file))
+            joined_cmd_elt = new_outfile_path
+
+            if len(splited_cmd_elt) > 1:
+                joined_cmd_elt = new_outfile_path + IWindowsScript._newline + IWindowsScript._newline.join(splited_cmd_elt[1:]).lstrip()
+
+            cmd_elt[index] = redirectors[index - 1] + joined_cmd_elt
 
         return ic("".join(cmd_elt))

@@ -144,7 +144,7 @@ def test_write_script_for_mac(unix_content):
 
 def test_write_script_for_windows_powershell(windows_content):
     # fmt:off
-    expected_output = '\n$category="a_category_with_space"\nWrite-Output "[*] Running $category collection commands..."\nNew-Item -ItemType Directory -Force -Path $basedir\\$category | Out-Null\ndir > $basedir\\$category\\dir.txt\r\n'
+    expected_output = '\n$category="a_category_with_space"\nWrite-Output "[*] Running $category collection commands..."\nNew-Item -ItemType Directory -Force -Path $basedir\\$category | Out-Null\ndir > $basedir\\$category\\dir.txt\n'
     # fmt:on
 
     windows_ps1 = WindowsPowershellScript()
@@ -157,7 +157,7 @@ def test_write_script_for_windows_powershell_cmdlet_1(
     windows_powershell_cmdlet_content_1,
 ):
     # fmt:off
-    expected_output = '\n$category="a_category_with_space"\nWrite-Output "[*] Running $category collection commands..."\nNew-Item -ItemType Directory -Force -Path $basedir\\$category | Out-Null\ndir | Out-File -Encoding utf8 -FilePath $basedir\\$category\\dir.txt\r\n'
+    expected_output = '\n$category="a_category_with_space"\nWrite-Output "[*] Running $category collection commands..."\nNew-Item -ItemType Directory -Force -Path $basedir\\$category | Out-Null\ndir | Out-File -Encoding utf8 -FilePath $basedir\\$category\\dir.txt\n'
     # fmt:on
 
     windows_ps1 = WindowsPowershellScript()
@@ -172,7 +172,7 @@ def test_write_script_for_windows_powershell_cmdlet_2(
     windows_powershell_cmdlet_content_2,
 ):
     # fmt:off
-    expected_output = '\n$category="a_category_with_space"\nWrite-Output "[*] Running $category collection commands..."\nNew-Item -ItemType Directory -Force -Path $basedir\\$category | Out-Null\ndir | Out-File -Encoding utf8 -Append -FilePath $basedir\\$category\\dir.txt\r\n'
+    expected_output = '\n$category="a_category_with_space"\nWrite-Output "[*] Running $category collection commands..."\nNew-Item -ItemType Directory -Force -Path $basedir\\$category | Out-Null\ndir | Out-File -Encoding utf8 -Append -FilePath $basedir\\$category\\dir.txt\n'
     # fmt:on
 
     windows_ps1 = WindowsPowershellScript()
@@ -187,7 +187,7 @@ def test_write_script_for_windows_powershell_cmdlet_3(
     windows_powershell_cmdlet_content_3,
 ):
     # fmt:off
-    expected_output = '\n$category="a_category_with_space"\nWrite-Output "[*] Running $category collection commands..."\nNew-Item -ItemType Directory -Force -Path $basedir\\$category | Out-Null\ndir | Out-File -Encoding utf8 -Append -FilePath $basedir\\$category\\dir.txt\r\n'
+    expected_output = '\n$category="a_category_with_space"\nWrite-Output "[*] Running $category collection commands..."\nNew-Item -ItemType Directory -Force -Path $basedir\\$category | Out-Null\ndir | Out-File -Encoding utf8 -Append -FilePath $basedir\\$category\\dir.txt\n'
     # fmt:on
 
     windows_ps1 = WindowsPowershellScript()
@@ -227,13 +227,13 @@ def test_write_checks_cmds_for_mac(unix_content):
 def test_write_checks_cmds_for_windows_powershell(windows_content):
     checkdir = "$checksdir"
     expected_output = []
-    expected_output.append("\r\n# Checks\r\n")
-    expected_output.append("Write-Output \"[*] Running Checks ...\"\r\n")
+    expected_output.append("\n# Checks\n")
+    expected_output.append("Write-Output \"[*] Running Checks ...\"\n")
     expected_output.append(
-        "whoami /all | Out-File -Encoding utf8 -Append -FilePath $checksdir\\1.1.1.txt\r\n"
+        "whoami /all | Out-File -Encoding utf8 -Append -FilePath $checksdir\\1.1.1.txt\n"
     )
     expected_output.append(
-        "net users | Out-File -Encoding utf8 -Append -FilePath $checksdir\\1.1.2.txt\r\n"
+        "net users | Out-File -Encoding utf8 -Append -FilePath $checksdir\\1.1.2.txt\n"
     )
 
     output = WindowsPowershellScript().write_checks_cmds(checkdir, windows_content, [])
@@ -245,7 +245,7 @@ def test_write_check_with_collect_only_and_not_only_powershell(
     collect_only_and_not_only,
 ):
     # fmt:off
-    expected_output = '\n$category="a_category_with_space"\nWrite-Output "[*] Running $category collection commands..."\nNew-Item -ItemType Directory -Force -Path $basedir\\$category | Out-Null\ndir > $basedir\\$category\\dir.txt\r\n'
+    expected_output = '\n$category="a_category_with_space"\nWrite-Output "[*] Running $category collection commands..."\nNew-Item -ItemType Directory -Force -Path $basedir\\$category | Out-Null\ndir > $basedir\\$category\\dir.txt\n'
     # fmt:on
 
     windows_ps1 = WindowsPowershellScript()
@@ -254,9 +254,9 @@ def test_write_check_with_collect_only_and_not_only_powershell(
     )
 
     expected_absent_check_cmd = (
-        " | Out-File -Encoding utf8 -Append -FilePath $checksdir\\1.1.1.txt\r\n"
+        " | Out-File -Encoding utf8 -Append -FilePath $checksdir\\1.1.1.txt\n"
     )
-    expected_check_cmd = "whoami /all | Out-File -Encoding utf8 -Append -FilePath $checksdir\\2.1.1.txt\r\n"
+    expected_check_cmd = "whoami /all | Out-File -Encoding utf8 -Append -FilePath $checksdir\\2.1.1.txt\n"
 
     assert expected_output in cmds
     assert expected_absent_check_cmd not in cmds
