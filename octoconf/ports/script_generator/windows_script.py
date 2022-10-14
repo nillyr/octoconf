@@ -46,7 +46,7 @@ class IWindowsScript(metaclass=ABCMeta):
             # 0 out_file
             # 1..n other commands if any
             splited_cmd_elt = cmd_elt[index].split(sep=';', maxsplit=1)
-            out_file = splited_cmd_elt[0]
+            out_file = splited_cmd_elt[0].lstrip()
             new_outfile_path = str(basedir / PureWindowsPath(out_file))
             joined_cmd_elt = new_outfile_path
 

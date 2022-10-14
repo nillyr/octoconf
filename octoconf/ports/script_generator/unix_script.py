@@ -34,12 +34,25 @@ class IUnixScript(metaclass=ABCMeta):
         """
         This method puts the audit proofs in the folder corresponding to the current category. Since the user is not aware of the folder automatically created during the tests, it is not possible to specify the exact path for the output of the files in the checklist.
         """
+
+        matches = re.finditer(IUnixScript._regex_pattern, cmd)
+        redirectors = []
+        for _, match in enumerate(matches, start = 1):
+            redirectors.append(match.group())
+
         cmd_elt = list(filter(None, re.split(IUnixScript._regex_pattern, cmd)))
-        for index in range(1, len(cmd_elt), 2):
-            path = basedir / PurePosixPath(cmd_elt[index]).parent
-            cmd_elt[index] = IUnixScript._pattern + str(
-                path / PurePosixPath(cmd_elt[index]).name
-            )
-            ic(cmd_elt[index])
+
+        for index in range(1, len(cmd_elt)):
+            # 0 out_file
+            # 1..n other commands if any
+            splited_cmd_elt = cmd_elt[index].split(sep=';', maxsplit=1)
+            out_file = splited_cmd_elt[0].lstrip()
+            new_outfile_path = str(basedir / PurePosixPath(out_file))
+            joined_cmd_elt = new_outfile_path
+
+            if len(splited_cmd_elt) > 1:
+                joined_cmd_elt = new_outfile_path + IUnixScript._newline + IUnixScript._newline.join(splited_cmd_elt[1:]).lstrip()
+
+            cmd_elt[index] = redirectors[index - 1] + joined_cmd_elt
 
         return ic("".join(cmd_elt))

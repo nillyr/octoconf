@@ -34,7 +34,7 @@ def unix_content_with_multiple_output():
             "category_id": 1,
             "category_name": "a category with space",
             "checks_cmds": [["1.1.1", "whoami"], ["1.1.2", "id"]],
-            "collection_cmds": ["[[ -f file.conf ]] && cat file.conf > dummy_1.txt; cat file2.conf >> dummy-2.txt"],
+            "collection_cmds": ["[[ -f file.conf ]] && cat file.conf > dummy_1.txt; cat file2.conf >> dummy_2.txt"],
         }
     ]
 
@@ -111,7 +111,7 @@ def collect_only_and_not_only():
 
 def test_write_script_for_linux(unix_content):
     # fmt:off
-    expected_output = '\nCATEGORY="a_category_with_space"\necho "[*] Running \\"${CATEGORY}\\" collection commands..."\nmkdir -p "${BASEDIR}"/"${CATEGORY}"/\nls -al >> "${BASEDIR}"/"${CATEGORY}"/ls.txt\n'
+    expected_output = '\nCATEGORY="a_category_with_space"\necho "[*] Running \\"${CATEGORY}\\" collection commands..."\nmkdir -p "${BASEDIR}"/"${CATEGORY}"/\nls -al > "${BASEDIR}"/"${CATEGORY}"/ls.txt\n'
     # fmt:on
 
     linux_sh = LinuxBashScript()
@@ -122,7 +122,7 @@ def test_write_script_for_linux(unix_content):
 
 def test_write_script_for_linux_with_multiple_output(unix_content_with_multiple_output):
     # fmt:off
-    expected_output = '\nCATEGORY="a_category_with_space"\necho "[*] Running \\"${CATEGORY}\\" collection commands..."\nmkdir -p "${BASEDIR}"/"${CATEGORY}"/\n[[ -f file.conf ]] && cat file.conf >> "${BASEDIR}"/"${CATEGORY}"/dummy_1.txt; cat file2.conf >> "${BASEDIR}"/"${CATEGORY}"/dummy-2.txt\n'
+    expected_output = '\nCATEGORY="a_category_with_space"\necho "[*] Running \\"${CATEGORY}\\" collection commands..."\nmkdir -p "${BASEDIR}"/"${CATEGORY}"/\n[[ -f file.conf ]] && cat file.conf > "${BASEDIR}"/"${CATEGORY}"/dummy_1.txt\ncat file2.conf >> "${BASEDIR}"/"${CATEGORY}"/dummy_2.txt\n'
     # fmt:on
 
     linux_sh = LinuxBashScript()
@@ -133,7 +133,7 @@ def test_write_script_for_linux_with_multiple_output(unix_content_with_multiple_
 
 def test_write_script_for_mac(unix_content):
     # fmt:off
-    expected_output = '\nCATEGORY="a_category_with_space"\necho "[*] Running \\"${CATEGORY}\\" collection commands..."\nmkdir -p "${BASEDIR}"/"${CATEGORY}"/\nls -al >> "${BASEDIR}"/"${CATEGORY}"/ls.txt\n'
+    expected_output = '\nCATEGORY="a_category_with_space"\necho "[*] Running \\"${CATEGORY}\\" collection commands..."\nmkdir -p "${BASEDIR}"/"${CATEGORY}"/\nls -al > "${BASEDIR}"/"${CATEGORY}"/ls.txt\n'
     # fmt:on
 
     mac_sh = MacOSBashScript()
@@ -265,7 +265,7 @@ def test_write_check_with_collect_only_and_not_only_powershell(
 
 def test_write_check_with_collect_only_and_not_only_linux(collect_only_and_not_only):
     # fmt:off
-    expected_output = '\nCATEGORY="a_category_with_space"\necho "[*] Running \\"${CATEGORY}\\" collection commands..."\nmkdir -p "${BASEDIR}"/"${CATEGORY}"/\ndir >> "${BASEDIR}"/"${CATEGORY}"/dir.txt\n'
+    expected_output = '\nCATEGORY="a_category_with_space"\necho "[*] Running \\"${CATEGORY}\\" collection commands..."\nmkdir -p "${BASEDIR}"/"${CATEGORY}"/\ndir > "${BASEDIR}"/"${CATEGORY}"/dir.txt\n'
     # fmt:on
 
     linux_sh = LinuxBashScript()
@@ -281,7 +281,7 @@ def test_write_check_with_collect_only_and_not_only_linux(collect_only_and_not_o
 
 def test_write_check_with_collect_only_and_not_only_mac(collect_only_and_not_only):
     # fmt:off
-    expected_output = '\nCATEGORY="a_category_with_space"\necho "[*] Running \\"${CATEGORY}\\" collection commands..."\nmkdir -p "${BASEDIR}"/"${CATEGORY}"/\ndir >> "${BASEDIR}"/"${CATEGORY}"/dir.txt\n'
+    expected_output = '\nCATEGORY="a_category_with_space"\necho "[*] Running \\"${CATEGORY}\\" collection commands..."\nmkdir -p "${BASEDIR}"/"${CATEGORY}"/\ndir > "${BASEDIR}"/"${CATEGORY}"/dir.txt\n'
     # fmt:on
 
     mac_sh = MacOSBashScript()
