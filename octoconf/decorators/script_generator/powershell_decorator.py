@@ -35,7 +35,7 @@ date >> $system_information_dir\\timestamp.txt
 [System.Net.Dns]::GetHostName() >> $system_information_dir\\hostname.txt
 (Get-CimInstance Win32_OperatingSystem).Caption >> $system_information_dir\\os.txt
 (Get-CimInstance Win32_OperatingSystem).Version >> $system_information_dir\\os_version.txt
-Get-ChildItem -Path Env: >> $system_information_dir\\env.txt
+Get-ChildItem -Path Env: | Format-Table -AutoSize >> $system_information_dir\\env.txt
 
 # Custom functions
 $custom_functions_dir = "$basedir\\20_custom_functions"
