@@ -129,6 +129,22 @@ class ReportGeneratorAdapter(IReportGenerator):
             "font_color": config.get_config("report_colors", "default_font_color"),
             "bg_color": config.get_config("report_colors", "default_background_color")
         })
+        self._add_format("classification", {
+            "bold": 0,
+            "border": 1,
+            "align": "left",
+            "valign": "vcenter",
+            "font_color": config.get_config("classification", "classification_font_color"),
+            "bg_color": config.get_config("classification", "classification_background_color")
+        })
+        self._add_format("classification_center", {
+            "bold": 0,
+            "border": 0,
+            "align": "center",
+            "valign": "vcenter",
+            "font_color": config.get_config("classification", "classification_font_color"),
+            "bg_color": config.get_config("classification", "classification_background_color")
+        })
 
     def _add_format(self, name:str, values: dict) -> None:
         # fmt:off
@@ -194,27 +210,27 @@ class ReportGeneratorAdapter(IReportGenerator):
         # fmt:on
 
     def _write_checkpoints_results_on_worksheet(self, ws: xlsxwriter.workbook.Worksheet, checkpoints: list) -> None:
-        checkpoint_row = 2
+        checkpoint_row = 4
         for checkpoint in checkpoints:
             ws.write(
-                f"A{checkpoint_row}",
+                f"B{checkpoint_row}",
                 global_values.localize.gettext("level"),
                 self._get_format("sub_header"),
             )
             ws.merge_range(
-                f"B{checkpoint_row}:D{checkpoint_row}",
+                f"C{checkpoint_row}:E{checkpoint_row}",
                 checkpoint["title"],
                 self._get_format("sub_header"),
             )
             ws.write(
-                f"E{checkpoint_row}",
+                f"F{checkpoint_row}",
                 global_values.localize.gettext("result"),
                 self._get_format("sub_header"),
             )
 
             check_row = checkpoint_row + 1
             for check in checkpoint["checks"]:
-                ws.data_validation(f"A{check_row}", {
+                ws.data_validation(f"B{check_row}", {
                     'validate': 'list',
                     'source': [
                         global_values.localize.gettext("minimal"),
@@ -223,7 +239,7 @@ class ReportGeneratorAdapter(IReportGenerator):
                         global_values.localize.gettext("high"),
                     ]
                 })
-                ws.data_validation(f"E{check_row}", {
+                ws.data_validation(f"F{check_row}", {
                     'validate': 'list',
                     'source': [
                         global_values.localize.gettext("success"),
@@ -233,25 +249,25 @@ class ReportGeneratorAdapter(IReportGenerator):
                 })
 
                 ws.write(
-                    f"A{check_row}",
+                    f"B{check_row}",
                     global_values.localize.gettext(check["level"]),
                     self._get_format(check["level"])
                 )
                 ws.merge_range(
-                    f"B{check_row}:D{check_row}",
+                    f"C{check_row}:E{check_row}",
                     check["title"],
                     self._get_format("check")
                 )
                 if "result" in check:
                     key = "success" if check["result"] == True else "failed"
                     ws.write(
-                        f"E{check_row}",
+                        f"F{check_row}",
                         global_values.localize.gettext(key),
                         self._get_format(key)
                     )
                 else:
                     ws.write(
-                        f"E{check_row}",
+                        f"F{check_row}",
                         global_values.localize.gettext("na"),
                         self._get_format("na")
                     )
@@ -271,18 +287,22 @@ class ReportGeneratorAdapter(IReportGenerator):
             )
             ws = self.wb.add_worksheet(name=category_name)
             ws.hide_gridlines(2)
-            ws.set_column("A:A", 15)
-            ws.set_column("B:D", 35)
-            ws.set_column("E:E", 15)
-            ws.set_row(0, 25)
+            ws.set_column("A:A", 2)
+            ws.set_column("B:B", 20)
+            ws.set_column("C:E", 35)
+            ws.set_column("F:F", 20)
+
+            ws.merge_range("C1:E1", "=%s!D10" % (global_values.localize.gettext("information")), self._get_format("classification_center"))
+
+            ws.set_row(2, 25)
             ws.merge_range(
-                "A1:E1", category["name"], self._get_format("header")
+                "B3:F3", category["name"], self._get_format("header")
             )
             # Column 'A' (level)
-            range_a = xlsxwriter.utility.xl_range(0, 0, 1048575, 0)
+            range_a = xlsxwriter.utility.xl_range(2, 1, 1048575, 1)
             self._add_conditional_formatting(ws, range_a)
             # Column 'E' (result)
-            range_e = xlsxwriter.utility.xl_range(0, 4, 1048575, 4)
+            range_e = xlsxwriter.utility.xl_range(0, 5, 1048575, 5)
             self._add_conditional_formatting(ws, range_e)
             # Write results in the worksheet and get nb of success/failed for stacked chart
             self._write_checkpoints_results_on_worksheet(ws, category["checkpoints"])
@@ -320,7 +340,7 @@ class ReportGeneratorAdapter(IReportGenerator):
         })
 
         # Do not stick the chart on the far left
-        ws.insert_chart(f"D{last_row+5}", staked_chart_by_lvl)
+        ws.insert_chart(f"E{last_row+5}", staked_chart_by_lvl)
 
     def _add_synthesis_worksheet(self, categories: list) -> None:
         """
@@ -329,28 +349,32 @@ class ReportGeneratorAdapter(IReportGenerator):
         ws = self.wb.add_worksheet(name=global_values.localize.gettext("summary"))
 
         ws.hide_gridlines(2)
-        ws.set_column("A:K", 20)
-        ws.set_row(0, 25)
-        ws.merge_range("A1:K1", global_values.localize.gettext("summary"), self._get_format("header"))
-        ws.merge_range(
-            "A2:C3", global_values.localize.gettext("categories"), self._get_format("sub_header")
-        )
-        ws.merge_range(
-            "D2:G2", global_values.localize.gettext("success"), self._get_format("sub_header")
-        )
-        ws.merge_range(
-            "H2:K2", global_values.localize.gettext("failed"), self._get_format("sub_header")
-        )
-        ws.write("D3", global_values.localize.gettext("minimal"), self._get_format("sub_header"))
-        ws.write("E3", global_values.localize.gettext("intermediary"), self._get_format("sub_header"))
-        ws.write("F3", global_values.localize.gettext("enhanced"), self._get_format("sub_header"))
-        ws.write("G3", global_values.localize.gettext("high"), self._get_format("sub_header"))
-        ws.write("H3", global_values.localize.gettext("minimal"), self._get_format("sub_header"))
-        ws.write("I3", global_values.localize.gettext("intermediary"), self._get_format("sub_header"))
-        ws.write("J3", global_values.localize.gettext("enhanced"), self._get_format("sub_header"))
-        ws.write("K3", global_values.localize.gettext("high"), self._get_format("sub_header"))
+        ws.set_column("A:A", 2)
+        ws.set_column("B:L", 20)
+        ws.set_row(2, 25)
 
-        row = 3
+        ws.merge_range("B1:L1", "=%s!D10" % (global_values.localize.gettext("information")), self._get_format("classification_center"))
+
+        ws.merge_range("B3:L3", global_values.localize.gettext("summary"), self._get_format("header"))
+        ws.merge_range(
+            "B4:D5", global_values.localize.gettext("categories"), self._get_format("sub_header")
+        )
+        ws.merge_range(
+            "E4:H4", global_values.localize.gettext("success"), self._get_format("sub_header")
+        )
+        ws.merge_range(
+            "I4:L4", global_values.localize.gettext("failed"), self._get_format("sub_header")
+        )
+        ws.write("E5", global_values.localize.gettext("minimal"), self._get_format("sub_header"))
+        ws.write("F5", global_values.localize.gettext("intermediary"), self._get_format("sub_header"))
+        ws.write("G5", global_values.localize.gettext("enhanced"), self._get_format("sub_header"))
+        ws.write("H5", global_values.localize.gettext("high"), self._get_format("sub_header"))
+        ws.write("I5", global_values.localize.gettext("minimal"), self._get_format("sub_header"))
+        ws.write("J5", global_values.localize.gettext("intermediary"), self._get_format("sub_header"))
+        ws.write("K5", global_values.localize.gettext("enhanced"), self._get_format("sub_header"))
+        ws.write("L5", global_values.localize.gettext("high"), self._get_format("sub_header"))
+
+        row = 5
         for category in categories:
             category = category["name"]
             row += 1
@@ -358,13 +382,13 @@ class ReportGeneratorAdapter(IReportGenerator):
             # E = 4, F = 5, G = 6, H = 7
             # I = 8, J = 9, K = 10
             ws.merge_range(
-                xlsxwriter.utility.xl_range(row - 1, 0, row - 1, 2),
+                xlsxwriter.utility.xl_range(row - 1, 1, row - 1, 3),
                 category,
                 self._get_format("check"),
             )
 
-            lvl_range = f"'{category}'!{xlsxwriter.utility.xl_range(0, 0, 1048575, 0)}"
-            results_range = f"'{category}'!{xlsxwriter.utility.xl_range(0, 4, 1048575, 4)}"
+            lvl_range = f"'{category}'!{xlsxwriter.utility.xl_range(0, 1, 1048575, 1)}"
+            results_range = f"'{category}'!{xlsxwriter.utility.xl_range(0, 5, 1048575, 5)}"
 
             levels = [
                 f"{lvl_range};\"{global_values.localize.gettext('minimal')}\"",
@@ -376,7 +400,7 @@ class ReportGeneratorAdapter(IReportGenerator):
             success = {f"{results_range};\"{global_values.localize.gettext('success')}\"": levels}
             failed = {f"{results_range};\"{global_values.localize.gettext('failed')}\"": levels}
 
-            start, stop = (3, 7)
+            start, stop = (4, 8)
             for criteria in success:
                 for col in range(start, stop):
                     ws.write_formula(
@@ -384,7 +408,7 @@ class ReportGeneratorAdapter(IReportGenerator):
                         "=COUNTIFS(%s; %s)" % (success[criteria][col - start], criteria),
                         self._get_format("check"),
                     )
-            start, stop = (stop, 11)
+            start, stop = (stop, 12)
             for criteria in failed:
                 for col in range(start, stop):
                     ws.write_formula(
@@ -395,11 +419,11 @@ class ReportGeneratorAdapter(IReportGenerator):
 
         # Get total values
         ws.merge_range(
-                xlsxwriter.utility.xl_range(row, 0, row, 2),
+                xlsxwriter.utility.xl_range(row, 1, row, 3),
                 "Total",
                 self._get_format("bold"),
         )
-        start_row = 3
+        start_row = 4
         for col in range(start_row, stop):
             ws.write_formula(
                 xlsxwriter.utility.xl_rowcol_to_cell(row, col),
@@ -416,15 +440,21 @@ class ReportGeneratorAdapter(IReportGenerator):
         ws.set_column("B:B", 12)
         ws.set_column("C:C", 12)
         ws.set_column("D:D", 100)
+
+        ws.data_validation(f"D10", {
+            'validate': 'list',
+            'source': [option.lstrip()[0:31] for option in config.get_config("classification", "classification_options").split(",")]
+        })
+
         # Title
         ws.merge_range("B2:D7", global_values.localize.gettext("information_header_title"), self._get_format("information_header"))
 
         # Title
-        ws.merge_range("B9:D9", global_values.localize.gettext("confidentiality"), self._get_format("sub_header"))
+        ws.merge_range("B9:D9", global_values.localize.gettext("data_classification"), self._get_format("sub_header"))
         # Key
-        ws.merge_range("B10:C10", global_values.localize.gettext("confidentiality_level"), self._get_format("bold"))
+        ws.merge_range("B10:C10", global_values.localize.gettext("classification_level"), self._get_format("bold"))
         # Value
-        ws.write("D10", "FIXME", self._get_format("regular"))
+        ws.write("D10", "FIXME", self._get_format("classification"))
 
         # Title
         ws.merge_range("B12:D12", global_values.localize.gettext("general_information"), self._get_format("sub_header"))
