@@ -15,7 +15,7 @@
   <img src="https://img.shields.io/badge/coverage-80%25-green.svg">
 </p>
 
-Tool dedicated to the realization of configuration audits of various systems via semi-automated analysis of the collected security configurations.
+Tool dedicated to the realization of configuration audits of various systems via semi-automated analysis of the collected configurations.
 
 ```
         ,'""`.       octoconf 1.6.4
