@@ -49,11 +49,11 @@ msgstr "Information"
 msgid "information_header_title"
 msgstr "General information - Configuration audit"
 
-msgid "confidentiality"
-msgstr "Confidentiality"
+msgid "data_classification"
+msgstr "Data classification"
 
-msgid "confidentiality_level"
-msgstr "Confidentiality level"
+msgid "classification_level"
+msgstr "Classification level"
 
 msgid "general_information"
 msgstr "General information"
