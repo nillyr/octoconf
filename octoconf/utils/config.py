@@ -29,6 +29,11 @@ default_background_color = FFFFFF
 header_background_color = 333E4E
 sub_header_background_color = 8496AF
 
+# Classification
+classification_options = Public, Interne, Confidentiel, Diffusion Restreinte, NC - Non Classifié, C1 - Usage interne, C2 - Diffusion Restreinte, C3 - Secret, Secret, Très Secret, EU Restricted, EU Confidential, EU Secret, EU Top Secret, Restricted, Confidential, Secret, Top Secret
+classification_font_color = C51718
+classification_background_color = FFFFFF
+
 # level
 lvl_minimal = C51718
 lvl_intermediary = F1992D
@@ -47,6 +52,11 @@ to_be_defined = F1992D
 #default_background_color =
 #header_background_color =
 #sub_header_background_color =
+
+[classification]
+#classification_options =
+#classification_font_color =
+#classification_background_color =
 
 [level_colors]
 # level
