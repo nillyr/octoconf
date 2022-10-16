@@ -33,7 +33,7 @@ def setup():
         .bind(ICommandRunnerFactory, CommandRunnerFactory())
         .bind(IReportGenerator, ReportGeneratorAdapter())
     )
-    global_values.set_localize("en")
+    global_values.set_localize(config.get_config("MISC", "language"))
     yield None
     inject.clear()
 

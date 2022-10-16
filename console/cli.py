@@ -203,7 +203,7 @@ def parse_args() -> argparse.Namespace:
         "-c", "--checklist", required=True, type=str, help="checklist to use"
     )
     analyze_parser.add_argument(
-        "-l", "--language", default="EN", help="EN/FR (default=EN)"
+        "-l", "--language", default=config.get_config("MISC", "language"), help="EN/FR (default=%s)" % (config.get_config("MISC", "language"))
     )
 
     ## Audit ##
@@ -224,7 +224,7 @@ def parse_args() -> argparse.Namespace:
         help="basedir output for collection commands",
     )
     audit_parser.add_argument(
-        "-l", "--language", default="EN", help="EN/FR (default=EN)"
+        "-l", "--language", default=config.get_config("MISC", "language"), help="EN/FR (default=%s)" % (config.get_config("MISC", "language"))
     )
 
     ## Checklist ##
@@ -315,8 +315,9 @@ def parse_args() -> argparse.Namespace:
     report_parser.set_defaults(func=parse_report_args)
 
     report_parser.add_argument("-i", "--input", required=True, help="JSON results file")
+    report_parser.add_argument("-c", "--checklist", required=True, help="checklist")
     report_parser.add_argument(
-        "-l", "--language", default="EN", help="EN/FR (default=EN)"
+        "-l", "--language", default=config.get_config("MISC", "language"), help="EN/FR (default=%s)" % (config.get_config("MISC", "language"))
     )
 
     if len(sys.argv) == 1:

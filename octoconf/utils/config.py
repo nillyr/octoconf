@@ -22,6 +22,9 @@ class Config:
     def _init_configuration_file(self, filename: str) -> None:
         with open(filename, "w") as cfg_file:
             content = """[DEFAULT]
+# MISC
+language = EN
+
 # report colors
 header_font_color = FFFFFF
 default_font_color = 000000
@@ -44,6 +47,9 @@ lvl_high = 009644
 success = 009644
 failed = C51718
 to_be_defined = F1992D
+
+[MISC]
+#language =
 
 [report_colors]
 # Hexadecimal values only
