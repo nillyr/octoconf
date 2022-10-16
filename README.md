@@ -18,7 +18,7 @@
 Tool dedicated to the realization of configuration audits of various systems via semi-automated analysis of the collected configurations.
 
 ```
-        ,'""`.       octoconf 1.6.7
+        ,'""`.       octoconf 1.6.8
        / _  _ \
        |(@)(@)|      Tool for semi-automatic verification
        )  __  (      of security configurations.
@@ -33,6 +33,7 @@ positional arguments:
     audit               performs an audit of the host based on a checklist
     checklist           performs the interaction with the checklists
     report              performs the generation of audit reports
+    config              performs octoconf configuration management
 
 optional arguments:
   -h, --help            show this help message and exit
