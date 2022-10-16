@@ -157,6 +157,15 @@ def parse_report_args(args):
     return ReportGeneratorInteractor().execute(args.input, is_file=True)
 
 
+def parse_config_args(args):
+    if "value" in args:
+        # Edit sub-command
+        return config.set_configuration_parameter(args)
+    else:
+        # Print sub-command
+        return print(config.get_running_configuration())
+
+
 def parse_args() -> argparse.Namespace:
     p = argparse.ArgumentParser(
         formatter_class=argparse.RawDescriptionHelpFormatter,
@@ -318,6 +327,41 @@ def parse_args() -> argparse.Namespace:
     report_parser.add_argument("-c", "--checklist", required=True, help="checklist")
     report_parser.add_argument(
         "-l", "--language", default=config.get_config("MISC", "language"), help="EN/FR (default=%s)" % (config.get_config("MISC", "language"))
+    )
+
+    ## Config ##
+    config_parser = cmd.add_parser(
+        name="config", help="performs the interaction with the checklists"
+    )
+    config_parser.set_defaults(func=parse_config_args)
+    config_commands = config_parser.add_subparsers(title="Commands")
+
+    _ = config_commands.add_parser(
+        name="print",
+        help="print the configuration file or a given parameter",
+    )
+
+    edit_parser = config_commands.add_parser(
+        name="edit",
+        help="edit octoconf configuration file",
+    )
+    edit_parser.add_argument(
+        "-s",
+        "--section",
+        required=True,
+        help="configuration section to edit",
+    )
+    edit_parser.add_argument(
+        "-p",
+        "--parameter",
+        required=True,
+        help="configuration parameter to edit",
+    )
+    edit_parser.add_argument(
+        "-v",
+        "--value",
+        required=True,
+        help="value to assign to the parameter",
     )
 
     if len(sys.argv) == 1:

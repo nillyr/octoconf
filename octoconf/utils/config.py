@@ -13,6 +13,7 @@ class Config:
     """
     This class enables the collection of the configuration defined by the user. If the configuration file is missing, it is created.
     """
+    _absolute_configuration_filepath: str
 
     def __init__(self) -> None:
         self._cfg_parser = configparser.ConfigParser()
@@ -82,11 +83,12 @@ to_be_defined = F1992D
     def _load_configuration(self) -> None:
         basedir = Path.home() / ".config" / "octoconf"
         cfg_file = Path(basedir / self._filename)
+        self._absolute_configuration_filepath = str(cfg_file)
         if not cfg_file.is_file():
             basedir.mkdir(parents=True, exist_ok=True)
-            self._init_configuration_file(str(cfg_file))
+            self._init_configuration_file(self._absolute_configuration_filepath)
 
-        self._cfg_parser.read(str(cfg_file))
+        self._cfg_parser.read(self._absolute_configuration_filepath)
 
     def get_config(self, section: str, option: str) -> str:
         try:
@@ -96,6 +98,21 @@ to_be_defined = F1992D
                 f"Error! No option '{option}' in section '{section}'", file=sys.stderr
             )
             return ""
+
+    def get_running_configuration(self) -> str:
+        running_configuration: str = ""
+        running_configuration = "Configuration file: '%s'\n\n" % (self._absolute_configuration_filepath)
+        with open(self._absolute_configuration_filepath, 'r') as configfile:
+            running_configuration += "".join(configfile.readlines())
+        return running_configuration
+
+
+    def set_configuration_parameter(self, args) -> None:
+        # Update
+        self._cfg_parser[args.section][args.parameter] = args.value
+        # Commit
+        with open(self._absolute_configuration_filepath, 'w') as configfile:
+            self._cfg_parser.write(configfile)
 
 
 sys.modules[__name__] = Config()
