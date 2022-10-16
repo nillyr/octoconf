@@ -23,60 +23,48 @@ class Config:
     def _init_configuration_file(self, filename: str) -> None:
         with open(filename, "w") as cfg_file:
             content = """[DEFAULT]
-# MISC
+language = EN
+header_font_color = FFFFFF
+default_font_color = 000000
+default_background_color = FFFFFF
+header_background_color = 333E4E
+sub_header_background_color = 8496AF
+classification_options = Public, Interne, Confidentiel, Diffusion Restreinte, NC - Non Classifié, C1 - Usage interne, C2 - Diffusion Restreinte, C3 - Secret, Secret, Très Secret, EU Restricted, EU Confidential, EU Secret, EU Top Secret, Restricted, Confidential, Secret, Top Secret
+classification_font_color = C51718
+classification_background_color = FFFFFF
+lvl_minimal = C51718
+lvl_intermediary = F1992D
+lvl_enhanced = FFCC00
+lvl_high = 009644
+success = 009644
+failed = C51718
+to_be_defined = F1992D
+
+[MISC]
 language = EN
 
-# report colors
+[report_colors]
 header_font_color = FFFFFF
 default_font_color = 000000
 default_background_color = FFFFFF
 header_background_color = 333E4E
 sub_header_background_color = 8496AF
 
-# Classification
+[classification]
 classification_options = Public, Interne, Confidentiel, Diffusion Restreinte, NC - Non Classifié, C1 - Usage interne, C2 - Diffusion Restreinte, C3 - Secret, Secret, Très Secret, EU Restricted, EU Confidential, EU Secret, EU Top Secret, Restricted, Confidential, Secret, Top Secret
 classification_font_color = C51718
 classification_background_color = FFFFFF
 
-# level
+[level_colors]
 lvl_minimal = C51718
 lvl_intermediary = F1992D
 lvl_enhanced = FFCC00
 lvl_high = 009644
 
-# status
+[status_colors]
 success = 009644
 failed = C51718
 to_be_defined = F1992D
-
-[MISC]
-#language =
-
-[report_colors]
-# Hexadecimal values only
-#header_font_color =
-#default_font_color =
-#default_background_color =
-#header_background_color =
-#sub_header_background_color =
-
-[classification]
-#classification_options =
-#classification_font_color =
-#classification_background_color =
-
-[level_colors]
-# level
-#lvl_minimal =
-#lvl_intermediary =
-#lvl_enhanced =
-#lvl_high =
-
-[status_colors]
-# Hexadecimal values only
-#success =
-#failed =
-#to_be_defined =
 """
             cfg_file.write(content)
 
@@ -109,7 +97,7 @@ to_be_defined = F1992D
 
     def set_configuration_parameter(self, args) -> None:
         # Update
-        self._cfg_parser[args.section][args.parameter] = args.value
+        self._cfg_parser[args.section][args.option] = args.value
         # Commit
         with open(self._absolute_configuration_filepath, 'w') as configfile:
             self._cfg_parser.write(configfile)

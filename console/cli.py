@@ -331,19 +331,19 @@ def parse_args() -> argparse.Namespace:
 
     ## Config ##
     config_parser = cmd.add_parser(
-        name="config", help="performs the interaction with the checklists"
+        name="config", help="performs octoconf configuration management"
     )
     config_parser.set_defaults(func=parse_config_args)
     config_commands = config_parser.add_subparsers(title="Commands")
 
     _ = config_commands.add_parser(
         name="print",
-        help="print the configuration file or a given parameter",
+        help="print the current configuration",
     )
 
     edit_parser = config_commands.add_parser(
         name="edit",
-        help="edit octoconf configuration file",
+        help="edit octoconf configuration",
     )
     edit_parser.add_argument(
         "-s",
@@ -352,16 +352,16 @@ def parse_args() -> argparse.Namespace:
         help="configuration section to edit",
     )
     edit_parser.add_argument(
-        "-p",
-        "--parameter",
+        "-o",
+        "--option",
         required=True,
-        help="configuration parameter to edit",
+        help="configuration option to edit",
     )
     edit_parser.add_argument(
         "-v",
         "--value",
         required=True,
-        help="value to assign to the parameter",
+        help="value to assign to the option",
     )
 
     if len(sys.argv) == 1:
