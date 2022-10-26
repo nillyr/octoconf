@@ -18,7 +18,7 @@
 Tool dedicated to the realization of configuration audits of various systems via semi-automated analysis of the collected configurations.
 
 ```
-        ,'""`.       octoconf 1.7.0
+        ,'""`.       octoconf 1.7.1
        / _  _ \
        |(@)(@)|      Tool for semi-automatic verification
        )  __  (      of security configurations.
