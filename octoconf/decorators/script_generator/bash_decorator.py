@@ -42,6 +42,7 @@ uname -a > \"${SYSTEMINFORMATIONDIR}\"/system_information.txt
 for keyword in system-manufacturer system-product-name bios-release-date bios-version; do echo "$keyword = " $(dmidecode -s $keyword) >> \"${SYSTEMINFORMATIONDIR}\"/smbios_information.txt; done
 hostnamectl > \"${SYSTEMINFORMATIONDIR}\"/hostnamectl.txt
 env > \"${SYSTEMINFORMATIONDIR}\"/env.txt
+whoami > \"${SYSTEMINFORMATIONDIR}\"/whoami.txt
 
 # Configuration collection
 echo \"[*] Beginning of the collection...\"'''

@@ -38,6 +38,7 @@ date >> \"${SYSTEMINFORMATIONDIR}\"/timestamp.txt
 system_profiler > \"${SYSTEMINFORMATIONDIR}\"/system_profiler.txt
 uname -a > \"${SYSTEMINFORMATIONDIR}\"/system_information.txt
 env > \"${SYSTEMINFORMATIONDIR}\"/env.txt
+whoami > \"${SYSTEMINFORMATIONDIR}\"/whoami.txt
 
 # Configuration collection
 echo \"[*] Beginning of the collection...\"'''
