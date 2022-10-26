@@ -36,10 +36,26 @@ date >> $system_information_dir\\timestamp.txt
 (Get-CimInstance Win32_OperatingSystem).Caption >> $system_information_dir\\os.txt
 (Get-CimInstance Win32_OperatingSystem).Version >> $system_information_dir\\os_version.txt
 Get-ChildItem -Path Env: | Format-Table -AutoSize >> $system_information_dir\\env.txt
+whoami /all >> $system_information_dir\\whoami.txt
 
 # Custom functions
 $custom_functions_dir = "$basedir\\20_custom_functions"
 New-Item -ItemType Directory -Force -Path $custom_functions_dir | Out-Null
+
+Function Test-CommandExists {
+	Param ($command)
+	$oldPreference = $ErrorActionPreference
+	$ErrorActionPreference = "Stop"
+	try {
+		If (Get-Command $command) {
+			return $true
+		}
+	} Catch {
+		return $false
+	} Finally {
+		$ErrorActionPreference = $oldPreference
+	}
+}
 
 function _collect_user_rights_assigments {
     # Fail script if we can't find SecEdit.exe
