@@ -322,18 +322,18 @@ class ReportGeneratorAdapter(IReportGenerator):
         staked_chart_by_lvl.set_y_axis({'name': global_values.localize.gettext("nb_checks"), 'major_gridlines': {'visible': False}})
 
         staked_chart_by_lvl.add_series({
-            "name":         f"={ws_name}!$D$2",
-            "categories":   f"={ws_name}!$D$3:$G$3",
-            "values":       f"={ws_name}!$D${last_row}:G${last_row}",
+            "name":         f"={ws_name}!$E$4",
+            "categories":   f"={ws_name}!$E$5:$H$5",
+            "values":       f"={ws_name}!$E${last_row}:H${last_row}",
             "data_labels":  {"value": True},
             "fill":         {"color": "#"+config.get_config("status_colors", "success")},
             "gap":          20
         })
 
         staked_chart_by_lvl.add_series({
-            "name":         f"={ws_name}!$H$2",
-            "categories":   f"={ws_name}!$H$3:$K$3",
-            "values":       f"={ws_name}!$H${last_row}:K${last_row}",
+            "name":         f"={ws_name}!$I$4",
+            "categories":   f"={ws_name}!$L$5:$L$5",
+            "values":       f"={ws_name}!$I${last_row}:L${last_row}",
             "data_labels":  {"value": True},
             "fill":         {"color": "#"+config.get_config("status_colors", "failed")},
             "gap":          20
