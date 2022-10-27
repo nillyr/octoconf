@@ -167,7 +167,7 @@ public static extern bool LookupPrivilegeDisplayName(
 
 }
 
-_collect_user_rights_assigments | Out-File -Encoding utf8 -Append -FilePath $custom_functions_dir\\collect_user_rights_assigments.txt
+_collect_user_rights_assigments | Format-Table -AutoSize -Wrap | Out-File -Encoding utf8 -Append -FilePath $custom_functions_dir\\collect_user_rights_assigments.txt
 
 # Configuration collection
 Write-Output "[*] Beginning of the collection..."
