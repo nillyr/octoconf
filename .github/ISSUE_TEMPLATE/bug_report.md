@@ -15,8 +15,8 @@ A clear and concise description of what you expected to happen.
 
 **Additional information (please complete the following information):**
  - Command history - what commands were used
- - The checklist used (or at least the non-functional part)
- - Error obtained (stack trace)
+ - The used security baseline
+ - Error obtained
 
 **Screenshots**
 If applicable, add screenshots to help explain your problem.

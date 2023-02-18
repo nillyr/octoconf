@@ -61,8 +61,8 @@ msgstr "General information"
 msgid "date_of_completion"
 msgstr "Date of completion"
 
-msgid "used_checklist"
-msgstr "Checklist used"
+msgid "used_baseline"
+msgstr "Baseline"
 
 msgid "tool_version"
 msgstr "Version of the tool"

@@ -1,0 +1,14 @@
+title: "A given baseline"
+categories:
+  - category: "cat1"
+    name: "First <x>category</x>"
+    description: |
+      This is a long description.
+      With multiple lines.
+    rules:
+      - cat1_rule1
+  - category: "cat2"
+    name: "Second <x>category</x>"
+    rules:
+      - cat2_rule1
+      - cat2_rule2

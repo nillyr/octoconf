@@ -1,0 +1,17 @@
+id: "cat1_rule1"
+title: "First rule of the first <x>category</x>"
+description: |
+  This is a <x>description</x>.
+collection_cmd: |
+  whoami > whoami.txt
+check: |
+  whoami
+verification_type: CHECK_REGEX
+expected: .*
+recommendation: |
+  This is a long <x>recommendation</x>.
+  Fixme reco step 1
+  Fixme reco step 2
+level: minimal
+references:
+  - https://example.com

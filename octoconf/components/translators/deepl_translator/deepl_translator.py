@@ -1,4 +1,4 @@
-# @copyright Copyright (c) 2021-2022 Nicolas GRELLETY
+# @copyright Copyright (c) 2021-2023 Nicolas GRELLETY
 # @license https://opensource.org/licenses/GPL-3.0 GNU GPLv3
 # @link https://github.com/nillyr/octoconf
 # @since 1.0.0b
@@ -9,12 +9,12 @@ import requests
 
 from . import config
 from .exceptions import DeepLError
-from octoconf.ports import ITranslator
+from octoconf.interfaces import ITranslator
 
 
 class DeepL(ITranslator):
     """
-    Simplistic implementation to translate checklists using the DeepL translator.
+    Simplistic implementation to translate baselines using the DeepL translator.
     """
 
     def __init__(self) -> None:
@@ -26,7 +26,7 @@ class DeepL(ITranslator):
         """
         Method to send a request to the deepl API.
 
-        Use of the ignore tag to avoid translating some parts of the checklist (especially the executed commands).
+        Use of the ignore tag to avoid translating some parts of the baseline (especially the executed commands).
         """
         if source_lang not in config.const.SUPPORTED_LANG.keys():
             raise DeepLError(400, "Value for 'source_lang' not supported.")

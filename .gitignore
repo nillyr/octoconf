@@ -54,8 +54,7 @@ coverage.xml
 
 # Tests
 octoconf_tests/.ignore/
-octoconf_tests/interactors/archive/tryme
-octoconf_tests/interactors/archive/_data
+octoconf_tests/use_cases/archive/10_octoconf_checks
 
 # Generated data
 *_results.json

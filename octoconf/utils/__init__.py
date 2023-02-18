@@ -1,5 +1,3 @@
-from octoconf.utils.checklist_exporter import ChecklistExporter
-from octoconf.utils.checklists_loader import ChecklistsLoader
 import octoconf.utils.const
 import octoconf.utils.config
 import octoconf.utils.debug

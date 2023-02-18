@@ -1,10 +1,9 @@
 BUILD_DIR := build
 COV_DIR   := htmlcov
 DIST_DIR  := dist
-DOC_DIR   := docs
 TEST_DIR  := octoconf_tests/.ignore/pytest
 
-default: clean test wheel sdist doc
+default: clean test wheel sdist
 
 clean:
 	$(RM) -r $(BUILD_DIR)
@@ -30,10 +29,3 @@ test:
 coverage:
 	coverage run -m pytest -v -W error::UserWarning
 	coverage html
-
-doc:
-	pandoc -o $(DOC_DIR)/octoconf.pdf docs/title.txt \
-	docs/0x1-Introduction/0x1-Table_of_contents.md \
-	docs/0x1-Introduction/0x2-License.md \
-	docs/0x1-Introduction/0x3-Introduction.md \
-	docs/0x2-User_Documentation/0x1-User_Documentation.md

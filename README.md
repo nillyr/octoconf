@@ -15,10 +15,10 @@
   <img src="https://img.shields.io/badge/coverage-80%25-green.svg">
 </p>
 
-Tool dedicated to the realization of configuration audits of various systems via semi-automated analysis of the collected configurations.
+Tool dedicated to the realization of configuration audits of various assets.
 
 ```
-        ,'""`.       octoconf 1.7.1
+        ,'""`.       octoconf 2.0.0b
        / _  _ \
        |(@)(@)|      Tool for semi-automatic verification
        )  __  (      of security configurations.
@@ -28,10 +28,9 @@ Tool dedicated to the realization of configuration audits of various systems via
 
 
 positional arguments:
-  {analyze,audit,checklist,report} Available Commands
-    analyze             performs an analysis on an archive based on a checklist
-    audit               performs an audit of the host based on a checklist
-    checklist           performs the interaction with the checklists
+  {analyze,audit,baseline,report} Available Commands
+    analyze             performs an analysis on an archive based on a security baseline
+    baseline            performs the interaction with the security baselines
     report              performs the generation of audit reports
     config              performs octoconf configuration management
 
@@ -49,26 +48,26 @@ optional arguments:
 ## Documentation
 
 - Documentation can be found in the [wiki](https://github.com/nillyr/octoconf/wiki).
-- Documentation can be generated with `pandoc` with `make doc`. The chosen format is `pdf`.
 
 ## Quick usage
 
 ```bash
 # Generate a collection script
-octoconf checklist generate -c ./debian-based.yml -p linux -o audit-debian.sh
+octoconf baseline generate_script -p linux -b ./debian-based.yml -o audit-debian.sh
+# Generate a collection script with utils functions included
+octoconf baseline generate_script -p linux -b ./debian-based.yml -u ./utils.sh -o audit-debian.sh
 # Run the script on the targeted host (admin)
 chmod +x audit-debian.sh; ./audit-debian.sh
 # Retrieve audit evidence and then analyze
-octoconf analyze -c ./debian-based.yml -a audit_[...].zip
+octoconf analyze -b ./debian-based.yml -a audit_[...].zip
 ```
 
 ## Disclaimer
 
 - This is not a turn key tool, read the documentation for more information
 - This tool does not offer any guarantee
-- The authors of this tool cannot be held responsible for the effects caused by the commands made in the checklists
-- It is highly recommended to risk assess your checklists in a test environment before using them in production
-- It is highly recommended to manually check each critical configuration of the audited system
+- The authors of this tool cannot be held responsible for the effects caused by the executed commands
+- It is highly recommended to risk assess your commands in a test environment before using them in production
 
 ## Maintainer
 

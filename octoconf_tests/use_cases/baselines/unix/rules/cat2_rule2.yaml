@@ -1,0 +1,18 @@
+id: "cat2_rule2"
+title: "First rule of the second <x>category</x>"
+description: |
+  This is a <x>description</x>.
+collection_cmd: |
+  [[ -d "/dummy_dir" ]] && echo "dummy_dir exists" > dummy_1.txt; cat dummy_input_file.txt > /dummy/dummy_1.txt
+check: |
+  whoami
+verification_type: CHECK_REGEX
+expected: .*
+recommendation: |
+  This is a long <x>recommendation</x>.
+  Fixme reco step 1
+  Fixme reco step 2
+level: minimal
+references:
+  - https://example.com
+  - https://example.com

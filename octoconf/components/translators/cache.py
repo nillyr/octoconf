@@ -1,4 +1,4 @@
-# @copyright Copyright (c) 2021-2022 Nicolas GRELLETY
+# @copyright Copyright (c) 2021-2023 Nicolas GRELLETY
 # @license https://opensource.org/licenses/GPL-3.0 GNU GPLv3
 # @link https://github.com/nillyr/octoconf
 # @since 1.0.0b
@@ -24,7 +24,7 @@ class TranslatorCache:
         return cls._instance
 
     def load_cache(self, source_lang: str, target_lang: str) -> None:
-        path = Path.cwd() / self._cache_directory
+        path = Path.home() / ".cache" / "octoconf"
         path.mkdir(parents=True, exist_ok=True)
 
         self._cache_filename = str(path / f"{source_lang}-{target_lang}.json")

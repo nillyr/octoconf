@@ -1,4 +1,4 @@
-# @copyright Copyright (c) 2021-2022 Nicolas GRELLETY
+# @copyright Copyright (c) 2021-2023 Nicolas GRELLETY
 # @license https://opensource.org/licenses/GPL-3.0 GNU GPLv3
 # @link https://github.com/nillyr/octoconf
 # @since 1.0.0b
@@ -83,7 +83,8 @@ to_be_defined = F1992D
             return self._cfg_parser.get(section, option)
         except:
             print(
-                f"Error! No option '{option}' in section '{section}'", file=sys.stderr
+                f"Error! No option '{option}' in section '{section}'",
+                file=sys.stderr
             )
             return ""
 
