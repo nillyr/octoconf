@@ -34,6 +34,7 @@ class UnixOutputRedirectorRegexCB(IOutputRedirectorRegexBuilder):
 
         BASICS = r"(?<!\$\.)\s*(?<!2)>+\s*(?!=|\&)(?#[a-zA-Z0-9.\-_/]+)(?#(;|&&)"
         FILE_DESCRIPTORS_ADDITIONAL_FILES = r"[3-9]<>(?#[a-zA-Z0-9.\-_/]+)(?#(;|&&)"
+        TEE_CMD = r"\|\s*tee\s+(?:-(?:[a-z]\s*))*(?#(;|&&)"
 
     _instance = None
     _product = None

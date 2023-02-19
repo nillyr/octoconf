@@ -8,7 +8,9 @@ from icecream import ic
 import inject
 
 from octoconf.interfaces import IBaseline
-from octoconf.interfaces.generate_script.language_abstract_factory import ILanguageFactory
+from octoconf.interfaces.generate_script.language_abstract_factory import (
+    ILanguageFactory,
+)
 
 
 class GenerateScriptUseCase:
@@ -35,13 +37,17 @@ class GenerateScriptUseCase:
             if Path(utils).is_file():
                 print(f"[*] Loading content of utils file '{utils}'...")
                 with open(utils, "r") as utils_file:
-                    utils_content = utils_file.read()
+                    utils_content = "# Import of util file" + self._newline(platform)
+                    utils_content += utils_file.read()
+                    utils_content += "# Enf of import" + self._newline(platform)
                 utils_file.close()
 
         commands = self._adapter.get_commands(baseline)
         script = self._factory.get_language(platform)
 
         with open(output_file, "w", newline=self._newline(platform)) as file:
-            content = script.write_script(utils_content, commands, script.write_checks_cmds)
+            content = script.write_script(
+                utils_content, commands, script.write_checks_cmds
+            )
             [file.write(x) for x in content]
         file.close()

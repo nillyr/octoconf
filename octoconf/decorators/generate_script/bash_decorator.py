@@ -14,42 +14,35 @@ class BashDecorator(Decorator):
     def decorator(func):
         def inner(*args, **kwargs):
             content = []
-            prolog = '''#!/bin/bash
+            prolog = """#!/bin/bash
+
+# Redirect /dev/stderr file descriptor
+exec 2>\"${BASEDIR}\"/stderr.txt
+
+# FIXME: à tester et compléter avec la gestion du chiffrement
+save_to_file() {
+    output_file=$1
+    IFS=$'\\n' read -d "" -rs data_in <<< "$(cat /dev/stdin)"
+    echo "$data_in" > "$output_file"
+}
 
 if [[ ! "${EUID}" -eq 0 ]]; then
     echo "[x] This script must be run as 'root'"
     exit 1
 fi
 
-# Prolog
-echo \"[*] Preparation...\"
 BASEDIR="$(pwd)/audit_$(hostname)_$(date '+%Y%m%d-%H%M%S')"
-mkdir -p \"${BASEDIR}\"
-SYSTEMINFORMATIONDIR=\"${BASEDIR}\"/00_system_information
-mkdir -p \"${SYSTEMINFORMATIONDIR}\"
 CHECKSDIR=\"${BASEDIR}\"/10_octoconf_checks
-mkdir -p \"${CHECKSDIR}\"
 
-exec 2>\"${BASEDIR}\"/stderr.txt
+mkdir -p \"${BASEDIR}\" \"${CHECKSDIR}\"
 
-# Standard system information
-date >> \"${SYSTEMINFORMATIONDIR}\"/timestamp.txt
-hostname -f > \"${SYSTEMINFORMATIONDIR}\"/hostname.txt
-lsb_release -d | awk -F: '{print $2}' | sed -r "s/\\t+//g" > \"${SYSTEMINFORMATIONDIR}\"/os.txt
-lsb_release -r | awk -F: '{print $2}' | sed -r "s/\\t+//g" > \"${SYSTEMINFORMATIONDIR}\"/os_version.txt
-cat /etc/*ease* > \"${SYSTEMINFORMATIONDIR}\"/release.txt
-uname -a > \"${SYSTEMINFORMATIONDIR}\"/system_information.txt
-for keyword in system-manufacturer system-product-name bios-release-date bios-version; do echo "$keyword = " $(dmidecode -s $keyword) >> \"${SYSTEMINFORMATIONDIR}\"/smbios_information.txt; done
-hostnamectl > \"${SYSTEMINFORMATIONDIR}\"/hostnamectl.txt
-env > \"${SYSTEMINFORMATIONDIR}\"/env.txt
-whoami > \"${SYSTEMINFORMATIONDIR}\"/whoami.txt
-'''
+date >> \"${BASEDIR}\"/timestamp.txt
+"""
             content.append(prolog)
             content.extend(func(*args, **kwargs))
             epilog = '''
-# Epilog
 echo \"[*] Finishing...\"
-date >> \"${SYSTEMINFODIR}\"/timestamp.txt
+date >> \"${BASEDIR}\"/timestamp.txt
 tar zcf \"${BASEDIR##*/}\".tar.gz -C \"${BASEDIR}\" .
 rm -rf \"${BASEDIR}\"
 echo \"[+] Done!\"'''
