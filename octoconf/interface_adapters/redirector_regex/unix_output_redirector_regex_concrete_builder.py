@@ -33,11 +33,11 @@ class UnixOutputRedirectorRegexCB(IOutputRedirectorRegexBuilder):
         """
 
         # [fd (fd!= 2)]>[>] output_file
-        BASICS = r"(?<!\$\.)\s*(?<!2)>+\s*(?!=|\&)(?#[a-zA-Z0-9.\-_/]+)(?#(;|&&)"
+        BASICS = r"\s*\d?(?<!2)\&?>{1,2}\|?(?!\&)\s*"
         # Do not match fd to fd (exec 3>&1) or input to fd (exec 3<input_file)
-        FD_TO_FILES = r"exec\s+\d(?:(?:<?>))(?!\&)(?#[a-zA-Z0-9.\-_/]+)(?#(;|&&)"
+        FD_TO_FILES = r"(?#exec)\s+\d(?:(?:<?>))(?!\&)"
         # Bash commands
-        TEE_CMD = r"\|\s*tee\s+(?:-(?:[a-z]\s*))*(?#(;|&&)"
+        TEE_CMD = r"\|\s*tee\s+(?:-(?:[a-z]\s*))*"
 
     _instance = None
     _product = None
