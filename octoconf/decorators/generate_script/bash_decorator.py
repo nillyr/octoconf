@@ -15,37 +15,50 @@ class BashDecorator(Decorator):
         def inner(*args, **kwargs):
             content = []
             prolog = """#!/bin/bash
+# shellcheck disable=SC2002
 
-# Redirect /dev/stderr file descriptor
-exec 2>\"${BASEDIR}\"/stderr.txt
+# Prevent overwriting of existing files
+set -o noclobber
 
-# FIXME: à tester et compléter avec la gestion du chiffrement
-save_to_file() {
-    output_file=$1
-    IFS=$'\\n' read -d "" -rs data_in <<< "$(cat /dev/stdin)"
-    echo "$data_in" > "$output_file"
-}
+EXIT_STATUS=0
 
 if [[ ! "${EUID}" -eq 0 ]]; then
-    echo "[x] This script must be run as 'root'"
-    exit 1
+    echo "[x] This script must be run as 'root'" >&2
+    EXIT_STATUS=1
+    exit $EXIT_STATUS
 fi
 
-BASEDIR="$(pwd)/audit_$(hostname)_$(date '+%Y%m%d-%H%M%S')"
-CHECKSDIR=\"${BASEDIR}\"/10_octoconf_checks
+# Redirect stderr file descriptor
+exec 2>"${BASEDIR}"/log_stderr.txt
 
-mkdir -p \"${BASEDIR}\" \"${CHECKSDIR}\"
+echo "[*] Starting Data collection..."
 
-date >> \"${BASEDIR}\"/timestamp.txt
-"""
+BASEDIR=$(mktemp -d -t tmp.XXXXXXXXXXXX)
+CHECKSDIR="${BASEDIR}"/10_octoconf_checks
+
+mkdir -p "${CHECKSDIR}"
+
+date >> "${BASEDIR}"/date.txt"""
             content.append(prolog)
             content.extend(func(*args, **kwargs))
-            epilog = '''
-echo \"[*] Finishing...\"
-date >> \"${BASEDIR}\"/timestamp.txt
-tar zcf \"${BASEDIR##*/}\".tar.gz -C \"${BASEDIR}\" .
-rm -rf \"${BASEDIR}\"
-echo \"[+] Done!\"'''
+            epilog = """
+date >> "${BASEDIR}"/date.txt
+
+tar zcf "${HOSTNAME-$(hostname)}_$(date '+%Y%m%d-%H%M%S').tar.gz" -C "$BASEDIR" .
+retval=$?
+if [ "$retval" -eq 0 ]; then
+    rm -rf "$BASEDIR"
+    EXIT_STATUS=0
+else
+    # Do not redirect to stderr otherwise the user will not be aware of the issue.
+    echo "[x] Unable to create archive. ${BASEDIR} has not been deleted."
+    EXIT_STATUS=1
+fi
+
+echo "[+] Finished Data collection."
+
+exit $EXIT_STATUS
+"""
             content.append(epilog)
             return content
 

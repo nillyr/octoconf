@@ -20,18 +20,26 @@ class WindowsPowershellScript(IWindowsScript):
         """
         Adds to the collection script all the check commands allowing the analysis of the results by this tool.
         """
-        cmds.append(IWindowsScript._newline
-            + "# Checks"
-            + IWindowsScript._newline)
-        cmds.append("Write-Output \"[*] Running Checks ...\""
-            + IWindowsScript._newline)
+        cmds.append(
+            IWindowsScript._newline
+            + 'Write-Output "[*] Starting Compliance checks..."'
+            + IWindowsScript._newline
+        )
         for category in content:
             for commands in category["commands"]:
-                output_file, check_cmd = commands["rule"] + ".txt", commands["check"].rstrip()
+                output_file, check_cmd = (
+                    commands["rule"] + ".txt",
+                    commands["check"].rstrip(),
+                )
                 if not check_cmd:
                     continue
                 path = checksdir + "\\" + output_file + IWindowsScript._newline
                 cmds.append(check_cmd + IWindowsScript._powershell_pattern + path)
+        cmds.append(
+            IWindowsScript._newline
+            + 'Write-Output "[+] Finished Compliance checks."'
+            + IWindowsScript._newline
+        )
         return ic(cmds)
 
     @PowershellDecorator.decorator
@@ -46,7 +54,7 @@ class WindowsPowershellScript(IWindowsScript):
         for category in content:
             str = """
 $category=\"{0}\"
-Write-Output "[*] Running {1} collection commands..."
+Write-Output "[*] Starting Collection commands of category: {1}..."
 New-Item -ItemType Directory -Force -Path $basedir\\$category | Out-Null
 """.format(
                 re.sub(
@@ -66,4 +74,10 @@ New-Item -ItemType Directory -Force -Path $basedir\\$category | Out-Null
                     + IWindowsScript._newline
                 )
             cmds.append(str)
+            cmds.append(
+                """Write-Output "[+] Finished Collection commands of category: {0}."
+""".format(
+                    "$category",
+                )
+            )
         return callback("$checksdir", content, cmds)

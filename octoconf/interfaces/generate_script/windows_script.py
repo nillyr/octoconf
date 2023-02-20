@@ -9,7 +9,9 @@ import re
 
 from icecream import ic
 
-from octoconf.interface_adapters.redirector_regex.redirector_regex import RedirectorRegex
+from octoconf.interface_adapters.redirector_regex.redirector_regex import (
+    RedirectorRegex,
+)
 
 
 class IWindowsScript(metaclass=ABCMeta):
@@ -37,16 +39,19 @@ class IWindowsScript(metaclass=ABCMeta):
 
         matches = re.finditer(IWindowsScript._regex_pattern, collection_cmd)
         redirectors = []
-        for _, match in enumerate(matches, start = 1):
+        for _, match in enumerate(matches, start=1):
             redirectors.append(match.group())
 
-        cmd_elt = list(filter(None, re.split(IWindowsScript._regex_pattern, collection_cmd)))
+        cmd_elt = list(
+            filter(None, re.split(IWindowsScript._regex_pattern, collection_cmd))
+        )
 
         for index in range(1, len(cmd_elt)):
             # 0 out_file
             # 1..n other commands if any
-            splited_cmd_elt = cmd_elt[index].split(sep=';', maxsplit=1)
-            out_file = splited_cmd_elt[0].lstrip().rstrip()
+            splited_cmd_elt = cmd_elt[index].split(sep=";", maxsplit=1)
+            out_file = splited_cmd_elt[0].lstrip()
+
             out_file = out_file.split(sep=IWindowsScript._newline, maxsplit=1)
             out_file[0] = re.sub(r"(^\\|/)", "", out_file[0], count=1)
 
@@ -57,7 +62,10 @@ class IWindowsScript(metaclass=ABCMeta):
             if len(splited_cmd_elt) > 1:
                 new_outfile_path += "; "
 
-            joined_cmd_elt = new_outfile_path + IWindowsScript._newline.join(splited_cmd_elt[1:]).lstrip()
+            joined_cmd_elt = (
+                new_outfile_path
+                + IWindowsScript._newline.join(splited_cmd_elt[1:]).lstrip()
+            )
 
             cmd_elt[index] = redirectors[index - 1] + joined_cmd_elt
 

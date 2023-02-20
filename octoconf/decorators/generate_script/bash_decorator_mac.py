@@ -14,43 +14,52 @@ class BashDecoratorMAC(Decorator):
     def decorator(func):
         def inner(*args, **kwargs):
             content = []
-            prolog = '''#!/bin/bash
+            prolog = """#!/bin/bash
+# shellcheck disable=SC2002
+
+# Prevent overwriting of existing files
+set -o noclobber
+
+EXIT_STATUS=0
 
 id -Gn $USER | grep -q -w admin
 if [ $? -ne 0 ]; then
-  echo "[x] You must be in the admin group to run this script."
-  exit
+    echo "[x] You must be in the admin group to run this script." >&2
+    EXIT_STATUS=1
+    exit $EXIT_STATUS
 fi
 
-# Prolog
-echo \"[*] Preparation...\"
-BASEDIR="$(pwd)/audit_$(hostname)_$(date '+%Y%m%d-%H%M%S')"
-mkdir -p \"${BASEDIR}\"
-SYSTEMINFORMATIONDIR=\"${BASEDIR}\"/00_system_information
-mkdir -p \"${SYSTEMINFORMATIONDIR}\"
-CHECKSDIR=\"${BASEDIR}\"/10_octoconf_checks
-mkdir -p \"${CHECKSDIR}\"
+# Redirect stderr file descriptor
+exec 2>"${BASEDIR}"/log_stderr.txt
 
-exec 2>\"${BASEDIR}\"/stderr.txt
+echo "[*] Starting Data collection..."
 
-# Standard system information
-date >> \"${SYSTEMINFORMATIONDIR}\"/timestamp.txt
-system_profiler > \"${SYSTEMINFORMATIONDIR}\"/system_profiler.txt
-uname -a > \"${SYSTEMINFORMATIONDIR}\"/system_information.txt
-env > \"${SYSTEMINFORMATIONDIR}\"/env.txt
-whoami > \"${SYSTEMINFORMATIONDIR}\"/whoami.txt
+BASEDIR=$(mktemp -d -t tmp.XXXXXXXXXXXX)
+CHECKSDIR="${BASEDIR}"/10_octoconf_checks
 
-# Configuration collection
-echo \"[*] Beginning of the collection...\"'''
+mkdir -p "${CHECKSDIR}"
+
+date >> "${BASEDIR}"/date.txt"""
             content.append(prolog)
             content.extend(func(*args, **kwargs))
-            epilog = '''
-# Epilog
-echo \"[*] Finishing...\"
-date >> \"${SYSTEMINFORMATIONDIR}\"/timestamp.txt
-tar zcf \"${BASEDIR##*/}\".tar.gz -C \"${BASEDIR}\" .
-rm -rf \"${BASEDIR}\"
-echo \"[+] Done!\"'''
+            epilog = """
+date >> "${BASEDIR}"/date.txt
+
+tar zcf "${HOSTNAME-$(hostname)}_$(date '+%Y%m%d-%H%M%S').tar.gz" -C "$BASEDIR" .
+retval=$?
+if [ "$retval" -eq 0 ]; then
+    rm -rf "$BASEDIR"
+    EXIT_STATUS=0
+else
+    # Do not redirect to stderr otherwise the user will not be aware of the issue.
+    echo "[x] Unable to create archive. ${BASEDIR} has not been deleted."
+    EXIT_STATUS=1
+fi
+
+echo "[+] Finished Data collection."
+
+exit $EXIT_STATUS
+"""
             content.append(epilog)
             return content
 

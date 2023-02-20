@@ -20,17 +20,26 @@ class LinuxBashScript(IUnixScript):
         """
         Adds to the collection script all the check commands allowing the analysis of the results by this tool.
         """
-        cmds.append(IUnixScript._newline + "# Checks" + IUnixScript._newline)
-        cmds.append(IUnixScript._newline
-            + "echo \"[*] Running Checks ...\""
-            + IUnixScript._newline)
+        cmds.append(
+            IUnixScript._newline
+            + 'echo "[*] Starting Compliance checks..."'
+            + IUnixScript._newline
+        )
         for category in content:
             for commands in category["commands"]:
-                output_file, check_cmd = commands["rule"] + ".txt", commands["check"].rstrip()
+                output_file, check_cmd = (
+                    commands["rule"] + ".txt",
+                    commands["check"].rstrip(),
+                )
                 if not check_cmd:
                     continue
                 path = '"' + checksdir + '"/' + output_file + IUnixScript._newline
                 cmds.append(check_cmd + IUnixScript._pattern + path)
+        cmds.append(
+            IUnixScript._newline
+            + 'echo "[+] Finished Compliance checks."'
+            + IUnixScript._newline
+        )
         return ic(cmds)
 
     @BashDecorator.decorator
@@ -45,7 +54,7 @@ class LinuxBashScript(IUnixScript):
         for category in content:
             str = """
 CATEGORY=\"{0}\"
-echo "[*] Running {1} collection commands..."
+echo "[*] Starting Collection commands of category: {1}..."
 mkdir -p {2}
 """.format(
                 re.sub(
@@ -55,7 +64,7 @@ mkdir -p {2}
                     0,
                     re.IGNORECASE,
                 ),
-                '\\"${CATEGORY}\\"',
+                "${CATEGORY}",
                 '"${BASEDIR}"/"${CATEGORY}"/',
             )
             for cmd in category["commands"]:
@@ -66,4 +75,11 @@ mkdir -p {2}
                     + IUnixScript._newline
                 )
             cmds.append(str)
+
+            cmds.append(
+                """echo "[+] Finished Collection commands of category: {0}."
+""".format(
+                    "${CATEGORY}"
+                )
+            )
         return callback("${CHECKSDIR}", content, cmds)
