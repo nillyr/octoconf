@@ -228,7 +228,7 @@ def test_write_checks_cmds_for_linux(unix_content):
     checkdir = "${CHECKSDIR}"
     expected_output = []
     expected_output.append('\necho "[*] Starting Compliance checks..."\n')
-    expected_output.append('whoami >> "${CHECKSDIR}"/rule_id.txt\n')
+    expected_output.append('whoami | encrypt_output >> "${CHECKSDIR}"/rule_id.txt\n')
     expected_output.append('\necho "[+] Finished Compliance checks."\n')
 
     output = LinuxBashScript().write_checks_cmds(checkdir, unix_content, [])
@@ -240,7 +240,7 @@ def test_write_checks_cmds_for_mac(unix_content):
     checkdir = "${CHECKSDIR}"
     expected_output = []
     expected_output.append('\necho "[*] Starting Compliance checks..."\n')
-    expected_output.append('whoami >> "${CHECKSDIR}"/rule_id.txt\n')
+    expected_output.append('whoami | encrypt_output >> "${CHECKSDIR}"/rule_id.txt\n')
     expected_output.append('\necho "[+] Finished Compliance checks."\n')
 
     output = MacOSBashScript().write_checks_cmds(checkdir, unix_content, [])
@@ -253,7 +253,7 @@ def test_write_checks_cmds_for_windows_powershell(windows_content):
     expected_output = []
     expected_output.append('\nWrite-Output "[*] Starting Compliance checks..."\n')
     expected_output.append(
-        "whoami /all | Out-File -Encoding utf8 -Append -FilePath $checksdir\\rule_id.txt\n"
+        "whoami /all | Encrypt-Symetric | Out-File -Encoding utf8 -Append -FilePath $checksdir\\rule_id.txt\n"
     )
     expected_output.append('\nWrite-Output "[+] Finished Compliance checks."\n')
 

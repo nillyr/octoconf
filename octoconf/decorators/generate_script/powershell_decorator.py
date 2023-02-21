@@ -19,6 +19,20 @@ class PowershellDecorator(Decorator):
 
 $ExitCode = 0
 
+# This function does nothing but return the data that has been received.
+# We recommend to use a utility file with all the cryptographic operations.
+Function Encrypt-Symetric() {
+    Param(
+        [Parameter(ValueFromPipeline=$true)] $UnencryptedString
+    )
+
+    Begin {}
+    Process {
+        return $UnencryptedString
+    }
+    End {}
+}
+
 if (-NOT ([Security.Principal.WindowsPrincipal] [Security.Principal.WindowsIdentity]::GetCurrent()).IsInRole([Security.Principal.WindowsBuiltInRole]::Administrator)) {
     Write-Error "[x] Error: This script is meant to be run with administrator rights"
     $ExitCode = 1
@@ -27,7 +41,7 @@ if (-NOT ([Security.Principal.WindowsPrincipal] [Security.Principal.WindowsIdent
 
 Write-Output "[*] Starting Data collection..."
 
-$basedir = "$pwd\$($env:COMPUTERNAME)_$(get-date -f yyyyMMdd-hhmmss)"
+$basedir = "$pwd\$($env:COMPUTERNAME)_$(Get-Date -f yyyyMMdd-hhmmss)"
 $checksdir = "$basedir\\10_octoconf_checks"
 
 New-Item -ItemType Directory -Force -Path $basedir | Out-Null

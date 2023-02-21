@@ -22,6 +22,12 @@ set -o noclobber
 
 EXIT_STATUS=0
 
+# This function does nothing but return the data that has been received.
+# We recommend to use a utility file with all the cryptographic operations.
+encrypt_output() {
+    cat /dev/stdin
+}
+
 id -Gn $USER | grep -q -w admin
 if [ $? -ne 0 ]; then
     echo "[x] You must be in the admin group to run this script." >&2

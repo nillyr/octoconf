@@ -20,7 +20,7 @@ class IUnixScript(metaclass=ABCMeta):
     """
 
     _newline = "\n"
-    _pattern = " >> "
+    _pattern = " | encrypt_output >> "
     _regex_pattern = RedirectorRegex.get_redirector_regex("Unix")
 
     @abstractmethod

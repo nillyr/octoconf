@@ -22,6 +22,12 @@ set -o noclobber
 
 EXIT_STATUS=0
 
+# This function does nothing but return the data that has been received.
+# We recommend to use a utility file with all the cryptographic operations.
+encrypt_output() {
+    cat /dev/stdin
+}
+
 if [[ ! "${EUID}" -eq 0 ]]; then
     echo "[x] This script must be run as 'root'" >&2
     EXIT_STATUS=1
