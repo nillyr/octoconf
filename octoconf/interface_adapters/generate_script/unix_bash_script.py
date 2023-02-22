@@ -7,11 +7,11 @@ import re
 
 from icecream import ic
 
-from octoconf.decorators.generate_script import BashDecoratorMAC
+from octoconf.decorators.generate_script import BashDecorator
 from octoconf.interfaces.generate_script.unix_script import IUnixScript
 
 
-class MacOSBashScript(IUnixScript):
+class UnixBashScript(IUnixScript):
     """
     Class allowing the generation of the collection script for the indicated system.
     """
@@ -42,7 +42,7 @@ class MacOSBashScript(IUnixScript):
         )
         return ic(cmds)
 
-    @BashDecoratorMAC.decorator
+    @BashDecorator.decorator
     def write_script(self, utils_content, content, callback):
         """
         Adds to the collection script the set of commands for collecting proofs to perform manual verifications.

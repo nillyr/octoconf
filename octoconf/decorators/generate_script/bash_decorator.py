@@ -22,21 +22,6 @@ set -o noclobber
 
 EXIT_STATUS=0
 
-# This function does nothing but return the data that has been received.
-# We recommend to use a utility file with all the cryptographic operations.
-encrypt_output() {
-    cat /dev/stdin
-}
-
-if [[ ! "${EUID}" -eq 0 ]]; then
-    echo "[x] This script must be run as 'root'" >&2
-    EXIT_STATUS=1
-    exit $EXIT_STATUS
-fi
-
-# Redirect stderr file descriptor
-exec 2>"${BASEDIR}"/log_stderr.txt
-
 echo "[*] Starting Data collection..."
 
 BASEDIR=$(mktemp -d -t tmp.XXXXXXXXXXXX)
@@ -56,8 +41,7 @@ if [ "$retval" -eq 0 ]; then
     rm -rf "$BASEDIR"
     EXIT_STATUS=0
 else
-    # Do not redirect to stderr otherwise the user will not be aware of the issue.
-    echo "[x] Unable to create archive. ${BASEDIR} has not been deleted."
+    echo "[x] Unable to create archive. ${BASEDIR} has not been deleted." >&2
     EXIT_STATUS=1
 fi
 

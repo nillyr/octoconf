@@ -8,11 +8,8 @@ import sys
 import pytest
 
 sys.path.append("../../octoconf/")
-from octoconf.interface_adapters.generate_script.linux_bash_script import (
-    LinuxBashScript,
-)
-from octoconf.interface_adapters.generate_script.macos_bash_script import (
-    MacOSBashScript,
+from octoconf.interface_adapters.generate_script.unix_bash_script import (
+    UnixBashScript,
 )
 from octoconf.interface_adapters.generate_script.windows_powershell_script import (
     WindowsPowershellScript,
@@ -138,7 +135,7 @@ def test_write_script_for_linux(unix_content):
     expected_output = '\nCATEGORY="a_category_with_space"\necho "[*] Starting Collection commands of category: ${CATEGORY}..."\nmkdir -p "${BASEDIR}"/"${CATEGORY}"/\nls -al > "${BASEDIR}"/"${CATEGORY}"/ls.txt\n'
     # fmt:on
 
-    linux_sh = LinuxBashScript()
+    linux_sh = UnixBashScript()
     cmds = linux_sh.write_script("", unix_content, linux_sh.write_checks_cmds)
 
     assert expected_output in cmds
@@ -149,7 +146,7 @@ def test_write_script_for_linux_with_multiple_output(unix_content_with_multiple_
     expected_output = '\nCATEGORY="a_category_with_space"\necho "[*] Starting Collection commands of category: ${CATEGORY}..."\nmkdir -p "${BASEDIR}"/"${CATEGORY}"/\n[[ -f file.conf ]] && cat file.conf > "${BASEDIR}"/"${CATEGORY}"/dummy_1.txt; cat file2.conf >> "${BASEDIR}"/"${CATEGORY}"/dummy_2.txt\n'
     # fmt:on
 
-    linux_sh = LinuxBashScript()
+    linux_sh = UnixBashScript()
     cmds = linux_sh.write_script(
         "", unix_content_with_multiple_output, linux_sh.write_checks_cmds
     )
@@ -162,7 +159,7 @@ def test_write_script_for_mac(unix_content):
     expected_output = '\nCATEGORY="a_category_with_space"\necho "[*] Starting Collection commands of category: ${CATEGORY}..."\nmkdir -p "${BASEDIR}"/"${CATEGORY}"/\nls -al > "${BASEDIR}"/"${CATEGORY}"/ls.txt\n'
     # fmt:on
 
-    mac_sh = MacOSBashScript()
+    mac_sh = UnixBashScript()
     cmds = mac_sh.write_script("", unix_content, mac_sh.write_checks_cmds)
 
     assert expected_output in cmds
@@ -228,10 +225,10 @@ def test_write_checks_cmds_for_linux(unix_content):
     checkdir = "${CHECKSDIR}"
     expected_output = []
     expected_output.append('\necho "[*] Starting Compliance checks..."\n')
-    expected_output.append('whoami | encrypt_output >> "${CHECKSDIR}"/rule_id.txt\n')
+    expected_output.append('whoami >> "${CHECKSDIR}"/rule_id.txt\n')
     expected_output.append('\necho "[+] Finished Compliance checks."\n')
 
-    output = LinuxBashScript().write_checks_cmds(checkdir, unix_content, [])
+    output = UnixBashScript().write_checks_cmds(checkdir, unix_content, [])
 
     assert output == expected_output
 
@@ -240,10 +237,10 @@ def test_write_checks_cmds_for_mac(unix_content):
     checkdir = "${CHECKSDIR}"
     expected_output = []
     expected_output.append('\necho "[*] Starting Compliance checks..."\n')
-    expected_output.append('whoami | encrypt_output >> "${CHECKSDIR}"/rule_id.txt\n')
+    expected_output.append('whoami >> "${CHECKSDIR}"/rule_id.txt\n')
     expected_output.append('\necho "[+] Finished Compliance checks."\n')
 
-    output = MacOSBashScript().write_checks_cmds(checkdir, unix_content, [])
+    output = UnixBashScript().write_checks_cmds(checkdir, unix_content, [])
 
     assert output == expected_output
 
@@ -253,7 +250,7 @@ def test_write_checks_cmds_for_windows_powershell(windows_content):
     expected_output = []
     expected_output.append('\nWrite-Output "[*] Starting Compliance checks..."\n')
     expected_output.append(
-        "whoami /all | Encrypt-Symetric | Out-File -Encoding utf8 -Append -FilePath $checksdir\\rule_id.txt\n"
+        "whoami /all | Out-File -Encoding utf8 -Append -FilePath $checksdir\\rule_id.txt\n"
     )
     expected_output.append('\nWrite-Output "[+] Finished Compliance checks."\n')
 

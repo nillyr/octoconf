@@ -20,9 +20,7 @@ class IWindowsScript(metaclass=ABCMeta):
     """
 
     _newline = "\n"
-    _powershell_pattern = (
-        " | Encrypt-Symetric | Out-File -Encoding utf8 -Append -FilePath "
-    )
+    _powershell_pattern = " | Out-File -Encoding utf8 -Append -FilePath "
     _regex_pattern = RedirectorRegex.get_redirector_regex("Windows")
 
     @abstractmethod
