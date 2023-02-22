@@ -44,6 +44,7 @@ optional arguments:
 
 - Python 3.8+
 - pip
+- [Asciidoctor](https://docs.asciidoctor.org/asciidoctor/latest/install/) (`asciidoctor` and `asciidoctor-pdf`)
 
 ## Documentation
 
