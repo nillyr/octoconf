@@ -32,11 +32,8 @@ class UnixOutputRedirectorRegexCB(IOutputRedirectorRegexBuilder):
         Set of supported redirections.
         """
 
-        # [fd (fd!= 2)]>[>] output_file
-        BASICS = r"\s*\d?(?<!2)\&?>{1,2}\|?(?!\&)\s*"
-        # Do not match fd to fd (exec 3>&1) or input to fd (exec 3<input_file)
+        BASICS = r"(?:\s*\d?\&?>{1,2}\|?(?!\&|/)\s*)(?![^\(]*\){2})"
         FD_TO_FILES = r"(?#exec)\s+\d(?:(?:<?>))(?!\&)"
-        # Bash commands
         TEE_CMD = r"\|\s*tee\s+(?:-(?:[a-z]\s*))*"
 
     _instance = None

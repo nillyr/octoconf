@@ -33,7 +33,7 @@ class WindowsOutputRedirectorRegexCB(IOutputRedirectorRegexBuilder):
         Set of supported redirections.
         """
 
-        BASICS = r"\s*(?:([1-6]>\&[1-6]\s*)*|[1-6]|[\*])>+\s*(?<!2>)"
+        BASICS = r"(?:\s*(?:\d?|\*)>{1,2}(?!\&)\s*)(?![^efhilorsw\(]*\))"
         CMD_GPRESULT = r"\s*/H\s*"
         CMD_SECEDIT = r"\s*/cfg\s*"
         CMD_MSINFO32 = r"\s*/report\s*"
