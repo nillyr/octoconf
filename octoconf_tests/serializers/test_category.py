@@ -10,8 +10,8 @@ import pytest
 
 sys.path.append("../../octoconf/")
 from octoconf.components.serializers.category import CategoryJsonEncoder
-from octoconf.entities.rule import Rule
 from octoconf.entities.category import Category
+from octoconf.entities.rule import Rule
 
 
 @pytest.fixture
@@ -30,7 +30,7 @@ def my_rules():
             severity="a_severity",
             references=["a_first_reference"],
             output="a_output",
-            compliant=False
+            compliant=False,
         )
     ]
 

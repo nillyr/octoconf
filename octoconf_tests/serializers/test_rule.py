@@ -7,7 +7,7 @@ import json
 import sys
 
 sys.path.append("../../octoconf/")
-from octoconf.components.serializers import RuleJsonEncoder
+from octoconf.components.serializers.rule import RuleJsonEncoder
 from octoconf.entities.rule import Rule
 
 

@@ -3,37 +3,7 @@ title: "First rule of the second <x>category</x>"
 description: |
   This is a <x>description</x>.
 collection_cmd: |
-  id > id.txt
-  id >> append_id.txt
-  id 1> fd_stdout_id.txt
-  id 1>> fd_stdout_append_id.txt
-  id &> fd_stdout_and_stderr_id.txt
-  id &> fd_stdout_and_stderr_append_id.txt
-
-  cat << EOF > here_document.txt
-  dummy line 1
-  dummy line 2
-  EOF
-
-  cat << EOF >> append_here_document.txt
-  dummy line 1
-  dummy line 2
-  EOF
-
-  cat <<- EOF > here_document_strip_all_leading_tab.txt
-  dummy line 1
-  dummy line 2
-  EOF
-
-  exec 3>fd_to_file.txt
-  id >&3
-  exec 3>&-
-
-  echo 1234567890 > file.txt
-  exec 3<>file.txt
-  read -rn 4 <&3
-  echo -n . >&3
-  exec 3>&-
+  id >| id.txt; if (( 42 > 24 )); then echo "true" > comp.txt; fi
 check: |
   whoami
 verification_type: CHECK_REGEX

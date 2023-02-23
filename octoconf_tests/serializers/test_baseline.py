@@ -10,7 +10,9 @@ import pytest
 
 sys.path.append("../../octoconf/")
 from octoconf.components.serializers.baseline import BaselineJsonEncoder
-from octoconf.entities import *
+from octoconf.entities.baseline import Baseline
+from octoconf.entities.category import Category
+from octoconf.entities.rule import Rule
 
 
 @pytest.fixture
