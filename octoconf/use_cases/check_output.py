@@ -6,7 +6,8 @@
 from icecream import ic
 import inject
 
-from octoconf.interfaces import IChecker, IBaseline
+from octoconf.interfaces.baseline import IBaseline
+from octoconf.interfaces.checker import IChecker
 
 
 class CheckOutputUseCase:

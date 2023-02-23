@@ -7,7 +7,7 @@ from pathlib import Path
 from icecream import ic
 import inject
 
-from octoconf.interfaces import IBaseline
+from octoconf.interfaces.baseline import IBaseline
 from octoconf.interfaces.generate_script.language_abstract_factory import (
     ILanguageFactory,
 )

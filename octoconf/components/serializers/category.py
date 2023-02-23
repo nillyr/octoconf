@@ -6,7 +6,7 @@
 import json
 
 from octoconf.components.serializers.rule import RuleJsonEncoder
-from octoconf.entities import Rule
+from octoconf.entities.rule import Rule
 
 
 class CategoryJsonEncoder(json.JSONEncoder):
@@ -22,7 +22,7 @@ class CategoryJsonEncoder(json.JSONEncoder):
                 "category": o.category,
                 "name": o.name,
                 "description": o.description,
-                "rules": o.rules
+                "rules": o.rules,
             }
             return to_serialize
         except AttributeError:

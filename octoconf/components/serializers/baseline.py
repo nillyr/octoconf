@@ -7,7 +7,8 @@ import json
 
 from octoconf.components.serializers.category import CategoryJsonEncoder
 from octoconf.components.serializers.rule import RuleJsonEncoder
-from octoconf.entities import Category, Rule
+from octoconf.entities.category import Category
+from octoconf.entities.rule import Rule
 
 
 class BaselineJsonEncoder(json.JSONEncoder):

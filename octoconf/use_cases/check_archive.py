@@ -9,7 +9,8 @@ import chardet
 from icecream import ic
 import inject
 
-from octoconf.interfaces import IArchive, IBaseline
+from octoconf.interfaces.archive import IArchive
+from octoconf.interfaces.baseline import IBaseline
 
 
 class CheckArchiveUseCase:
@@ -42,6 +43,10 @@ class CheckArchiveUseCase:
                 if not encoding:
                     # True when using the pwsh Out-File cmdlet (utf8noBom)
                     encoding = "UTF-8-SIG"
-                results.append(self._adapter.update_rule_with_output_result(rule, raw.decode(encoding)))
+                results.append(
+                    self._adapter.update_rule_with_output_result(
+                        rule, raw.decode(encoding)
+                    )
+                )
             check_output.close()
         return ic(results)

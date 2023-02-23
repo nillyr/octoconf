@@ -7,8 +7,8 @@ from abc import ABC, abstractmethod
 from pathlib import Path
 from typing import List
 
-from octoconf.entities import *
-
+from octoconf.entities.baseline import Baseline
+from octoconf.entities.rule import Rule
 
 class IBaseline(ABC):
     """

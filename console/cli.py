@@ -12,25 +12,30 @@ import sys
 import inject
 
 sys.path.append("../octoconf/")
-from octoconf.interface_adapters import (
-    ArchiveInterfaceAdapter,
-    CheckerInterfaceAdapter,
-    BaselineInterfaceAdapter,
-    LanguageFactory,
-    ReportGeneratorInterfaceAdapter,
-)
-from octoconf.components.translators.deepl_translator.deepl_translator import DeepL
-from octoconf.use_cases import *
-from octoconf.interfaces import (
-    IArchive,
-    IChecker,
-    IBaseline,
-    ILanguageFactory,
-    IReportGenerator,
-    ITranslator,
-)
-from octoconf.utils import *
+
+
 from octoconf.__init__ import __version__
+
+from octoconf.components.translators.deepl_translator.deepl_translator import DeepL
+from octoconf.interfaces.archive import IArchive
+from octoconf.interfaces.baseline import IBaseline
+from octoconf.interfaces.checker import IChecker
+from octoconf.interfaces.generate_report import IReportGenerator
+from octoconf.interfaces.generate_script.language_abstract_factory import ILanguageFactory
+from octoconf.interfaces.translator import ITranslator
+from octoconf.interface_adapters.archive import ArchiveInterfaceAdapter
+from octoconf.interface_adapters.baseline import BaselineInterfaceAdapter
+from octoconf.interface_adapters.checker import CheckerInterfaceAdapter
+from octoconf.interface_adapters.generate_report import ReportGeneratorInterfaceAdapter
+from octoconf.interface_adapters.generate_script.language_factory import LanguageFactory
+from octoconf.use_cases.baseline_translator import BaselineTranslatorUseCase
+from octoconf.use_cases.check_archive import CheckArchiveUseCase
+from octoconf.use_cases.check_output import CheckOutputUseCase
+from octoconf.use_cases.generate_report import GenerateReportUseCase
+from octoconf.use_cases.generate_script import GenerateScriptUseCase
+import octoconf.utils.config as config
+import octoconf.utils.debug as debug
+import octoconf.utils.global_values as global_values
 
 
 def default_parse_args(args):

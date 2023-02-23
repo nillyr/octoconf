@@ -1,5 +1,0 @@
-from octoconf.interface_adapters.archive import ArchiveInterfaceAdapter
-from octoconf.interface_adapters.checker import CheckerInterfaceAdapter
-from octoconf.interface_adapters.baseline import BaselineInterfaceAdapter
-from octoconf.interface_adapters.generate_report import ReportGeneratorInterfaceAdapter
-from octoconf.interface_adapters.generate_script import *

@@ -7,7 +7,7 @@ import re
 
 from icecream import ic
 
-from octoconf.decorators.generate_script import BashDecorator
+from octoconf.decorators.generate_script.bash_decorator import BashDecorator
 from octoconf.interfaces.generate_script.unix_script import IUnixScript
 
 

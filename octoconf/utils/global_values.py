@@ -3,7 +3,7 @@
 # @link https://github.com/nillyr/octoconf
 # @since 1.0.0b
 
-from octoconf.utils import Locale
+from octoconf.utils.locale.locale import Locale
 
 
 def set_localize(lang: str):

@@ -7,9 +7,9 @@ import re
 
 import xlsxwriter
 
-from octoconf.interfaces import IReportGenerator
-from octoconf.utils import global_values
-from octoconf.utils import timestamp, today
+from octoconf.interfaces.generate_report import IReportGenerator
+import octoconf.utils.global_values as global_values
+from octoconf.utils.timestamp import timestamp, today
 import octoconf.utils.config as config
 from octoconf.__init__ import __version__, __url__
 
@@ -22,132 +22,208 @@ class ReportGeneratorInterfaceAdapter(IReportGenerator):
 
     def __init__(self) -> None:
         self.wb = xlsxwriter.Workbook(self._filename + ".xlsx")
-        self._add_format("information_header", {
-            "bold": 1,
-            "border": 1,
-            "align": "center",
-            "valign": "vcenter",
-            "font_size": 14,
-            "font_color": config.get_config("report_colors", "header_font_color"),
-            "bg_color": config.get_config(
-                "report_colors", "header_background_color"
-        )})
-        self._add_format("header", {
-            "bold": 1,
-            "border": 1,
-            "align": "center",
-            "valign": "vcenter",
-            "font_color": config.get_config("report_colors", "header_font_color"),
-            "bg_color": config.get_config(
-                "report_colors", "header_background_color"
-        )})
-        self._add_format("sub_header", {
-            "bold": 0,
-            "border": 1,
-            "align": "center",
-            "valign": "vcenter",
-            "font_color": config.get_config("report_colors", "header_font_color"),
-            "bg_color": config.get_config(
-                "report_colors", "sub_header_background_color"
-        )})
-        self._add_format("minimal", {
-            "bold": 1,
-            "border": 1,
-            "align": "center",
-            "valign": "vcenter",
-            "font_color": config.get_config("level_colors", "lvl_minimal"),
-            "bg_color": config.get_config("report_colors", "default_background_color")
-        })
-        self._add_format("intermediary", {
-            "bold": 1,
-            "border": 1,
-            "align": "center",
-            "valign": "vcenter",
-            "font_color": config.get_config("level_colors", "lvl_intermediary"),
-            "bg_color": config.get_config("report_colors", "default_background_color")
-        })
-        self._add_format("enhanced", {
-            "bold": 1,
-            "border": 1,
-            "align": "center",
-            "valign": "vcenter",
-            "font_color": config.get_config("level_colors", "lvl_enhanced"),
-            "bg_color": config.get_config("report_colors", "default_background_color")
-        })
-        self._add_format("high", {
-            "bold": 1,
-            "border": 1,
-            "align": "center",
-            "valign": "vcenter",
-            "font_color": config.get_config("level_colors", "lvl_high"),
-            "bg_color": config.get_config("report_colors", "default_background_color")
-        })
-        self._add_format("check", {
-            "bold": 0,
-            "border": 1,
-            "align": "left",
-            "valign": "vcenter",
-            "font_color": config.get_config("report_colors", "default_font_color"),
-            "bg_color": config.get_config("report_colors", "default_background_color")
-        })
-        self._add_format("success", {
-            "bold": 1,
-            "border": 1,
-            "align": "center",
-            "valign": "vcenter",
-            "font_color": config.get_config("status_colors", "success"),
-            "bg_color": config.get_config("report_colors", "default_background_color")
-        })
-        self._add_format("failed", {
-            "bold": 1,
-            "border": 1,
-            "align": "center",
-            "valign": "vcenter",
-            "font_color": config.get_config("status_colors", "failed"),
-            "bg_color": config.get_config("report_colors", "default_background_color")
-        })
-        self._add_format("na", {
-            "bold": 1,
-            "border": 1,
-            "align": "center",
-            "valign": "vcenter",
-            "font_color": config.get_config("status_colors", "to_be_defined"),
-            "bg_color": config.get_config("report_colors", "default_background_color")
-        })
-        self._add_format("bold", {
-            "bold": 1,
-            "border": 1,
-            "align": "left",
-            "valign": "vcenter",
-            "font_color": config.get_config("report_colors", "default_font_color"),
-            "bg_color": config.get_config("report_colors", "default_background_color")
-        })
-        self._add_format("regular", {
-            "bold": 0,
-            "border": 1,
-            "align": "left",
-            "valign": "vcenter",
-            "font_color": config.get_config("report_colors", "default_font_color"),
-            "bg_color": config.get_config("report_colors", "default_background_color")
-        })
-        self._add_format("classification", {
-            "bold": 0,
-            "border": 1,
-            "align": "left",
-            "valign": "vcenter",
-            "font_color": config.get_config("classification", "classification_font_color"),
-            "bg_color": config.get_config("classification", "classification_background_color")
-        })
-        self._add_format("classification_center", {
-            "bold": 0,
-            "border": 0,
-            "align": "center",
-            "valign": "vcenter",
-            "font_color": config.get_config("classification", "classification_font_color"),
-            "bg_color": config.get_config("classification", "classification_background_color")
-        })
+        self._add_format(
+            "information_header",
+            {
+                "bold": 1,
+                "border": 1,
+                "align": "center",
+                "valign": "vcenter",
+                "font_size": 14,
+                "font_color": config.get_config("report_colors", "header_font_color"),
+                "bg_color": config.get_config(
+                    "report_colors", "header_background_color"
+                ),
+            },
+        )
+        self._add_format(
+            "header",
+            {
+                "bold": 1,
+                "border": 1,
+                "align": "center",
+                "valign": "vcenter",
+                "font_color": config.get_config("report_colors", "header_font_color"),
+                "bg_color": config.get_config(
+                    "report_colors", "header_background_color"
+                ),
+            },
+        )
+        self._add_format(
+            "sub_header",
+            {
+                "bold": 0,
+                "border": 1,
+                "align": "center",
+                "valign": "vcenter",
+                "font_color": config.get_config("report_colors", "header_font_color"),
+                "bg_color": config.get_config(
+                    "report_colors", "sub_header_background_color"
+                ),
+            },
+        )
+        self._add_format(
+            "minimal",
+            {
+                "bold": 1,
+                "border": 1,
+                "align": "center",
+                "valign": "vcenter",
+                "font_color": config.get_config("level_colors", "lvl_minimal"),
+                "bg_color": config.get_config(
+                    "report_colors", "default_background_color"
+                ),
+            },
+        )
+        self._add_format(
+            "intermediary",
+            {
+                "bold": 1,
+                "border": 1,
+                "align": "center",
+                "valign": "vcenter",
+                "font_color": config.get_config("level_colors", "lvl_intermediary"),
+                "bg_color": config.get_config(
+                    "report_colors", "default_background_color"
+                ),
+            },
+        )
+        self._add_format(
+            "enhanced",
+            {
+                "bold": 1,
+                "border": 1,
+                "align": "center",
+                "valign": "vcenter",
+                "font_color": config.get_config("level_colors", "lvl_enhanced"),
+                "bg_color": config.get_config(
+                    "report_colors", "default_background_color"
+                ),
+            },
+        )
+        self._add_format(
+            "high",
+            {
+                "bold": 1,
+                "border": 1,
+                "align": "center",
+                "valign": "vcenter",
+                "font_color": config.get_config("level_colors", "lvl_high"),
+                "bg_color": config.get_config(
+                    "report_colors", "default_background_color"
+                ),
+            },
+        )
+        self._add_format(
+            "check",
+            {
+                "bold": 0,
+                "border": 1,
+                "align": "left",
+                "valign": "vcenter",
+                "font_color": config.get_config("report_colors", "default_font_color"),
+                "bg_color": config.get_config(
+                    "report_colors", "default_background_color"
+                ),
+            },
+        )
+        self._add_format(
+            "success",
+            {
+                "bold": 1,
+                "border": 1,
+                "align": "center",
+                "valign": "vcenter",
+                "font_color": config.get_config("status_colors", "success"),
+                "bg_color": config.get_config(
+                    "report_colors", "default_background_color"
+                ),
+            },
+        )
+        self._add_format(
+            "failed",
+            {
+                "bold": 1,
+                "border": 1,
+                "align": "center",
+                "valign": "vcenter",
+                "font_color": config.get_config("status_colors", "failed"),
+                "bg_color": config.get_config(
+                    "report_colors", "default_background_color"
+                ),
+            },
+        )
+        self._add_format(
+            "na",
+            {
+                "bold": 1,
+                "border": 1,
+                "align": "center",
+                "valign": "vcenter",
+                "font_color": config.get_config("status_colors", "to_be_defined"),
+                "bg_color": config.get_config(
+                    "report_colors", "default_background_color"
+                ),
+            },
+        )
+        self._add_format(
+            "bold",
+            {
+                "bold": 1,
+                "border": 1,
+                "align": "left",
+                "valign": "vcenter",
+                "font_color": config.get_config("report_colors", "default_font_color"),
+                "bg_color": config.get_config(
+                    "report_colors", "default_background_color"
+                ),
+            },
+        )
+        self._add_format(
+            "regular",
+            {
+                "bold": 0,
+                "border": 1,
+                "align": "left",
+                "valign": "vcenter",
+                "font_color": config.get_config("report_colors", "default_font_color"),
+                "bg_color": config.get_config(
+                    "report_colors", "default_background_color"
+                ),
+            },
+        )
+        self._add_format(
+            "classification",
+            {
+                "bold": 0,
+                "border": 1,
+                "align": "left",
+                "valign": "vcenter",
+                "font_color": config.get_config(
+                    "classification", "classification_font_color"
+                ),
+                "bg_color": config.get_config(
+                    "classification", "classification_background_color"
+                ),
+            },
+        )
+        self._add_format(
+            "classification_center",
+            {
+                "bold": 0,
+                "border": 0,
+                "align": "center",
+                "valign": "vcenter",
+                "font_color": config.get_config(
+                    "classification", "classification_font_color"
+                ),
+                "bg_color": config.get_config(
+                    "classification", "classification_background_color"
+                ),
+            },
+        )
 
-    def _add_format(self, name:str, values: dict) -> None:
+    def _add_format(self, name: str, values: dict) -> None:
         # fmt:off
         self._formats[name] = self.wb.add_format(
             {
@@ -164,7 +240,9 @@ class ReportGeneratorInterfaceAdapter(IReportGenerator):
         if name in self._formats:
             return self._formats.get(name)
 
-    def _add_conditional_formatting(self, ws: xlsxwriter.workbook.Worksheet, range) -> None:
+    def _add_conditional_formatting(
+        self, ws: xlsxwriter.workbook.Worksheet, range
+    ) -> None:
         # fmt:off
         ws.conditional_format(range, {
             'type': 'text',
@@ -210,7 +288,9 @@ class ReportGeneratorInterfaceAdapter(IReportGenerator):
         })
         # fmt:on
 
-    def _write_results_on_worksheet(self, ws: xlsxwriter.workbook.Worksheet, rules: list) -> None:
+    def _write_results_on_worksheet(
+        self, ws: xlsxwriter.workbook.Worksheet, rules: list
+    ) -> None:
         checkpoint_row = 4
         ws.write(
             f"B{checkpoint_row}",
@@ -230,46 +310,50 @@ class ReportGeneratorInterfaceAdapter(IReportGenerator):
 
         check_row = checkpoint_row + 1
         for rule in rules:
-            ws.data_validation(f"B{check_row}", {
-                'validate': 'list',
-                'source': [
-                    global_values.localize.gettext("minimal"),
-                    global_values.localize.gettext("intermediary"),
-                    global_values.localize.gettext("enhanced"),
-                    global_values.localize.gettext("high"),
-                ]
-            })
-            ws.data_validation(f"F{check_row}", {
-                'validate': 'list',
-                'source': [
-                    global_values.localize.gettext("success"),
-                    global_values.localize.gettext("failed"),
-                    global_values.localize.gettext("na")
-                ]
-            })
+            ws.data_validation(
+                f"B{check_row}",
+                {
+                    "validate": "list",
+                    "source": [
+                        global_values.localize.gettext("minimal"),
+                        global_values.localize.gettext("intermediary"),
+                        global_values.localize.gettext("enhanced"),
+                        global_values.localize.gettext("high"),
+                    ],
+                },
+            )
+            ws.data_validation(
+                f"F{check_row}",
+                {
+                    "validate": "list",
+                    "source": [
+                        global_values.localize.gettext("success"),
+                        global_values.localize.gettext("failed"),
+                        global_values.localize.gettext("na"),
+                    ],
+                },
+            )
 
             ws.write(
                 f"B{check_row}",
                 global_values.localize.gettext(rule["level"]),
-                self._get_format(rule["level"])
+                self._get_format(rule["level"]),
             )
             ws.merge_range(
-                f"C{check_row}:E{check_row}",
-                rule["title"],
-                self._get_format("check")
+                f"C{check_row}:E{check_row}", rule["title"], self._get_format("check")
             )
             if "compliant" in rule:
                 key = "success" if rule["compliant"] == True else "failed"
                 ws.write(
                     f"F{check_row}",
                     global_values.localize.gettext(key),
-                    self._get_format(key)
+                    self._get_format(key),
                 )
             else:
                 ws.write(
                     f"F{check_row}",
                     global_values.localize.gettext("na"),
-                    self._get_format("na")
+                    self._get_format("na"),
                 )
             check_row += 1
             checkpoint_row = check_row
@@ -292,12 +376,14 @@ class ReportGeneratorInterfaceAdapter(IReportGenerator):
             ws.set_column("C:E", 35)
             ws.set_column("F:F", 20)
 
-            ws.merge_range("C1:E1", "=%s!D10" % (global_values.localize.gettext("information")), self._get_format("classification_center"))
+            ws.merge_range(
+                "C1:E1",
+                "=%s!D10" % (global_values.localize.gettext("information")),
+                self._get_format("classification_center"),
+            )
 
             ws.set_row(2, 25)
-            ws.merge_range(
-                "B3:F3", category["name"], self._get_format("header")
-            )
+            ws.merge_range("B3:F3", category["name"], self._get_format("header"))
             # Column 'A' (level)
             range_a = xlsxwriter.utility.xl_range(2, 1, 1048575, 1)
             self._add_conditional_formatting(ws, range_a)
@@ -307,7 +393,7 @@ class ReportGeneratorInterfaceAdapter(IReportGenerator):
             # Write results in the worksheet and get nb of success/failed for stacked chart
             self._write_results_on_worksheet(ws, category["rules"])
 
-    #fmt:off
+    # fmt:off
     def _add_charts(self,
         ws: xlsxwriter.worksheet.Worksheet,
         last_row: int) -> None:

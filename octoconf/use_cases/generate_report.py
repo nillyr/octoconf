@@ -11,7 +11,8 @@ from icecream import ic
 import inject
 from json2xml import json2xml
 
-from octoconf.interfaces import IBaseline, IReportGenerator
+from octoconf.interfaces.baseline import IBaseline
+from octoconf.interfaces.generate_report import IReportGenerator
 
 
 class GenerateReportUseCase:

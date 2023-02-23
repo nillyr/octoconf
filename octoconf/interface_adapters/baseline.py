@@ -13,7 +13,8 @@ from icecream import ic
 import yaml
 
 from octoconf.components.serializers.baseline import BaselineJsonEncoder, RuleJsonEncoder
-from octoconf.entities import *
+from octoconf.entities.baseline import Baseline
+from octoconf.entities.rule import Rule
 from octoconf.interfaces.baseline import IBaseline
 
 

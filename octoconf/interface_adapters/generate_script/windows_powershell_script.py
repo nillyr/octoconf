@@ -7,7 +7,7 @@ import re
 
 from icecream import ic
 
-from octoconf.decorators.generate_script import PowershellDecorator
+from octoconf.decorators.generate_script.powershell_decorator import PowershellDecorator
 from octoconf.interfaces.generate_script.windows_script import IWindowsScript
 
 
