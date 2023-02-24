@@ -3,13 +3,18 @@
 # @link https://github.com/nillyr/octoconf
 # @since 1.0.0b
 
+# Standard imports
 import sys
 
+# Third party imports
+from icecream import ic
 import requests
 
-from . import config
+# Local imports
+from . import config as deepl_config
 from .exceptions import DeepLError
 from octoconf.interfaces.translator import ITranslator
+import octoconf.utils.config as config
 
 
 class DeepL(ITranslator):
@@ -19,7 +24,17 @@ class DeepL(ITranslator):
 
     def __init__(self) -> None:
         self._url = "/".join(
-            [config.const.BASE_URL, config.const.API_VERSION, config.const.ENDPOINT]
+            [
+                config.get_config("translator", "deepl_api_base")
+                if config.get_config("translator", "deepl_api_base") != ""
+                else deepl_config.const.BASE_URL,
+                config.get_config("translator", "deepl_api_version")
+                if config.get_config("translator", "deepl_api_version") != ""
+                else deepl_config.const.API_VERSION,
+                config.get_config("translator", "deepl_api_endpoint")
+                if config.get_config("translator", "deepl_api_endpoint") != ""
+                else deepl_config.const.ENDPOINT,
+            ]
         )
 
     def translate(self, text, source_lang, target_lang):
@@ -28,28 +43,36 @@ class DeepL(ITranslator):
 
         Use of the ignore tag to avoid translating some parts of the baseline (especially the executed commands).
         """
-        if source_lang not in config.const.SUPPORTED_LANG.keys():
+
+        api_key = config.get_config("translator", "deepl_api_key")
+        if any([api_key == "", api_key == "TO_BE_DEFINED"]):
+            raise DeepLError(
+                403, "'deepl_api_key' must be set before using the feature"
+            )
+
+        if source_lang not in deepl_config.const.SUPPORTED_LANG.keys():
             raise DeepLError(400, "Value for 'source_lang' not supported.")
-        if target_lang not in config.const.SUPPORTED_LANG.keys():
+        if target_lang not in deepl_config.const.SUPPORTED_LANG.keys():
             raise DeepLError(400, "Value for 'target_lang' not supported.")
 
         data = {
-            "auth_key": config.const.API_KEY,
-            "text": text,
+            "auth_key": api_key,
+            "text": text if text else "",
             "source_lang": source_lang,
             "target_lang": target_lang,
             "tag_handling": "xml",
             "ignore_tags": "x",
         }
+
         try:
-            response = requests.post(self._url, data=data)
+            response = ic(requests.post(self._url, data=data))
         except Exception as _err:
             print(f"Unmanaged Error: {_err}", file=sys.stderr)
         if response.status_code != 200:
             raise DeepLError(response.status_code, response.json()["message"])
 
-        res = response.json()
+        res = ic(response.json())
         if not res:
-            return None
+            return ""
 
         return res["translations"][0]["text"]

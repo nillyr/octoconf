@@ -13,6 +13,7 @@ class Config:
     """
     This class enables the collection of the configuration defined by the user. If the configuration file is missing, it is created.
     """
+
     _absolute_configuration_filepath: str
 
     def __init__(self) -> None:
@@ -24,6 +25,10 @@ class Config:
         with open(filename, "w") as cfg_file:
             content = """[DEFAULT]
 language = EN
+deepl_api_base = https://api-free.deepl.com
+deepl_api_endpoint = translate
+deepl_api_version = v2
+deepl_api_key = TO_BE_DEFINED
 header_font_color = FFFFFF
 default_font_color = 000000
 default_background_color = FFFFFF
@@ -42,6 +47,12 @@ to_be_defined = F1992D
 
 [MISC]
 language = EN
+
+[translator]
+deepl_api_base = https://api-free.deepl.com
+deepl_api_endpoint = translate
+deepl_api_version = v2
+deepl_api_key = TO_BE_DEFINED
 
 [report_colors]
 header_font_color = FFFFFF
@@ -83,24 +94,24 @@ to_be_defined = F1992D
             return self._cfg_parser.get(section, option)
         except:
             print(
-                f"Error! No option '{option}' in section '{section}'",
-                file=sys.stderr
+                f"Error! No option '{option}' in section '{section}'", file=sys.stderr
             )
             return ""
 
     def get_running_configuration(self) -> str:
         running_configuration: str = ""
-        running_configuration = "Configuration file: '%s'\n\n" % (self._absolute_configuration_filepath)
-        with open(self._absolute_configuration_filepath, 'r') as configfile:
+        running_configuration = "Configuration file: '%s'\n\n" % (
+            self._absolute_configuration_filepath
+        )
+        with open(self._absolute_configuration_filepath, "r") as configfile:
             running_configuration += "".join(configfile.readlines())
         return running_configuration
-
 
     def set_configuration_parameter(self, args) -> None:
         # Update
         self._cfg_parser[args.section][args.option] = args.value
         # Commit
-        with open(self._absolute_configuration_filepath, 'w') as configfile:
+        with open(self._absolute_configuration_filepath, "w") as configfile:
             self._cfg_parser.write(configfile)
 
 

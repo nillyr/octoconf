@@ -3,14 +3,7 @@
 # @link https://github.com/nillyr/octoconf
 # @since 1.0.0b
 
-import os
-
-from dotenv import load_dotenv
-
 from octoconf.utils import const
-
-load_dotenv()
-const.API_KEY = os.getenv("DEEPL_API_KEY")
 
 const.BASE_URL = "https://api-free.deepl.com"
 const.API_VERSION = "v2"

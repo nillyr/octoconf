@@ -36,10 +36,9 @@ class BaselineTranslatorUseCase:
         try:
             translated = self._translator.translate(text, source_lang, target_lang)
             self._cache.populate_cache(text, translated)
-        except Exception as _err:
-            print(f"{self.__class__} error: {_err}", file=sys.stderr)
-        finally:
             return translated
+        except Exception as _err:
+            raise _err
 
     @TranslatorCache.decorator
     def execute(self, args) -> int:
@@ -60,30 +59,40 @@ class BaselineTranslatorUseCase:
                         user_risk_acceptance = True
             except:
                 return 1
+
         baseline = self._baseline_adapter.load_baseline_from_file(
             Path(baseline_file_path)
         )
-
-        baseline.title = self._translate(ic(baseline.title), source_lang, target_lang)
-
-        for category in baseline.categories:
-            category.category = self._translate(
-                ic(category.category), source_lang, target_lang
-            )
-            category.name = self._translate(ic(category.name), source_lang, target_lang)
-            category.description = self._translate(
-                ic(category.description), source_lang, target_lang
+        try:
+            baseline.title = self._translate(
+                ic(baseline.title), source_lang, target_lang
             )
 
-            for rule in category.rules:
-                rule.title = self._translate(ic(rule.title), source_lang, target_lang)
-                rule.description = self._translate(
-                    ic(rule.description), source_lang, target_lang
+            for category in baseline.categories:
+                category.category = self._translate(
+                    ic(category.category), source_lang, target_lang
                 )
-                rule.recommendation = self._translate(
-                    ic(rule.recommendation), source_lang, target_lang
+                category.name = self._translate(
+                    ic(category.name), source_lang, target_lang
+                )
+                category.description = self._translate(
+                    ic(category.description), source_lang, target_lang
                 )
 
-        return self._baseline_adapter.save_translated_baseline(
-            Path(baseline_file_path), ic(baseline), Path(output_directory)
-        )
+                for rule in category.rules:
+                    rule.title = self._translate(
+                        ic(rule.title), source_lang, target_lang
+                    )
+                    rule.description = self._translate(
+                        ic(rule.description), source_lang, target_lang
+                    )
+                    rule.recommendation = self._translate(
+                        ic(rule.recommendation), source_lang, target_lang
+                    )
+
+            return self._baseline_adapter.save_translated_baseline(
+                Path(baseline_file_path), ic(baseline), Path(output_directory)
+            )
+        except Exception as _err:
+            print(f"[x] Error: {_err}", file=sys.stderr)
+            return 1
