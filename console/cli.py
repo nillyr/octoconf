@@ -119,7 +119,7 @@ def parse_args() -> argparse.Namespace:
        |(@)(@)|      Tool for semi-automatic verification
        )  __  (      of security configurations.
       /,'))((`.\\
-     (( ((  )) ))    /** Nicolas GRELLETY ( ngy.cs@protonmail.com ) **/
+     (( ((  )) ))    /** @nillyr **/
    hh `\ `)(' /'
   """.format(
             __version__

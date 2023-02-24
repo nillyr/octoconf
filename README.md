@@ -12,7 +12,7 @@
   </br>
   <img src="https://github.com/nillyr/octoconf/actions/workflows/snyk.yml/badge.svg">
   <img src="https://github.com/nillyr/octoconf/actions/workflows/tests.yml/badge.svg">
-  <img src="https://img.shields.io/badge/coverage-80%25-green.svg">
+  <img src="https://img.shields.io/badge/coverage-96%25-green.svg">
 </p>
 
 Tool dedicated to the realization of configuration audits of various assets.
@@ -23,7 +23,7 @@ Tool dedicated to the realization of configuration audits of various assets.
        |(@)(@)|      Tool for semi-automatic verification
        )  __  (      of security configurations.
       /,'))((`.\
-     (( ((  )) ))    /** Nicolas GRELLETY ( ngy.cs@protonmail.com ) **/
+     (( ((  )) ))    /** @nillyr **/
    hh `\ `)(' /'
 
 
@@ -57,10 +57,10 @@ optional arguments:
 octoconf baseline generate_script -p linux -b ./debian-based.yml -o audit-debian.sh
 # Generate a collection script with utils functions included
 octoconf baseline generate_script -p linux -b ./debian-based.yml -u ./utils.sh -o audit-debian.sh
-# Run the script on the targeted host (admin)
+# Run the script on the targeted host
 chmod +x audit-debian.sh; ./audit-debian.sh
 # Retrieve audit evidence and then analyze
-octoconf analyze -b ./debian-based.yml -a audit_[...].zip
+octoconf analyze -b ./debian-based.yml -a [...].zip
 ```
 
 ## Disclaimer
@@ -80,7 +80,7 @@ octoconf analyze -b ./debian-based.yml -a audit_[...].zip
 
 ## Copyright and license
 
-Copyright (c) 2021-2022 [Nicolas GRELLETY](https://github.com/nillyr)
+Copyright (c) 2021-2023 [Nicolas GRELLETY](https://github.com/nillyr)
 
 This software is licensed under GNU GPLv3 license. See `LICENSE` file in the root folder of the project.
 
