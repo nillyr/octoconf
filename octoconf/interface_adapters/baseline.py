@@ -70,7 +70,7 @@ class BaselineInterfaceAdapter(IBaseline):
 
     def map_results_in_baseline(
             self, rules: List[Rule],
-            baseline: Baseline) -> str:
+            baseline: Baseline) -> Baseline:
         json_baseline = json.loads(json.dumps(baseline, cls=BaselineJsonEncoder, ensure_ascii=False))
 
         for rule in rules:
@@ -83,7 +83,7 @@ class BaselineInterfaceAdapter(IBaseline):
                     rules_cpt += 1
                 cat_cpt += 1
 
-        return json_baseline
+        return Baseline(**json_baseline)
 
     def get_commands(self, baseline: Baseline) -> List:
         commands = list()
@@ -123,12 +123,14 @@ class BaselineInterfaceAdapter(IBaseline):
             compliant = rule.compliant
         )
 
-    def remove_ignore_translate_tags(self, json_baseline: str) -> str:
+    def remove_ignore_translate_tags(self, baseline: Baseline) -> Baseline:
+        json_baseline = json.loads(json.dumps(baseline, cls=BaselineJsonEncoder, ensure_ascii=False))
+
         pattern, repl = r"\<\/?x\>", ""
         json_baseline["title"] = re.sub(
             pattern,
             repl,
-            json_baseline["title"],
+            json_baseline["title"] if json_baseline["title"] else "",
             0,
             re.MULTILINE | re.IGNORECASE | re.DOTALL,
         )
@@ -140,7 +142,7 @@ class BaselineInterfaceAdapter(IBaseline):
                 category[category_key] = re.sub(
                     pattern,
                     repl,
-                    category[category_key],
+                    category[category_key] if category[category_key] else "",
                     0,
                     re.MULTILINE | re.IGNORECASE | re.DOTALL,
                 )
@@ -149,12 +151,12 @@ class BaselineInterfaceAdapter(IBaseline):
                     rule[rule_key] = re.sub(
                     pattern,
                     repl,
-                    rule[rule_key],
+                    rule[rule_key] if rule[rule_key] else "",
                     0,
                     re.MULTILINE | re.IGNORECASE | re.DOTALL,
                 )
 
-        return json_baseline
+        return Baseline(**json_baseline)
 
     def save_translated_baseline(
             self,
@@ -272,9 +274,12 @@ class BaselineInterfaceAdapter(IBaseline):
 
             baseline_content += "\n" + category_block
 
-        with open(str(output_directory / baseline_file_path.stem) + ".yaml", "w") as translated_baseline:
-            translated_baseline.write(baseline_content)
-        translated_baseline.close()
+        try:
+            with open(str(output_directory / baseline_file_path.stem) + ".yaml", "w") as translated_baseline:
+                translated_baseline.write(baseline_content)
+            translated_baseline.close()
 
-        print(f"[+] Baseline successfully translated and saved in '{output_directory}'")
-        return 0
+            print(f"[+] Baseline successfully translated and saved in '{output_directory}'")
+            return 0
+        except:
+            return 1

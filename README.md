@@ -31,7 +31,7 @@ positional arguments:
   {analyze,audit,baseline,report} Available Commands
     analyze             performs an analysis on an archive based on a security baseline
     baseline            performs the interaction with the security baselines
-    report              performs the generation of audit reports
+    report              performs the recompilation of the report in PDF and HTML format from an adoc file
     config              performs octoconf configuration management
 
 optional arguments:

@@ -23,14 +23,14 @@ class CheckArchiveUseCase:
         self._adapter = adapter
         self._archive = archive
 
-    def execute(self, baseline_file_path, archive):
-        baseline = self._adapter.load_baseline_from_file(Path(baseline_file_path))
+    def execute(self, baseline_path: str, archive_path: str) -> list:
+        baseline = self._adapter.load_baseline_from_file(Path(baseline_path))
         if baseline is None:
-            return
+            return []
 
-        extract_path = self._archive.extract(archive)
+        extract_path = self._archive.extract(archive_path)
         if extract_path is None:
-            return
+            return []
 
         results = []
         for file in extract_path.glob("**/*.txt"):

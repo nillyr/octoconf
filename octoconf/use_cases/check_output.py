@@ -3,9 +3,12 @@
 # @link https://github.com/nillyr/octoconf
 # @since 1.0.0b
 
+from typing import List
+
 from icecream import ic
 import inject
 
+from octoconf.entities.rule import Rule
 from octoconf.interfaces.baseline import IBaseline
 from octoconf.interfaces.checker import IChecker
 
@@ -26,7 +29,7 @@ class CheckOutputUseCase:
         else:
             return self._checker.check_exact(cmd_output, expected)
 
-    def execute(self, results):
+    def execute(self, results: List[Rule]) -> List[Rule]:
         """
         Launch the verification of the results and send to the report generator use case to ease the manual processing by the user.
         """

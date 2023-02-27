@@ -38,6 +38,14 @@ import octoconf.utils.debug as debug
 import octoconf.utils.global_values as global_values
 
 
+def print_status(status) -> int:
+    if status == 0:
+        print("[+] Done!")
+        return status
+    else:
+        print(f"[x] Error! Something went wrong.", file=sys.stderr)
+        return status
+
 def default_parse_args(args):
     if args.version:
         print(f"octoconf {__version__}")
@@ -49,13 +57,14 @@ def parse_analyze_args(args):
         debug.set_debug(True)
 
     global_values.set_localize(args.language)
-    print("[*] Launching the archive analysis...")
+    print("[*] Launching the archive analyis...")
     results = CheckArchiveUseCase().execute(args.baseline, args.archive)
     results = CheckOutputUseCase().execute(results)
-    return GenerateReportUseCase().execute(results, args.baseline, is_file=False)
+    status = GenerateReportUseCase().execute(results, baseline_path = args.baseline)
+    return print_status(status)
 
 
-def parse_baseline_args(args) -> int:
+def parse_baseline_args(args):
     """
     Distinguishing arguments:
       - Generate script: platform
@@ -74,10 +83,8 @@ def parse_baseline_args(args) -> int:
             "utils": args.utils
         }
         print("[*] Launching the script generation...")
-        GenerateScriptUseCase().execute(opts)
-        print(f"[+] The generated script has been put here: {args.output}")
-        print("[+] Done")
-        return 0
+        status = GenerateScriptUseCase().execute(opts)
+        return print_status(status)
     elif _.get("target_lang"):
         # translate command
         opts = {
@@ -87,18 +94,21 @@ def parse_baseline_args(args) -> int:
             "target_lang": args.target_lang,
         }
         print("[*] Launching the translation of the baseline...")
-        return BaselineTranslatorUseCase().execute(opts)
+        status = BaselineTranslatorUseCase().execute(opts)
+        return print_status(status)
     else:
-        print(f"[x] Error! No suitable use case found.", file=sys.stderr)
-        return 1
+        raise NotImplementedError("[x] Error! No suitable use case found.")
 
 
 def parse_report_args(args):
     if args.debug:
         debug.set_debug(True)
 
-    global_values.set_localize(args.language)
-    return GenerateReportUseCase().execute(args.input, args.baseline, is_file=True)
+    raise NotImplementedError("This feature is not implemented yet.")
+
+    #print("[*] Launching report generation...")
+    #status = GenerateReportUseCase().execute(args.input, recompile=True)
+    #return print_status(status)
 
 
 def parse_config_args(args):
@@ -218,15 +228,11 @@ def parse_args() -> argparse.Namespace:
 
     ## Report ##
     report_parser = cmd.add_parser(
-        name="report", help="performs the generation of audit reports"
+        name="report", help="performs the recompilation of the report in PDF and HTML format from an adoc file"
     )
     report_parser.set_defaults(func=parse_report_args)
 
-    report_parser.add_argument("-i", "--input", required=True, help="JSON results file")
-    report_parser.add_argument("-b", "--baseline", required=True, help="baseline")
-    report_parser.add_argument(
-        "-l", "--language", default=config.get_config("MISC", "language"), help="EN/FR (default=%s)" % (config.get_config("MISC", "language"))
-    )
+    report_parser.add_argument("-i", "--input", required=True, help="Asciidoc (.adoc) report file")
 
     ## Config ##
     config_parser = cmd.add_parser(

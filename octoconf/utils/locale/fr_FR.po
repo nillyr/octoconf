@@ -81,3 +81,24 @@ msgstr "Version"
 
 msgid "operating_system"
 msgstr "Système d'exploitation"
+
+msgid "category_reference"
+msgstr "Référence de la catégorie"
+
+msgid "category_name"
+msgstr "Nom de la catégorie"
+
+msgid "rule_reference"
+msgstr "Référence de la règle"
+
+msgid "rule_name"
+msgstr "Nom de la règle"
+
+msgid "rule_level"
+msgstr "Niveau de la règle"
+
+msgid "rule_severity"
+msgstr "Sévérité de la règle"
+
+msgid "compliant"
+msgstr "Conforme"

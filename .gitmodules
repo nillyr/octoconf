@@ -2,3 +2,7 @@
 	path = baselines
 	url = git@github.com:nillyr/octobaselines.git
 	update = merge
+[submodule "octoconf/interface_adapters/octowriter"]
+	path = octoconf/interface_adapters/octowriter
+	url = git@github.com:nillyr/octowriter.git
+    update = merge

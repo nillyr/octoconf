@@ -25,29 +25,35 @@ class GenerateScriptUseCase:
         self._adapter = adapter
         self._factory = factory
 
-    def execute(self, args):
+    def execute(self, args) -> int:
         baseline_file_path, output_file, platform, utils = ic(args.values())
         utils_content = ""
 
         baseline = self._adapter.load_baseline_from_file(Path(baseline_file_path))
         if baseline is None:
-            return
+            return 1
 
         if utils is not None:
             if Path(utils).is_file():
-                print(f"[*] Loading content of utils file '{utils}'...")
-                with open(utils, "r") as utils_file:
-                    utils_content = "# Import of util file" + self._newline(platform)
-                    utils_content += utils_file.read()
-                    utils_content += "# Enf of import" + self._newline(platform)
-                utils_file.close()
+                try:
+                    with open(utils, "r") as utils_file:
+                        utils_content = "# Import of util file" + self._newline(platform)
+                        utils_content += utils_file.read()
+                        utils_content += "# Enf of import" + self._newline(platform)
+                    utils_file.close()
+                except:
+                    return 1
 
         commands = self._adapter.get_commands(baseline)
         script = self._factory.get_language(platform)
 
-        with open(output_file, "w", newline=self._newline(platform)) as file:
-            content = script.write_script(
-                utils_content, commands, script.write_checks_cmds
-            )
-            [file.write(x) for x in content]
-        file.close()
+        try:
+            with open(output_file, "w", newline=self._newline(platform)) as file:
+                content = script.write_script(
+                    utils_content, commands, script.write_checks_cmds
+                )
+                [file.write(x) for x in content]
+            file.close()
+            return 0
+        except:
+            return 1

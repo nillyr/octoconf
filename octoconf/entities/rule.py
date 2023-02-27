@@ -17,7 +17,7 @@ class Rule(BaseModel):
     verification_type: str = ""
     expected: str = ""
     recommendation: str
-    level: str
+    level: str = "minimal"
     severity: str = "unknown"
     references: List[str] = []
     # The following attributes are used when using the "analyze" command
