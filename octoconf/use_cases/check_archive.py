@@ -48,5 +48,4 @@ class CheckArchiveUseCase:
                         rule, raw.decode(encoding)
                     )
                 )
-            check_output.close()
         return ic(results)

@@ -40,7 +40,6 @@ class GenerateScriptUseCase:
                         utils_content = "# Import of util file" + self._newline(platform)
                         utils_content += utils_file.read()
                         utils_content += "# Enf of import" + self._newline(platform)
-                    utils_file.close()
                 except:
                     return 1
 
@@ -53,7 +52,6 @@ class GenerateScriptUseCase:
                     utils_content, commands, script.write_checks_cmds
                 )
                 [file.write(x) for x in content]
-            file.close()
             return 0
         except:
             return 1

@@ -31,6 +31,9 @@ msgstr "Echec"
 msgid "na"
 msgstr "N/A"
 
+msgid "unknown"
+msgstr "Inconnue"
+
 msgid "percent"
 msgstr "Pourcentage"
 
@@ -102,3 +105,75 @@ msgstr "Sévérité de la règle"
 
 msgid "compliant"
 msgstr "Conforme"
+
+msgid "compliance_report_title"
+msgstr "Rapport de conformité"
+
+msgid "audited_asset"
+msgstr "Nom de l'actif audité"
+
+msgid "auditee"
+msgstr "Audité"
+
+msgid "auditee_name"
+msgstr "Nom de l'audité"
+
+msgid "auditee_contact_full_name"
+msgstr "Noms complets des contacts de l'audité (séparés par un ';')"
+
+msgid "auditee_contact_email"
+msgstr "Adresses email des contacts de l'audité (séparées par un ';')"
+
+msgid "project_manager_full_name"
+msgstr "Nom complet du chef de projet"
+
+msgid "project_manager_email"
+msgstr "Adresse email du chef de projet"
+
+msgid "init_user_confirmation"
+msgstr "Confirmez-vous les informations saisies ?"
+
+msgid "author"
+msgstr "Auteur"
+
+msgid "authors"
+msgstr "Auteurs"
+
+msgid "authors_list_full_name"
+msgstr "Noms complets des auteurs (séparés par un ';')"
+
+msgid "authors_list_email"
+msgstr "Adresses email des auteurs (séparées par un ';')"
+
+msgid "project_management"
+msgstr "Gestion de projet"
+
+msgid "role"
+msgstr "Rôle"
+
+msgid "participants"
+msgstr "Intervenants"
+
+msgid "contact_information"
+msgstr "Information de contact"
+
+msgid "report_writing"
+msgstr "Rédaction du rapport"
+
+msgid "modification_history"
+msgstr "Historique des modifications"
+
+msgid "nc_summary_title"
+msgstr "Synthèse des non-conformités"
+
+msgid "see_also"
+msgstr "Voir aussi :"
+
+msgid "check_command"
+msgstr "Commande exécutée"
+
+msgid "expected_result"
+msgstr "Résultat attendu"
+
+msgid "terminal_output"
+msgstr "Résultat obtenu"

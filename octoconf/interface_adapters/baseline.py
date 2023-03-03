@@ -43,7 +43,6 @@ class BaselineInterfaceAdapter(IBaseline):
 
         with open(str(baseline_file_path), "r") as checklist:
             baseline = yaml.load(checklist, Loader=yaml.SafeLoader)
-        checklist.close()
 
         cat_cpt = 0
         for category in baseline["categories"]:
@@ -61,7 +60,6 @@ class BaselineInterfaceAdapter(IBaseline):
 
                 with open(str(rule_file_path), "r") as r:
                     rule_content = yaml.load(r, Loader=yaml.SafeLoader)
-                r.close()
 
                 baseline["categories"][cat_cpt]["rules"][rules_cpt] = rule_content
                 rules_cpt += 1
@@ -173,11 +171,9 @@ class BaselineInterfaceAdapter(IBaseline):
 
         with open(baselines_submodule_path / "baseline_template.yaml", "r") as baseline_file:
             baseline_content = baseline_file.read()
-        baseline_file.close()
 
         with open(baselines_submodule_path / "rules" / "rule_template.yaml", "r") as rule_file:
             rule_content = rule_file.read()
-        rule_file.close()
 
         # tab size = 2 (1 tab = 2 space, 3 tab = 6 space, etc.)
         # Preserve indentation otherwise yaml is not valid.
@@ -270,14 +266,12 @@ class BaselineInterfaceAdapter(IBaseline):
 
                 with open(str(rules_directory / rule.id) + ".yaml", "w") as rule_file:
                     rule_file.write(rule_block)
-                rule_file.close()
 
             baseline_content += "\n" + category_block
 
         try:
             with open(str(output_directory / baseline_file_path.stem) + ".yaml", "w") as translated_baseline:
                 translated_baseline.write(baseline_content)
-            translated_baseline.close()
 
             print(f"[+] Baseline successfully translated and saved in '{output_directory}'")
             return 0

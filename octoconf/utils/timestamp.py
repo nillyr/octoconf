@@ -6,11 +6,13 @@
 import datetime
 import time
 
+import octoconf.utils.global_values as global_values
+
 """
 Anonymous function to return a timestamp in YearMonthDayHourMinutesSeconds format.
 """
 timestamp = lambda: datetime.datetime.fromtimestamp(time.time()).strftime(
-    "%Y%m%d%H%M%S"
+    "%Y%m%d"
 )
 
-today = lambda: time.strftime("%d/%m/%Y", time.localtime())
+today = lambda: time.strftime("%d/%m/%Y" if global_values.localize.get_locale() == "FR" else "%m/%d/%Y", time.localtime())

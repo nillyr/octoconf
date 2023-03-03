@@ -1,7 +1,7 @@
 # octoconf
 
 <p align="center">
-  <img width="200" height="200" src="ressources/logo.png">
+  <img width="200" height="200" src="resources/logo.png">
   <br/><br/>
 </p>
 
@@ -31,7 +31,7 @@ positional arguments:
   {analyze,audit,baseline,report} Available Commands
     analyze             performs an analysis on an archive based on a security baseline
     baseline            performs the interaction with the security baselines
-    report              performs the recompilation of the report in PDF and HTML format from an adoc file
+    report              performs the recompilation of the report in PDF format from an adoc file
     config              performs octoconf configuration management
 
 optional arguments:
@@ -44,7 +44,9 @@ optional arguments:
 
 - Python 3.8+
 - pip
-- [Asciidoctor](https://docs.asciidoctor.org/asciidoctor/latest/install/) (`asciidoctor` and `asciidoctor-pdf`)
+- Asciidoc:
+  - [Asciidoctor](https://docs.asciidoctor.org/asciidoctor/latest/install/) processor: `asciidoctor-pdf`
+  - [ruby-rouge](https://docs.asciidoctor.org/asciidoctor/latest/syntax-highlighting/rouge/)
 
 ## Documentation
 
@@ -52,15 +54,59 @@ optional arguments:
 
 ## Quick usage
 
+- Clone this repo:
+
+```bash
+git clone --recurse-submodules git@github.com:nillyr/octoconf.git
+```
+
+- Generation of the script from a baseline:
+
 ```bash
 # Generate a collection script
-octoconf baseline generate_script -p linux -b ./debian-based.yml -o audit-debian.sh
+python console/cli.py baseline generate_script -p linux -b ./debian-based.yml -o audit-debian.sh
 # Generate a collection script with utils functions included
-octoconf baseline generate_script -p linux -b ./debian-based.yml -u ./utils.sh -o audit-debian.sh
-# Run the script on the targeted host
-chmod +x audit-debian.sh; ./audit-debian.sh
+python console/cli.py baseline generate_script -p linux -b ./debian-based.yml -u ./utils.sh -o audit-debian.sh
+```
+
+- Analyze of the results:
+
+```bash
 # Retrieve audit evidence and then analyze
-octoconf analyze -b ./debian-based.yml -a [...].zip
+python console/cli.py analyze -b ./debian-based.yml -a [...].zip
+```
+
+When using [octowriter](https://github.com/nillyr/octowriter) submodule, a `.ini` file can be use to init the PDF report.
+
+Create the following file with your own values:
+
+```ini
+[DEFAULT]
+auditee_name = Tricatel
+auditee_contact_full_name = Jacques Tricatel
+auditee_contact_email = Jacques.Tricatel@tricatel.fr
+
+project_manager_full_name = Charles Duchemin
+project_manager_email = Charles.Duchemin@guide-duchemin.fr
+
+authors_list_full_name = Charles Duchemin; Gérard Duchemin
+authors_list_email = Charles.Duchemin@guide-duchemin.fr; Gérard.Duchemin@guide-duchemin.fr
+
+audited_asset = canning-worker1.tricatel.lan
+
+confidentiality_level = Confidential
+```
+
+Analyze of the results:
+
+```bash
+python console/cli.py analyze -b ./debian-based.yml -a [...].zip --ini info.ini
+```
+
+In order to use a custom theme with your own images, the following command can be used:
+
+```bash
+python console/cli.py analyze -b ./debian-based.yml -a [...].zip --ini info.ini --imagesdir /path/to/imagesdir --pdf-themesdir /path/to/themesdir --pdf-theme custom-theme.yml
 ```
 
 ## Disclaimer
@@ -83,5 +129,7 @@ octoconf analyze -b ./debian-based.yml -a [...].zip
 Copyright (c) 2021-2023 [Nicolas GRELLETY](https://github.com/nillyr)
 
 This software is licensed under GNU GPLv3 license. See `LICENSE` file in the root folder of the project.
+
+The information used in the configuration file comes from the movie "[L'Aile ou la Cuisse](https://www.allocine.fr/film/fichefilm_gen_cfilm=47573.html)".
 
 Icons made by [Smashicons](https://www.flaticon.com/authors/smashicons "Smashicons") from [www.flaticon.com](https://www.flaticon.com/ "Flaticon")

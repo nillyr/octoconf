@@ -3,14 +3,14 @@ name: snyk
 on:
   push:
     paths-ignore:
-      - '.vscode/**'
-      - 'docs/**'
-      - 'ressources/**'
+      - ".vscode/**"
+      - "docs/**"
+      - "resources/**"
   pull_request:
     paths-ignore:
-      - '.vscode/**'
-      - 'docs/**'
-      - 'ressources/**'
+      - ".vscode/**"
+      - "docs/**"
+      - "resources/**"
 
 jobs:
   security:

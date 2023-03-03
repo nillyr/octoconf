@@ -4,8 +4,8 @@
 # @since 1.0.0b
 
 from pathlib import Path
+from typing import Any
 
-from icecream import ic
 import inject
 
 from octoconf.interfaces.baseline import IBaseline
@@ -24,24 +24,24 @@ class GenerateReportUseCase:
 
     def execute(
             self,
-            results,
-            baseline_path: str = None,
+            data_input: Any,
+            args: Any,
             recompile: bool = False) -> int:
         if recompile:
-            if Path(results).is_file():
-                return self._report_generator.regenerate_report(results)
+            if Path(data_input).is_file():
+                return self._report_generator.regenerate_report(Path(data_input), args)
             else:
                 return 1
         else:
-            baseline = self._baseline_adapter.load_baseline_from_file(Path(baseline_path))
+            baseline = self._baseline_adapter.load_baseline_from_file(Path(args.baseline))
             if baseline is None:
                 return 1
 
             return self._report_generator.generate_report(
                 self._baseline_adapter.remove_ignore_translate_tags(
                     self._baseline_adapter.map_results_in_baseline(
-                        results,
+                        data_input,
                         baseline
                     )
-                )
+                ), args
             )

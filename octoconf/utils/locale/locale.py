@@ -19,6 +19,7 @@ class Locale:
 
     def __init__(self, lang: str = "EN"):
         self._dict = dict()
+        self._locale = lang.upper()
         self._pofilename = f"{lang.lower()}_{lang.upper()}.po"
         self._parse_po_file()
 
@@ -48,3 +49,6 @@ class Locale:
                 f"Error: key {_err} not found in class {__class__.__name__}.",
                 file=sys.stderr,
             )
+
+    def get_locale(self) -> str:
+        return self._locale

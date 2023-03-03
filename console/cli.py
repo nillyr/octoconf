@@ -12,10 +12,7 @@ import sys
 import inject
 
 sys.path.append("../octoconf/")
-
-
 from octoconf.__init__ import __version__
-
 from octoconf.components.translators.deepl_translator.deepl_translator import DeepL
 from octoconf.interfaces.archive import IArchive
 from octoconf.interfaces.baseline import IBaseline
@@ -60,7 +57,7 @@ def parse_analyze_args(args):
     print("[*] Launching the archive analyis...")
     results = CheckArchiveUseCase().execute(args.baseline, args.archive)
     results = CheckOutputUseCase().execute(results)
-    status = GenerateReportUseCase().execute(results, baseline_path = args.baseline)
+    status = GenerateReportUseCase().execute(results, args)
     return print_status(status)
 
 
@@ -104,11 +101,10 @@ def parse_report_args(args):
     if args.debug:
         debug.set_debug(True)
 
-    raise NotImplementedError("This feature is not implemented yet.")
-
-    #print("[*] Launching report generation...")
-    #status = GenerateReportUseCase().execute(args.input, recompile=True)
-    #return print_status(status)
+    global_values.set_localize(args.language)
+    print("[*] Launching report generation...")
+    status = GenerateReportUseCase().execute(args.input, args, recompile=True)
+    return print_status(status)
 
 
 def parse_config_args(args):
@@ -167,6 +163,21 @@ def parse_args() -> argparse.Namespace:
     )
     analyze_parser.add_argument(
         "-l", "--language", default=config.get_config("MISC", "language"), help="EN/FR (default=%s)" % (config.get_config("MISC", "language"))
+    )
+    analyze_parser.add_argument(
+        "-o", "--outdir", required=False, type=str, default=None, help="output directory"
+    )
+    analyze_parser.add_argument(
+        "--ini", required=False, type=str, default=None, help="[required dependency: asciidoctor-pdf] path to the configuration file (.ini) containing the required information to initialize the report"
+    )
+    analyze_parser.add_argument(
+        "--imagesdir", required=False, type=str, default=None, help="[required dependency: asciidoctor-pdf] path to the folder containing the images to be used when generating the report"
+    )
+    analyze_parser.add_argument(
+        "--pdf-themesdir", required=False, type=str, default=None, help="[required dependency: asciidoctor-pdf] path to the folder containing the stylesheet and associated images to be used when generating the report "
+    )
+    analyze_parser.add_argument(
+        "--pdf-theme", required=False, type=str, default="custom-theme.yml", help="[required dependency: asciidoctor-pdf] name of the stylesheet in the 'pdf-themesdir' folder to use when generating the report"
     )
 
     ## Baseline ##
@@ -228,11 +239,26 @@ def parse_args() -> argparse.Namespace:
 
     ## Report ##
     report_parser = cmd.add_parser(
-        name="report", help="performs the recompilation of the report in PDF and HTML format from an adoc file"
+        name="report", help="performs the recompilation of the report in PDF format from an adoc file"
     )
     report_parser.set_defaults(func=parse_report_args)
 
     report_parser.add_argument("-i", "--input", required=True, help="Asciidoc (.adoc) report file")
+    report_parser.add_argument(
+        "-l", "--language", default=config.get_config("MISC", "language"), help="EN/FR (default=%s)" % (config.get_config("MISC", "language"))
+    )
+    report_parser.add_argument(
+        "-o", "--outdir", required=False, type=str, default=None, help="output directory"
+    )
+    report_parser.add_argument(
+        "--imagesdir", required=False, type=str, default=None, help="[required dependency: asciidoctor-pdf] path to the folder containing the images to be used when generating the report"
+    )
+    report_parser.add_argument(
+        "--pdf-themesdir", required=False, type=str, default=None, help="[required dependency: asciidoctor-pdf] path to the folder containing the stylesheet and associated images to be used when generating the report "
+    )
+    report_parser.add_argument(
+        "--pdf-theme", required=False, type=str, default="custom-theme.yml", help="[required dependency: asciidoctor-pdf] name of the stylesheet in the 'pdf-themesdir' folder to use when generating the report"
+    )
 
     ## Config ##
     config_parser = cmd.add_parser(

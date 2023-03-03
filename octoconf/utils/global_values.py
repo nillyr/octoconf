@@ -9,3 +9,7 @@ from octoconf.utils.locale.locale import Locale
 def set_localize(lang: str):
     global localize
     localize = Locale(lang)
+
+
+def get_locale() -> str:
+    return localize.get_locale()

@@ -31,6 +31,9 @@ msgstr "Failed"
 msgid "na"
 msgstr "N/A"
 
+msgid "unknown"
+msgstr "Unknown"
+
 msgid "percent"
 msgstr "Percent"
 
@@ -102,3 +105,75 @@ msgstr "Rule severity"
 
 msgid "compliant"
 msgstr "Compliant"
+
+msgid "compliance_report_title"
+msgstr "Compliance report"
+
+msgid "audited_asset"
+msgstr "Name of audited asset"
+
+msgid "auditee"
+msgstr "Auditee"
+
+msgid "auditee_name"
+msgstr "Auditee name"
+
+msgid "auditee_contact_full_name"
+msgstr "Full names of the auditee's contacts (separated by a ';')"
+
+msgid "auditee_contact_email"
+msgstr "Email addresses of the auditee's contacts (separated by a ';')"
+
+msgid "project_manager_full_name"
+msgstr "Project manager full name"
+
+msgid "project_manager_email"
+msgstr "Project manager email address"
+
+msgid "init_user_confirmation"
+msgstr "Do you confirm the provided information?"
+
+msgid "author"
+msgstr "Author"
+
+msgid "authors"
+msgstr "Authors"
+
+msgid "authors_list_full_name"
+msgstr "Full names of the authors (separated by a ';')"
+
+msgid "authors_list_email"
+msgstr "Email addresses of the authors (separated by a ';')"
+
+msgid "project_management"
+msgstr "Project management"
+
+msgid "role"
+msgstr "Role"
+
+msgid "participants"
+msgstr "Participants"
+
+msgid "contact_information"
+msgstr "Contact information"
+
+msgid "report_writing"
+msgstr "Report writing"
+
+msgid "modification_history"
+msgstr "Modification history"
+
+msgid "nc_summary_title"
+msgstr "Summary of non-conformities"
+
+msgid "see_also"
+msgstr "See also:"
+
+msgid "check_command"
+msgstr "Check command"
+
+msgid "expected_result"
+msgstr "Expected result"
+
+msgid "terminal_output"
+msgstr "Terminal output"

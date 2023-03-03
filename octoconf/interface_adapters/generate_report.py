@@ -4,6 +4,8 @@
 # @since 1.0.0b
 
 import csv
+from pathlib import Path
+from typing import Any
 
 from octoconf.entities.baseline import Baseline
 from octoconf.interfaces.generate_report import IReportGenerator
@@ -12,8 +14,7 @@ from octoconf.utils.timestamp import timestamp
 
 is_submodule_imported: bool = False
 try:
-    #import octoconf.interface_adapters.octowriter.scripts.generate_html as HTMLGenerator
-    #import octoconf.interface_adapters.octowriter.scripts.generate_pdf as PDFGenerator
+    from octoconf.interface_adapters.octowriter.scripts.generate_pdf import PDFGenerator
     from octoconf.interface_adapters.octowriter.scripts.generate_xls import XLSGenerator
     is_submodule_imported = True
 except ImportError:
@@ -24,7 +25,7 @@ class ReportGeneratorInterfaceAdapter(IReportGenerator):
     def __init__(self) -> None:
         super().__init__()
 
-    def generate_csv(self, filename: str, results: Baseline) -> None:
+    def generate_csv(self, filename: str, results: Baseline, output_dir: Path) -> None:
         header_columns = [
           global_values.localize.gettext("category_reference"),
           global_values.localize.gettext("category_name"),
@@ -35,7 +36,7 @@ class ReportGeneratorInterfaceAdapter(IReportGenerator):
           global_values.localize.gettext("compliant"),
         ]
 
-        with open(f"{filename}.csv", mode="w") as compliance_report:
+        with open(f"{output_dir / filename}.csv", mode="w") as compliance_report:
             csv_writer = csv.DictWriter(compliance_report, delimiter=',', quotechar='"', quoting=csv.QUOTE_MINIMAL, fieldnames=header_columns)
             csv_writer.writeheader()
 
@@ -50,29 +51,53 @@ class ReportGeneratorInterfaceAdapter(IReportGenerator):
                         global_values.localize.gettext("rule_severity"): rule.severity,
                         global_values.localize.gettext("compliant"): rule.compliant,
                     })
-        compliance_report.close()
 
-    def regenerate_report(results: str) -> int:
+    def regenerate_report(self, input_file: Path, args: Any) -> int:
         try:
             if not is_submodule_imported:
                 return 1
 
-            # HTMLGenerator().build(results)
-            # PDFGenerator().build(results)
+            filename = f"octoconf_compliance_report_{timestamp()}"
+
+            output_directory = Path(args.outdir) if args.outdir else Path.cwd()
+            output_directory.mkdir(parents=True, exist_ok=True)
+
+            imagesdir = Path(args.imagesdir) if args.imagesdir else None
+            pdf_themesdir = Path(args.pdf_themesdir) if args.pdf_themesdir else None
+
+            PDFGenerator().build_pdf(filename,
+                                        output_directory,
+                                        input_file.parent,
+                                        header_file = input_file.name,
+                                        imagesdir = imagesdir,
+                                        pdf_themesdir = pdf_themesdir,
+                                        pdf_theme = args.pdf_theme)
             return 0
         except:
             return 1
 
-    def generate_report(self, results: Baseline) -> int:
+    def generate_report(self, results: Baseline, args: Any) -> int:
         try:
             filename = f"octoconf_compliance_report_{timestamp()}"
-            self.generate_csv(filename, results)
+
+            output_directory = Path(args.outdir) if args.outdir else Path.cwd()
+            output_directory.mkdir(parents=True, exist_ok=True)
+
+            self.generate_csv(filename, results, output_directory)
 
             if is_submodule_imported:
-                #HTMLGenerator().generate_html(filename, results)
-                #PDFGenerator().generate_pdf(filename, results)
-                XLSGenerator().generate_xls(filename, results)
+                ini_file = Path(args.ini) if args.ini else None
+                imagesdir = Path(args.imagesdir) if args.imagesdir else None
+                pdf_themesdir = Path(args.pdf_themesdir) if args.pdf_themesdir else None
 
+                XLSGenerator().generate_xls(filename, results, output_directory)
+                PDFGenerator().generate_pdf(filename,
+                                            results,
+                                            output_directory,
+                                            ini_file,
+                                            imagesdir,
+                                            pdf_themesdir,
+                                            args.pdf_theme)
             return 0
         except:
             return 1
