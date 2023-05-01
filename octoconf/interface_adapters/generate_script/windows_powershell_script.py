@@ -22,7 +22,7 @@ class WindowsPowershellScript(IWindowsScript):
         """
         cmds.append(
             IWindowsScript._newline
-            + 'Write-Output "[*] Starting Compliance checks..."'
+            + 'Write-Output "[*] Starting compliance checks..."'
             + IWindowsScript._newline
         )
         for category in content:
@@ -34,10 +34,9 @@ class WindowsPowershellScript(IWindowsScript):
                 if not check_cmd:
                     continue
                 path = checksdir + "\\" + output_file + IWindowsScript._newline
-                cmds.append(check_cmd + IWindowsScript._powershell_pattern + path)
+                cmds.append(check_cmd + IWindowsScript._powershell_pattern + path + IWindowsScript._newline)
         cmds.append(
-            IWindowsScript._newline
-            + 'Write-Output "[+] Finished Compliance checks."'
+            'Write-Output "[+] Finished compliance checks."'
             + IWindowsScript._newline
         )
         return ic(cmds)
@@ -54,7 +53,7 @@ class WindowsPowershellScript(IWindowsScript):
         for category in content:
             str = """
 $category=\"{0}\"
-Write-Output "[*] Starting Collection commands of category: {1}..."
+Write-Output "[*] Starting collection commands of category: {1}..."
 New-Item -ItemType Directory -Force -Path $basedir\\$category | Out-Null
 """.format(
                 re.sub(
@@ -75,7 +74,7 @@ New-Item -ItemType Directory -Force -Path $basedir\\$category | Out-Null
                 )
             cmds.append(str)
             cmds.append(
-                """Write-Output "[+] Finished Collection commands of category: {0}."
+                """Write-Output "[+] Finished collection commands of category: {0}."
 """.format(
                     "$category",
                 )

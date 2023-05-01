@@ -22,7 +22,7 @@ class UnixBashScript(IUnixScript):
         """
         cmds.append(
             IUnixScript._newline
-            + 'echo "[*] Starting Compliance checks..."'
+            + 'echo "[*] Starting compliance checks..."'
             + IUnixScript._newline
         )
         for category in content:
@@ -34,10 +34,9 @@ class UnixBashScript(IUnixScript):
                 if not check_cmd:
                     continue
                 path = '"' + checksdir + '"/' + output_file + IUnixScript._newline
-                cmds.append(check_cmd + IUnixScript._pattern + path)
+                cmds.append(check_cmd + IUnixScript._pattern + path + IUnixScript._newline)
         cmds.append(
-            IUnixScript._newline
-            + 'echo "[+] Finished Compliance checks."'
+            'echo "[+] Finished compliance checks."'
             + IUnixScript._newline
         )
         return ic(cmds)
@@ -54,7 +53,7 @@ class UnixBashScript(IUnixScript):
         for category in content:
             str = """
 CATEGORY=\"{0}\"
-echo "[*] Starting Collection commands of category: {1}..."
+echo "[*] Starting collection commands of category: {1}..."
 mkdir -p {2}
 """.format(
                 re.sub(
@@ -77,7 +76,7 @@ mkdir -p {2}
             cmds.append(str)
 
             cmds.append(
-                """echo "[+] Finished Collection commands of category: {0}."
+                """echo "[+] Finished collection commands of category: {0}."
 """.format(
                     "${CATEGORY}"
                 )

@@ -116,6 +116,7 @@ class BaselineInterfaceAdapter(IBaseline):
             expected = rule.expected,
             recommendation = rule.recommendation,
             level = rule.level,
+            severity = rule.severity,
             references = rule.references,
             output = output_result,
             compliant = rule.compliant

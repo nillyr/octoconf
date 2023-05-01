@@ -31,9 +31,8 @@ class UnixOutputRedirectorRegexCB(IOutputRedirectorRegexBuilder):
         """
         Set of supported redirections.
         """
-
-        BASICS = r"(?:\s*\d?\&?>{1,2}\|?(?!\&|/)\s*)(?![^\(]*\){2})"
-        FD_TO_FILES = r"(?#exec)\s+\d(?:(?:<?>))(?!\&)"
+        BASICS = r"(?:\s*\d?\&?>{1,2}\|?(?!\&|/|/dev/null)\s*)(?![^\(]*\){2})"
+        FD_TO_FILES = r"(?#exec)\s+\d(?:(?:<?>))(?!\&|/dev/null)"
         TEE_CMD = r"\|\s*tee\s+(?:-(?:[a-z]\s*))*"
 
     _instance = None

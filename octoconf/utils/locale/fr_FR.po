@@ -20,7 +20,16 @@ msgid "enhanced"
 msgstr "Renforcé"
 
 msgid "high"
-msgstr "Élevé"
+msgstr "Élevé(e)"
+
+msgid "medium"
+msgstr "Moyenne"
+
+msgid "low"
+msgstr "Basse"
+
+msgid "informative"
+msgstr "Informative"
 
 msgid "success"
 msgstr "Succès"
@@ -32,7 +41,7 @@ msgid "na"
 msgstr "N/A"
 
 msgid "unknown"
-msgstr "Inconnue"
+msgstr "Inconnu(e)"
 
 msgid "percent"
 msgstr "Pourcentage"

@@ -22,6 +22,15 @@ msgstr "Enhanced"
 msgid "high"
 msgstr "High"
 
+msgid "medium"
+msgstr "Medium"
+
+msgid "low"
+msgstr "Low"
+
+msgid "informative"
+msgstr "Informative"
+
 msgid "success"
 msgstr "Success"
 
