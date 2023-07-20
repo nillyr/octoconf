@@ -9,13 +9,13 @@
   <img src="https://img.shields.io/badge/python-3.8+-blue.svg">
   <img src="https://img.shields.io/badge/platform-Linux%2FmacOS%2FWindows-blue.svg">
   <img src="https://img.shields.io/badge/gitmoji-%20😜%20😍-FFDD67.svg">
-  </br>
-  <img src="https://github.com/nillyr/octoconf/actions/workflows/snyk.yml/badge.svg">
-  <img src="https://github.com/nillyr/octoconf/actions/workflows/tests.yml/badge.svg">
-  <img src="https://img.shields.io/badge/coverage-96%25-green.svg">
 </p>
 
 Tool dedicated to the realization of configuration audits of various assets.
+
+| :information_source: Information |
+|:-------------------------------------------------------------|
+| This repository is mirrored with a personnal GitLab instance |
 
 ```
         ,'""`.       octoconf 2.0.0b
@@ -50,14 +50,14 @@ optional arguments:
 
 ## Documentation
 
-- Documentation can be found in the [wiki](https://github.com/nillyr/octoconf/wiki).
+- TODO
 
 ## Quick usage
 
 - Clone this repo:
 
 ```bash
-git clone --recurse-submodules git@github.com:nillyr/octoconf.git
+git clone --recurse-submodules <this repo>
 ```
 
 - Generation of the script from a baseline:
@@ -118,18 +118,18 @@ python console/cli.py analyze -b ./debian-based.yml -a [...].zip --ini info.ini 
 
 ## Maintainer
 
-- [Nicolas GRELLETY](https://github.com/nillyr)
+- Nicolas GRELLETY
 
 ## Authors
 
-- [Nicolas GRELLETY](https://github.com/nillyr)
+- Nicolas GRELLETY
 
 ## Copyright and license
 
-Copyright (c) 2021-2023 [Nicolas GRELLETY](https://github.com/nillyr)
+Copyright (c) 2021 Nicolas GRELLETY
 
 This software is licensed under GNU GPLv3 license. See `LICENSE` file in the root folder of the project.
 
 The information used in the configuration file comes from the movie "[L'Aile ou la Cuisse](https://www.allocine.fr/film/fichefilm_gen_cfilm=47573.html)".
 
-Icons made by [Smashicons](https://www.flaticon.com/authors/smashicons "Smashicons") from [www.flaticon.com](https://www.flaticon.com/ "Flaticon")
+Icons made by [Freepik](https://www.flaticon.com/authors/freepik "Freepik") from [www.flaticon.com](https://www.flaticon.com/ "Flaticon")
