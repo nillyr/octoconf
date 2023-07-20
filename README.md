@@ -57,7 +57,30 @@ optional arguments:
 - Clone this repo:
 
 ```bash
-git clone --recurse-submodules <this repo>
+# Cloning from GitHub
+
+## Clone without initializing submodules
+git clone git@github.com:nillyr/octoconf.git
+
+## Change submodules URL in the .gitmodules file
+## from: url = ssh://git@gitlab.internal.lan:2222/octo-project/<repo>.git
+## to: url = ssh://git@github.com:nillyr/<repo>.git
+
+## Init and update submodules
+cd octoconf
+git submodule update --init --recursive
+```
+
+- Create a virtual environment and install requirements
+
+```bash
+bash setup.sh
+```
+
+- Active the virtual environment
+
+```bash
+source venv/bin/activate
 ```
 
 - Generation of the script from a baseline:
@@ -76,7 +99,7 @@ python console/cli.py baseline generate_script -p linux -b ./debian-based.yml -u
 python console/cli.py analyze -b ./debian-based.yml -a [...].zip
 ```
 
-When using [octowriter](https://github.com/nillyr/octowriter) submodule, a `.ini` file can be use to init the PDF report.
+When using [octowriter](https://gitlab.internal.lan/octo-project/octowriter) submodule, a `.ini` file can be use to init the PDF report.
 
 Create the following file with your own values:
 
