@@ -1,8 +1,8 @@
 [submodule "baselines"]
 	path = baselines
-	url = git@github.com:nillyr/octobaselines.git
+	url = ssh://git@gitlab.internal.lan:2222/octo-project/octobaselines.git
 	update = merge
 [submodule "octoconf/interface_adapters/octowriter"]
 	path = octoconf/interface_adapters/octowriter
-	url = git@github.com:nillyr/octowriter.git
+	url = ssh://git@gitlab.internal.lan:2222/octo-project/octowriter.git
     update = merge
