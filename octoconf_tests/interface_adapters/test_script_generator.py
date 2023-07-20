@@ -133,7 +133,7 @@ def collect_only_and_not_only():
 
 def test_write_script_for_linux(unix_content):
     # fmt:off
-    expected_output = '\nCATEGORY="a_category_with_space"\necho "[*] Starting Collection commands of category: ${CATEGORY}..."\nmkdir -p "${BASEDIR}"/"${CATEGORY}"/\nls -al > "${BASEDIR}"/"${CATEGORY}"/ls.txt\n'
+    expected_output = '\nCATEGORY="a_category_with_space"\necho "[*] Starting collection commands of category: ${CATEGORY}..."\nmkdir -p "${BASEDIR}"/"${CATEGORY}"/\nls -al > "${BASEDIR}"/"${CATEGORY}"/ls.txt\n'
     # fmt:on
 
     linux_sh = UnixBashScript()
@@ -144,7 +144,7 @@ def test_write_script_for_linux(unix_content):
 
 def test_write_script_for_linux_with_multiple_output(unix_content_with_multiple_output):
     # fmt:off
-    expected_output = '\nCATEGORY="a_category_with_space"\necho "[*] Starting Collection commands of category: ${CATEGORY}..."\nmkdir -p "${BASEDIR}"/"${CATEGORY}"/\n[[ -f file.conf ]] && cat file.conf > "${BASEDIR}"/"${CATEGORY}"/dummy_1.txt; cat file2.conf >> "${BASEDIR}"/"${CATEGORY}"/dummy_2.txt\n'
+    expected_output = '\nCATEGORY="a_category_with_space"\necho "[*] Starting collection commands of category: ${CATEGORY}..."\nmkdir -p "${BASEDIR}"/"${CATEGORY}"/\n[[ -f file.conf ]] && cat file.conf > "${BASEDIR}"/"${CATEGORY}"/dummy_1.txt; cat file2.conf >> "${BASEDIR}"/"${CATEGORY}"/dummy_2.txt\n'
     # fmt:on
 
     linux_sh = UnixBashScript()
@@ -157,7 +157,7 @@ def test_write_script_for_linux_with_multiple_output(unix_content_with_multiple_
 
 def test_write_script_for_mac(unix_content):
     # fmt:off
-    expected_output = '\nCATEGORY="a_category_with_space"\necho "[*] Starting Collection commands of category: ${CATEGORY}..."\nmkdir -p "${BASEDIR}"/"${CATEGORY}"/\nls -al > "${BASEDIR}"/"${CATEGORY}"/ls.txt\n'
+    expected_output = '\nCATEGORY="a_category_with_space"\necho "[*] Starting collection commands of category: ${CATEGORY}..."\nmkdir -p "${BASEDIR}"/"${CATEGORY}"/\nls -al > "${BASEDIR}"/"${CATEGORY}"/ls.txt\n'
     # fmt:on
 
     mac_sh = UnixBashScript()
@@ -168,7 +168,7 @@ def test_write_script_for_mac(unix_content):
 
 def test_write_script_for_windows_powershell(windows_content):
     # fmt:off
-    expected_output = '\n$category="a_category_with_space"\nWrite-Output "[*] Starting Collection commands of category: $category..."\nNew-Item -ItemType Directory -Force -Path $basedir\\$category | Out-Null\ndir > $basedir\\$category\\dir.txt\n'
+    expected_output = '\n$category="a_category_with_space"\nWrite-Output "[*] Starting collection commands of category: $category..."\nNew-Item -ItemType Directory -Force -Path $basedir\\$category | Out-Null\ndir > $basedir\\$category\\dir.txt\n'
     # fmt:on
 
     windows_ps1 = WindowsPowershellScript()
@@ -181,7 +181,7 @@ def test_write_script_for_windows_powershell_cmdlet_1(
     windows_powershell_cmdlet_content_1,
 ):
     # fmt:off
-    expected_output = '\n$category="a_category_with_space"\nWrite-Output "[*] Starting Collection commands of category: $category..."\nNew-Item -ItemType Directory -Force -Path $basedir\\$category | Out-Null\ndir | Out-File -Encoding utf8 -FilePath $basedir\\$category\\dir.txt\n'
+    expected_output = '\n$category="a_category_with_space"\nWrite-Output "[*] Starting collection commands of category: $category..."\nNew-Item -ItemType Directory -Force -Path $basedir\\$category | Out-Null\ndir | Out-File -Encoding utf8 -FilePath $basedir\\$category\\dir.txt\n'
     # fmt:on
 
     windows_ps1 = WindowsPowershellScript()
@@ -196,7 +196,7 @@ def test_write_script_for_windows_powershell_cmdlet_2(
     windows_powershell_cmdlet_content_2,
 ):
     # fmt:off
-    expected_output = '\n$category="a_category_with_space"\nWrite-Output "[*] Starting Collection commands of category: $category..."\nNew-Item -ItemType Directory -Force -Path $basedir\\$category | Out-Null\ndir | Out-File -Encoding utf8 -Append -FilePath $basedir\\$category\\dir.txt\n'
+    expected_output = '\n$category="a_category_with_space"\nWrite-Output "[*] Starting collection commands of category: $category..."\nNew-Item -ItemType Directory -Force -Path $basedir\\$category | Out-Null\ndir | Out-File -Encoding utf8 -Append -FilePath $basedir\\$category\\dir.txt\n'
     # fmt:on
 
     windows_ps1 = WindowsPowershellScript()
@@ -211,7 +211,7 @@ def test_write_script_for_windows_powershell_cmdlet_3(
     windows_powershell_cmdlet_content_3,
 ):
     # fmt:off
-    expected_output = '\n$category="a_category_with_space"\nWrite-Output "[*] Starting Collection commands of category: $category..."\nNew-Item -ItemType Directory -Force -Path $basedir\\$category | Out-Null\ndir | Out-File -Append -Encoding utf8 -FilePath $basedir\\$category\\dir.txt\n'
+    expected_output = '\n$category="a_category_with_space"\nWrite-Output "[*] Starting collection commands of category: $category..."\nNew-Item -ItemType Directory -Force -Path $basedir\\$category | Out-Null\ndir | Out-File -Append -Encoding utf8 -FilePath $basedir\\$category\\dir.txt\n'
     # fmt:on
 
     windows_ps1 = WindowsPowershellScript()
@@ -225,9 +225,9 @@ def test_write_script_for_windows_powershell_cmdlet_3(
 def test_write_checks_cmds_for_linux(unix_content):
     checkdir = "${CHECKSDIR}"
     expected_output = []
-    expected_output.append('\necho "[*] Starting Compliance checks..."\n')
-    expected_output.append('whoami >> "${CHECKSDIR}"/rule_id.txt\n')
-    expected_output.append('\necho "[+] Finished Compliance checks."\n')
+    expected_output.append('\necho "[*] Starting compliance checks..."\n')
+    expected_output.append('whoami >> "${CHECKSDIR}"/rule_id.txt\n\n')
+    expected_output.append('echo "[+] Finished compliance checks."\n')
 
     output = UnixBashScript().write_checks_cmds(checkdir, unix_content, [])
 
@@ -237,9 +237,9 @@ def test_write_checks_cmds_for_linux(unix_content):
 def test_write_checks_cmds_for_mac(unix_content):
     checkdir = "${CHECKSDIR}"
     expected_output = []
-    expected_output.append('\necho "[*] Starting Compliance checks..."\n')
-    expected_output.append('whoami >> "${CHECKSDIR}"/rule_id.txt\n')
-    expected_output.append('\necho "[+] Finished Compliance checks."\n')
+    expected_output.append('\necho "[*] Starting compliance checks..."\n')
+    expected_output.append('whoami >> "${CHECKSDIR}"/rule_id.txt\n\n')
+    expected_output.append('echo "[+] Finished compliance checks."\n')
 
     output = UnixBashScript().write_checks_cmds(checkdir, unix_content, [])
 
@@ -249,11 +249,11 @@ def test_write_checks_cmds_for_mac(unix_content):
 def test_write_checks_cmds_for_windows_powershell(windows_content):
     checkdir = "$checksdir"
     expected_output = []
-    expected_output.append('\nWrite-Output "[*] Starting Compliance checks..."\n')
+    expected_output.append('\nWrite-Output "[*] Starting compliance checks..."\n')
     expected_output.append(
-        "whoami /all | Out-File -Encoding utf8 -Append -FilePath $checksdir\\rule_id.txt\n"
+        "whoami /all | Out-File -Encoding utf8 -Append -FilePath $checksdir\\rule_id.txt\n\n"
     )
-    expected_output.append('\nWrite-Output "[+] Finished Compliance checks."\n')
+    expected_output.append('Write-Output "[+] Finished compliance checks."\n')
 
     output = WindowsPowershellScript().write_checks_cmds(checkdir, windows_content, [])
 
