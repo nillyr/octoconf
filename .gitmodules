@@ -5,4 +5,4 @@
 [submodule "octoconf/interface_adapters/octowriter"]
 	path = octoconf/interface_adapters/octowriter
 	url = ssh://git@gitlab.internal.lan:2222/octo-project/octowriter.git
-    update = merge
+	update = merge
