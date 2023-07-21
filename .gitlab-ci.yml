@@ -1,11 +1,27 @@
-default:
-  image: python:3.10-slim-bullseye
-
 stages:
-  - test
+  - unit-test
 
-test-build:
-  stage: test
+unit-test:python3.8:
+  image: python:3.8-slim-bullseye
+  stage: unit-test
+  script:
+    - echo "Running unit tests..."
+    - bash ./setup.sh
+    - source venv/bin/activate
+    - pytest -v
+
+unit-test:python3.9:
+  image: python:3.9-slim-bullseye
+  stage: unit-test
+  script:
+    - echo "Running unit tests..."
+    - bash ./setup.sh
+    - source venv/bin/activate
+    - pytest -v
+
+unit-test:python3.10:
+  image: python:3.10-slim-bullseye
+  stage: unit-test
   script:
     - echo "Running unit tests..."
     - bash ./setup.sh
