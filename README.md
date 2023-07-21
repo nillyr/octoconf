@@ -15,7 +15,7 @@ Tool dedicated to the realization of configuration audits of various assets.
 
 | :information_source: Information |
 |:-------------------------------------------------------------|
-| This repository is mirrored from a personnal GitLab instance |
+| This repository is mirrored from a private GitLab instance |
 
 ```
         ,'""`.       octoconf 2.0.0b
