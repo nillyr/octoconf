@@ -1,7 +1,3 @@
-# [BUG] FIXME_BUG_NAME
-
-## Summary
-
 **Describe the bug (please complete the following information):**
 
 A clear and concise description of what the bug is.
@@ -25,5 +21,5 @@ If applicable, add screenshots to help explain your problem.
 - OS
 - Python version
 
-/label bug
+/label bug triage
 /assign @ngy
