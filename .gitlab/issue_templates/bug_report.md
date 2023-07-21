@@ -1,0 +1,29 @@
+# [BUG] FIXME_BUG_NAME
+
+## Summary
+
+**Describe the bug (please complete the following information):**
+
+A clear and concise description of what the bug is.
+
+**Expected behavior (please complete the following information):**
+
+A clear and concise description of what you expected to happen.
+
+**Additional information (please complete the following information):**
+
+- Command history - what commands were used
+- The used security baseline
+- Error obtained
+
+**Screenshots**
+
+If applicable, add screenshots to help explain your problem.
+
+**Desktop (please complete the following information):**
+
+- OS
+- Python version
+
+/label bug
+/assign @ngy
