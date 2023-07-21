@@ -8,5 +8,6 @@ test-build:
   stage: test
   script:
     - echo "Running unit tests..."
-    - python3 --version
-    - pip --version
+    - bash ./setup.sh
+    - source venv/bin/activate
+    - make test
