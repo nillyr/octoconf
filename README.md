@@ -9,6 +9,10 @@
   <img src="https://img.shields.io/badge/python-3.8+-blue.svg">
   <img src="https://img.shields.io/badge/platform-Linux%2FmacOS%2FWindows-blue.svg">
   <img src="https://img.shields.io/badge/gitmoji-%20😜%20😍-FFDD67.svg">
+  <img src="https://img.shields.io/badge/Changelog-gitmoji-brightgreen.svg">
+  <a href="https://twitter.com/n1llyr">
+    <img alt="Twitter: n1llyr" src="https://img.shields.io/twitter/follow/n1llyr.svg?style=social" target="_blank" />
+  </a>
 </p>
 
 Tool dedicated to the realization of configuration audits of various assets.
@@ -18,7 +22,7 @@ Tool dedicated to the realization of configuration audits of various assets.
 | This repository is mirrored from a private GitLab instance |
 
 ```
-        ,'""`.       octoconf 2.0.0b
+        ,'""`.       octoconf 2.0.0-beta
        / _  _ \
        |(@)(@)|      Tool for semi-automatic verification
        )  __  (      of security configurations.
