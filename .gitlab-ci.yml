@@ -16,6 +16,7 @@ unit-test:python3.8:
         - .gitlab/**
         - docs/**
         - resources/**
+        - CHANGELOG.md
         - README.md
         - SECURITY.md
         - LICENSE
@@ -37,6 +38,7 @@ unit-test:python3.9:
         - .gitlab/**
         - docs/**
         - resources/**
+        - CHANGELOG.md
         - README.md
         - SECURITY.md
         - LICENSE
@@ -58,6 +60,7 @@ unit-test:python3.10:
         - .gitlab/**
         - docs/**
         - resources/**
+        - CHANGELOG.md
         - README.md
         - SECURITY.md
         - LICENSE
