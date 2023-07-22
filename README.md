@@ -61,13 +61,12 @@ optional arguments:
 
 ## Clone without initializing submodules
 git clone git@github.com:nillyr/octoconf.git
+cd octoconf
 
-## Change submodules URL in the .gitmodules file
-## from: url = ssh://git@gitlab.internal.lan:2222/octo-project/<repo>.git
-## to: url = ssh://git@github.com:nillyr/<repo>.git
+## Update submodules URL
+bash update_gitmodules_url_for_github.sh
 
 ## Init and update submodules
-cd octoconf
 git submodule update --init --recursive
 ```
 
@@ -99,7 +98,7 @@ python console/cli.py baseline generate_script -p linux -b ./debian-based.yml -u
 python console/cli.py analyze -b ./debian-based.yml -a [...].zip
 ```
 
-When using [octowriter](https://gitlab.internal.lan/octo-project/octowriter) submodule, a `.ini` file can be use to init the PDF report.
+When using [octowriter](https://gitlab.internal.lan/octo-project/octowriter) ([GitHub link](https://github.com/nillyr/octowriter)) submodule, a `.ini` file can be use to init the PDF report.
 
 Create the following file with your own values:
 
