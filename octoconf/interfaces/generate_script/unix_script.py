@@ -61,7 +61,11 @@ class IUnixScript(metaclass=ABCMeta):
                 new_outfile_path += IUnixScript._newline + out_file[-1]
 
             if len(splited_cmd_elt) > 1:
-                new_outfile_path += "; "
+                # if ";\n" is present, then we are in a switch case and a space must not be added (prevent ;; becoming ; ;)
+                if not ";\n" in splited_cmd_elt[1][:3]:
+                    new_outfile_path += "; "
+                else:
+                    new_outfile_path += ";"
 
             joined_cmd_elt = (
                 new_outfile_path
