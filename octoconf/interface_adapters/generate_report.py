@@ -63,15 +63,11 @@ class ReportGeneratorInterfaceAdapter(IReportGenerator):
             output_directory = Path(args.outdir) if args.outdir else Path.cwd()
             output_directory.mkdir(parents=True, exist_ok=True)
 
-            imagesdir = Path(args.imagesdir) if args.imagesdir else None
-            pdf_themesdir = Path(args.pdf_themesdir) if args.pdf_themesdir else None
-
             PDFGenerator().build_pdf(filename,
                                         output_directory,
                                         input_file.parent,
                                         header_file = input_file.name,
-                                        imagesdir = imagesdir,
-                                        pdf_themesdir = pdf_themesdir,
+                                        template_name = args.template_name,
                                         pdf_theme = args.pdf_theme)
             return 0
         except:
@@ -88,16 +84,13 @@ class ReportGeneratorInterfaceAdapter(IReportGenerator):
 
             if is_submodule_imported:
                 ini_file = Path(args.ini) if args.ini else None
-                imagesdir = Path(args.imagesdir) if args.imagesdir else None
-                pdf_themesdir = Path(args.pdf_themesdir) if args.pdf_themesdir else None
 
                 XLSGenerator().generate_xls(filename, results, output_directory)
                 PDFGenerator().generate_pdf(filename,
                                             results,
                                             output_directory,
                                             ini_file,
-                                            imagesdir,
-                                            pdf_themesdir,
+                                            args.template_name,
                                             args.pdf_theme)
             return 0
         except:

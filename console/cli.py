@@ -172,13 +172,10 @@ def parse_args() -> argparse.Namespace:
         "--ini", required=False, type=str, default=None, help="[required dependency: asciidoctor-pdf] path to the configuration file (.ini) containing the required information to initialize the report"
     )
     analyze_parser.add_argument(
-        "--imagesdir", required=False, type=str, default=None, help="[required dependency: asciidoctor-pdf] path to the folder containing the images to be used when generating the report"
+        "--template-name", required=False, type=str, default="generic", help="[required dependency: asciidoctor-pdf] template name corresponding to the folder name (template/custom/<template_name>/) (default=generic)"
     )
     analyze_parser.add_argument(
-        "--pdf-themesdir", required=False, type=str, default=None, help="[required dependency: asciidoctor-pdf] path to the folder containing the stylesheet and associated images to be used when generating the report "
-    )
-    analyze_parser.add_argument(
-        "--pdf-theme", required=False, type=str, default="custom-theme.yml", help="[required dependency: asciidoctor-pdf] name of the stylesheet in the 'pdf-themesdir' folder to use when generating the report"
+        "--pdf-theme", required=False, type=str, default="default-theme.yml", help="[required dependency: asciidoctor-pdf] name of the stylesheet in the 'pdf-themesdir' folder to use when generating the report (default=default-theme.yml)"
     )
 
     ## Baseline ##
@@ -252,13 +249,10 @@ def parse_args() -> argparse.Namespace:
         "-o", "--outdir", required=False, type=str, default=None, help="output directory"
     )
     report_parser.add_argument(
-        "--imagesdir", required=False, type=str, default=None, help="[required dependency: asciidoctor-pdf] path to the folder containing the images to be used when generating the report"
+        "--template-name", required=False, type=str, default="generic", help="[required dependency: asciidoctor-pdf] template name corresponding to the folder name (template/custom/<template_name>/) (default=generic)"
     )
     report_parser.add_argument(
-        "--pdf-themesdir", required=False, type=str, default=None, help="[required dependency: asciidoctor-pdf] path to the folder containing the stylesheet and associated images to be used when generating the report "
-    )
-    report_parser.add_argument(
-        "--pdf-theme", required=False, type=str, default="custom-theme.yml", help="[required dependency: asciidoctor-pdf] name of the stylesheet in the 'pdf-themesdir' folder to use when generating the report"
+        "--pdf-theme", required=False, type=str, default="default-theme.yml", help="[required dependency: asciidoctor-pdf] name of the stylesheet in the 'pdf-themesdir' folder to use when generating the report (default=default-theme.yml)"
     )
 
     ## Config ##
