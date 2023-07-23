@@ -126,13 +126,19 @@ confidentiality_level = Confidential
 Analyze of the results:
 
 ```bash
-python console/cli.py analyze -b ./debian-based.yml -a [...].zip --ini info.ini
+python console/cli.py analyze -b ./debian-based.yml -a [...].zip -o "`pwd`/reports/" --ini info.ini
 ```
 
 In order to use a custom theme with your own images, the following command can be used:
 
 ```bash
-python console/cli.py analyze -b ./debian-based.yml -a [...].zip --ini info.ini --imagesdir /path/to/imagesdir --pdf-themesdir /path/to/themesdir --pdf-theme custom-theme.yml
+python console/cli.py analyze -b ./debian-based.yml -a [...].zip -o "`pwd`/reports/" --ini info.ini --template-name <my_template_name> --pdf-theme <my_theme.yml>
+```
+
+In order to re-generate the PDF report, the following command can be used:
+
+```bash
+python console/cli.py report -i "`pwd`/reports/build/adoc/header.adoc" -o "`pwd`/reports/" --template-name <my_template_name> --pdf-theme <my_theme.yml>
 ```
 
 ## Disclaimer
