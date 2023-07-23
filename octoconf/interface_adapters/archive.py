@@ -58,12 +58,4 @@ class ArchiveInterfaceAdapter(IArchive):
         except:
             pass
 
-        for file in path.glob("**/*.txt"):
-            if "10_octoconf_checks" in str(file).lower():
-                path = file.parent
-                break
-
-        else:
-            return
-
-        return ic(path)
+        return ic(path / "10_octoconf_checks")
