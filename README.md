@@ -49,7 +49,7 @@ optional arguments:
 - Python 3.8+
 - pip
 - Asciidoc:
-  - [Asciidoctor](https://docs.asciidoctor.org/asciidoctor/latest/install/) processor: `asciidoctor-pdf`
+  - [Asciidoctor](https://docs.asciidoctor.org/asciidoctor/latest/install/) processor: [asciidoctor-pdf](https://docs.asciidoctor.org/pdf-converter/latest/install/)
   - [ruby-rouge](https://docs.asciidoctor.org/asciidoctor/latest/syntax-highlighting/rouge/)
 
 ## Documentation
