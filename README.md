@@ -120,7 +120,7 @@ authors_list_email = Charles.Duchemin@guide-duchemin.fr; Gérard.Duchemin@guide-
 
 audited_asset = canning-worker1.tricatel.lan
 
-confidentiality_level = Confidential
+classification_level = Confidential
 ```
 
 Analyze of the results:
