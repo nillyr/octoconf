@@ -142,6 +142,9 @@ msgstr "Project manager email address"
 msgid "init_user_confirmation"
 msgstr "Do you confirm the provided information?"
 
+msgid "auditor_company_name"
+msgstr "Name of the company carrying out the audit"
+
 msgid "author"
 msgstr "Author"
 

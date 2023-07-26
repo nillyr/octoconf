@@ -142,6 +142,9 @@ msgstr "Adresse email du chef de projet"
 msgid "init_user_confirmation"
 msgstr "Confirmez-vous les informations saisies ?"
 
+msgid "auditor_company_name"
+msgstr "Nom de l'entreprise réalisant l'audit"
+
 msgid "author"
 msgstr "Auteur"
 
