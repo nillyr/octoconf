@@ -102,6 +102,10 @@ python console/cli.py baseline generate_script -p linux -b ./debian-based.yml -u
 python console/cli.py analyze -b ./debian-based.yml -a [...].zip
 ```
 
+| :warning: Warning |
+|:-------------------------------------------------------------|
+| If you need to use Microsoft Excel to open the XLSX file, you will need to use this [conversion script](https://gitlab.internal.lan/octo-project/octokonverter/-/blob/main/scripts/octoconf_xlsx_to_ms_excel.py) ([GitHub link](https://github.com/nillyr/octokonverter/blob/main/scripts/octoconf_xlsx_to_ms_excel.py)) |
+
 When using [octowriter](https://gitlab.internal.lan/octo-project/octowriter) ([GitHub link](https://github.com/nillyr/octowriter)) submodule, a `.ini` file can be use to init the PDF report.
 
 Create the following file with your own values:
