@@ -102,12 +102,6 @@ python console/cli.py baseline generate_script -p linux -b ./debian-based.yml -u
 python console/cli.py analyze -b ./debian-based.yml -a [...].zip
 ```
 
-| :warning: Warning |
-|:-------------------------------------------------------------|
-| If you need to use Microsoft Excel to open the XLSX file, you will need to use this [conversion script](https://gitlab.internal.lan/octo-project/octokonverter/-/blob/main/scripts/octoconf_xlsx_to_ms_excel.py) ([GitHub link](https://github.com/nillyr/octokonverter/blob/main/scripts/octoconf_xlsx_to_ms_excel.py)). Otherwise, the following errors could be raised: |
-| ![excel-err1](resources/non-excel-open-on-ms-excel.png) |
-| ![excel-err2](resources/non-excel-open-on-ms-excel-2.png) |
-
 When using [octowriter](https://gitlab.internal.lan/octo-project/octowriter) ([GitHub link](https://github.com/nillyr/octowriter)) submodule, a `.ini` file can be use to init the PDF report.
 
 Create the following file with your own values:
@@ -148,6 +142,15 @@ In order to re-generate the PDF report, the following command can be used:
 ```bash
 python console/cli.py report -i "`pwd`/reports/build/adoc/header.adoc" -o "`pwd`/reports/" --template-name <my_template_name> --pdf-theme <my_theme.yml>
 ```
+
+## Troubleshooting
+
+### Microsoft Excel
+
+If you got the following errors when opening the `.xlsx` file, you first need to use this [conversion script](https://gitlab.internal.lan/octo-project/octokonverter/-/blob/main/scripts/octoconf_xlsx_to_ms_excel.py) ([GitHub link](https://github.com/nillyr/octokonverter/blob/main/scripts/octoconf_xlsx_to_ms_excel.py))
+
+![excel-err1](resources/non-excel-open-on-ms-excel.png)
+![excel-err2](resources/non-excel-open-on-ms-excel-2.png)
 
 ## Disclaimer
 
