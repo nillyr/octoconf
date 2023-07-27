@@ -104,15 +104,9 @@ python console/cli.py analyze -b ./debian-based.yml -a [...].zip
 
 | :warning: Warning |
 |:-------------------------------------------------------------|
-<<<<<<< HEAD
 | If you need to use Microsoft Excel to open the XLSX file, you will need to use this [conversion script](https://gitlab.internal.lan/octo-project/octokonverter/-/blob/main/scripts/octoconf_xlsx_to_ms_excel.py) ([GitHub link](https://github.com/nillyr/octokonverter/blob/main/scripts/octoconf_xlsx_to_ms_excel.py)). Otherwise, the following errors could be raised. |
 | ![excel-err1](resources/non-excel-open-on-ms-excel.png) |
 | ![excel-err2](resources/non-excel-open-on-ms-excel-2.png) |
-=======
-| If you need to use Microsoft Excel to open the XLSX file, you will need to use this [conversion script](https://gitlab.internal.lan/octo-project/octokonverter/-/blob/main/scripts/octoconf_xlsx_to_ms_excel.py) ([GitHub link](https://github.com/nillyr/octokonverter/blob/main/scripts/octoconf_xlsx_to_ms_excel.py)). Otherwise, the following errors could be raised:
-![excel-err1](resources/non-excel-open-on-ms-excel.png)
-![excel-err2](resources/non-excel-open-on-ms-excel-2.png) |
->>>>>>> main
 
 When using [octowriter](https://gitlab.internal.lan/octo-project/octowriter) ([GitHub link](https://github.com/nillyr/octowriter)) submodule, a `.ini` file can be use to init the PDF report.
 
