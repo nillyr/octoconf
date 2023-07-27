@@ -2,7 +2,7 @@
 # @license https://opensource.org/licenses/GPL-3.0 GNU GPLv3
 # @link https://gitlab.internal.lan/octo-project/octoconf
 # @link https://github.com/nillyr/octoconf
-# @since 1.0.0b
+# @since 0.1.0
 
 from enum import Enum
 
