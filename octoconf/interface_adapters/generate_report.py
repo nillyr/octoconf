@@ -85,7 +85,7 @@ class ReportGeneratorInterfaceAdapter(IReportGenerator):
             if is_submodule_imported:
                 ini_file = Path(args.ini) if args.ini else None
 
-                XLSGenerator().generate_xls(filename, results, output_directory)
+                XLSGenerator().generate_xls(filename, results, output_directory, ini_file)
                 PDFGenerator().generate_pdf(filename,
                                             results,
                                             output_directory,

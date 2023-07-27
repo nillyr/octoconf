@@ -121,6 +121,9 @@ msgstr "Compliance report"
 msgid "audited_asset"
 msgstr "Name of audited asset"
 
+msgid "asset"
+msgstr "Asset"
+
 msgid "auditee"
 msgstr "Auditee"
 

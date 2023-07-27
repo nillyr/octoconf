@@ -121,6 +121,9 @@ msgstr "Rapport de conformité"
 msgid "audited_asset"
 msgstr "Nom de l'actif audité"
 
+msgid "asset"
+msgstr "Actif"
+
 msgid "auditee"
 msgstr "Audité"
 
