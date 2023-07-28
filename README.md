@@ -130,7 +130,7 @@ auditor_company_name = Guide Duchemin
 Analyze of the results:
 
 ```bash
-python console/cli.py analyze -b /path/to/baseline.yml -a [...].zip -o "`pwd`/reports/" --ini info.ini
+python console/cli.py analyze -b /path/to/baseline.yml -a [...].zip -o "`pwd`/reports/" --ini /path/to/ini_file.ini
 ```
 
 In order to use a custom theme with your own images, the following command can be used:
