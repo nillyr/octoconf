@@ -10,18 +10,19 @@
   <img src="https://img.shields.io/badge/platform-Linux%2FmacOS%2FWindows-blue.svg">
   <img src="https://img.shields.io/badge/gitmoji-%20😜%20😍-FFDD67.svg">
   <img src="https://img.shields.io/badge/Changelog-gitmoji-brightgreen.svg">
-  <a href="https://twitter.com/n1llyr">
-    <img alt="Twitter: n1llyr" src="https://img.shields.io/twitter/follow/n1llyr.svg?style=social" target="_blank" />
-  </a>
 </p>
 
 Tool dedicated to the realization of configuration audits of various assets.
 
 | :information_source: Information |
-|:-------------------------------------------------------------|
+|:-----------------------------------------------------------|
 | This repository is mirrored from a private GitLab instance |
 
-```
+| :warning: Warning |
+|:--------------------------------------------------------|
+| Read the [disclaimer](#disclaimer) carefully before use |
+
+```text
         ,'""`.       octoconf 2.0.0-beta
        / _  _ \
        |(@)(@)|      Tool for semi-automatic verification
@@ -46,10 +47,11 @@ optional arguments:
 
 ## Prerequisites
 
-- Python 3.8+
-- pip
+- Python 3.8+;
+- pip;
 - Asciidoc:
-  - [Asciidoctor](https://docs.asciidoctor.org/asciidoctor/latest/install/) processor: [asciidoctor-pdf](https://docs.asciidoctor.org/pdf-converter/latest/install/)
+  - [Asciidoctor](https://docs.asciidoctor.org/asciidoctor/latest/install/)
+  - [asciidoctor-pdf](https://docs.asciidoctor.org/pdf-converter/latest/install/)
   - [ruby-rouge](https://docs.asciidoctor.org/asciidoctor/latest/syntax-highlighting/rouge/)
 
 ## Documentation
@@ -74,13 +76,13 @@ bash update_gitmodules_url_for_github.sh
 git submodule update --init --recursive
 ```
 
-- Create a virtual environment and install requirements
+- Create a virtual environment and install requirements:
 
 ```bash
 bash setup.sh
 ```
 
-- Active the virtual environment
+- Active the virtual environment:
 
 ```bash
 source venv/bin/activate
@@ -90,16 +92,16 @@ source venv/bin/activate
 
 ```bash
 # Generate a collection script
-python console/cli.py baseline generate_script -p linux -b ./debian-based.yml -o audit-debian.sh
+python console/cli.py baseline generate_script -p linux -b /path/to/baseline.yml -o /path/to/output_script.sh
 # Generate a collection script with utils functions included
-python console/cli.py baseline generate_script -p linux -b ./debian-based.yml -u ./utils.sh -o audit-debian.sh
+python console/cli.py baseline generate_script -p linux -b /path/to/baseline.yml -u /path/to/utils_script.sh -o /path/to/output_script.sh
 ```
 
 - Analyze of the results:
 
 ```bash
 # Retrieve audit evidence and then analyze
-python console/cli.py analyze -b ./debian-based.yml -a [...].zip
+python console/cli.py analyze -b /path/to/baseline.yml -a [...].zip
 ```
 
 When using [octowriter](https://gitlab.internal.lan/octo-project/octowriter) ([GitHub link](https://github.com/nillyr/octowriter)) submodule, a `.ini` file can be use to init the PDF report.
@@ -128,36 +130,51 @@ auditor_company_name = Guide Duchemin
 Analyze of the results:
 
 ```bash
-python console/cli.py analyze -b ./debian-based.yml -a [...].zip -o "`pwd`/reports/" --ini info.ini
+python console/cli.py analyze -b /path/to/baseline.yml -a [...].zip -o "`pwd`/reports/" --ini info.ini
 ```
 
 In order to use a custom theme with your own images, the following command can be used:
 
 ```bash
-python console/cli.py analyze -b ./debian-based.yml -a [...].zip -o "`pwd`/reports/" --ini info.ini --template-name <my_template_name> --pdf-theme <my_theme.yml>
+python console/cli.py analyze -b /path/to/baseline.yml -a [...].zip -o "`pwd`/reports/" --ini /path/to/ini_file.ini --template-name template_name --pdf-theme theme_name.yml
 ```
 
 In order to re-generate the PDF report, the following command can be used:
 
 ```bash
-python console/cli.py report -i "`pwd`/reports/build/adoc/header.adoc" -o "`pwd`/reports/" --template-name <my_template_name> --pdf-theme <my_theme.yml>
+python console/cli.py report -i "`pwd`/reports/build/adoc/header.adoc" -o "`pwd`/reports/" --template-name template_name --pdf-theme theme_name.yml
 ```
+
+| :bulb: Tips |
+|:-----------------------------------------------------------|
+| If you only have one theme, name the file `default-theme.yml` and you will not have to add this parameter any more |
 
 ## Troubleshooting
 
+### DeepL
+
+Your API key must be configured in your home directory (`$HOME/.config/octoconf/octoconf.ini`). You can do it manually or with the following command:
+
+```bash
+python console/cli.py config edit -s translator -o deepl_api_key -v your_api_key
+```
+
+See [Where can I find my Authentication Key?](https://support.deepl.com/hc/en-us/articles/360020695820-Authentication-Key).
+
 ### Microsoft Excel
 
-If you got the following errors when opening the `.xlsx` file, you first need to use this [conversion script](https://gitlab.internal.lan/octo-project/octokonverter/-/blob/main/scripts/octoconf_xlsx_to_ms_excel.py) ([GitHub link](https://github.com/nillyr/octokonverter/blob/main/scripts/octoconf_xlsx_to_ms_excel.py))
+If you got the following errors when opening the `*.xlsx` file, you need either to use `*-ms-excel-compatible.xlsx` file or use this [conversion script](https://gitlab.internal.lan/octo-project/octokonverter/-/blob/main/scripts/octoconf_xlsx_to_ms_excel.py) ([GitHub link](https://github.com/nillyr/octokonverter/blob/main/scripts/octoconf_xlsx_to_ms_excel.py)).
 
 ![excel-err1](resources/non-excel-open-on-ms-excel.png)
 ![excel-err2](resources/non-excel-open-on-ms-excel-2.png)
 
 ## Disclaimer
 
-- This is not a turn key tool, read the documentation for more information
-- This tool does not offer any guarantee
-- The authors of this tool cannot be held responsible for the effects caused by the executed commands
-- It is highly recommended to risk assess your commands in a test environment before using them in production
+- This is not a turn key tool, read the documentation for more information;
+- This tool does not offer any guarantee;
+- The authors of this tool cannot be held responsible for the effects caused by the executed commands;
+- It is highly recommended to risk assess your commands in a test environment before using them in production;
+- It is highly recommended that the risk of service degradation be graded before any use on a system in production.
 
 ## Maintainer
 
