@@ -153,7 +153,7 @@ python console/cli.py report -i "`pwd`/reports/build/adoc/header.adoc" -o "`pwd`
 
 ### DeepL
 
-Your API key must be configured in your home directory (`$HOME/.config/octoconf/octoconf.ini`). You can do it manually or with the following command:
+Your API key must be configured. You can do it manually (`$HOME/.config/octoconf/octoconf.ini` & `%localappdata%\octoconf\octoconf.ini`) or with the following command:
 
 ```bash
 python console/cli.py config edit -s translator -o deepl_api_key -v your_api_key
