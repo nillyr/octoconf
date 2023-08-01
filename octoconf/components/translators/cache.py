@@ -5,7 +5,9 @@
 # @since 0.1.0
 
 import json
+from os import getenv
 from pathlib import Path
+import platform
 
 
 class TranslatorCache:
@@ -25,7 +27,10 @@ class TranslatorCache:
         return cls._instance
 
     def load_cache(self, source_lang: str, target_lang: str) -> None:
-        path = Path.home() / ".cache" / "octoconf"
+        if platform.system() == "Windows":
+            path = Path(getenv("LOCALAPPDATA") / "octoconf" / "cache")
+        else:
+            path = Path.home() / ".cache" / "octoconf"
         path.mkdir(parents=True, exist_ok=True)
 
         self._cache_filename = str(path / f"{source_lang}-{target_lang}.json")

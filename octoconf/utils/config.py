@@ -4,8 +4,10 @@
 # @link https://github.com/nillyr/octoconf
 # @since 0.1.0
 
-import sys
+from os import getenv
 from pathlib import Path
+import platform
+import sys
 
 import configparser
 
@@ -81,7 +83,11 @@ to_be_defined = F1992D
             cfg_file.write(content)
 
     def _load_configuration(self) -> None:
-        basedir = Path.home() / ".config" / "octoconf"
+        if platform.system() == "Windows":
+            basedir = Path(getenv("LOCALAPPDATA") / "octoconf")
+        else:
+            basedir = Path.home() / ".config" / "octoconf"
+
         cfg_file = Path(basedir / self._filename)
         self._absolute_configuration_filepath = str(cfg_file)
         if not cfg_file.is_file():
