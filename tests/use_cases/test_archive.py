@@ -14,12 +14,12 @@ from octoconf.interface_adapters.archive import ArchiveInterfaceAdapter
 
 @pytest.fixture
 def tar_gz_archive():
-    return "octoconf_tests/use_cases/archive/tryme.tar.gz"
+    return "tests/use_cases/archive/tryme.tar.gz"
 
 
 @pytest.fixture
 def zip_archive():
-    return "octoconf_tests/use_cases/archive/tryme.zip"
+    return "tests/use_cases/archive/tryme.zip"
 
 
 def test_extract_checks_files_only_from_nothing():
