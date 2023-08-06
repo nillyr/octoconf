@@ -19,7 +19,9 @@ from octoconf.interfaces.archive import IArchive
 from octoconf.interfaces.baseline import IBaseline
 from octoconf.interfaces.checker import IChecker
 from octoconf.interfaces.generate_report import IReportGenerator
-from octoconf.interfaces.generate_script.language_abstract_factory import ILanguageFactory
+from octoconf.interfaces.generate_script.language_abstract_factory import (
+    ILanguageFactory,
+)
 from octoconf.interfaces.translator import ITranslator
 from octoconf.interface_adapters.archive import ArchiveInterfaceAdapter
 from octoconf.interface_adapters.baseline import BaselineInterfaceAdapter
@@ -43,6 +45,7 @@ def print_status(status) -> int:
     else:
         print(f"[x] Error! Something went wrong.", file=sys.stderr)
         return status
+
 
 def default_parse_args(args):
     if args.version:
@@ -78,7 +81,7 @@ def parse_baseline_args(args):
             "baseline": args.baseline,
             "output": args.output,
             "platform": args.platform,
-            "utils": args.utils
+            "utils": args.utils,
         }
         print("[*] Launching the script generation...")
         status = GenerateScriptUseCase().execute(opts)
@@ -123,8 +126,8 @@ def parse_args() -> argparse.Namespace:
         description="""
         ,'""`.       octoconf {}
        / _  _ \\
-       |(@)(@)|      Tool for semi-automatic verification
-       )  __  (      of security configurations.
+       |(@)(@)|      Tool dedicated to the realization
+       )  __  (      of configuration audits.
       /,'))((`.\\
      (( ((  )) ))    /** @nillyr **/
    hh `\ `)(' /'
@@ -153,7 +156,8 @@ def parse_args() -> argparse.Namespace:
 
     ## Analyze ##
     analyze_parser = cmd.add_parser(
-        name="analyze", help="performs an analysis on an archive based on a security baseline"
+        name="analyze",
+        help="performs an analysis on an archive based on a security baseline",
     )
     analyze_parser.set_defaults(func=parse_analyze_args)
     analyze_parser.add_argument(
@@ -163,19 +167,39 @@ def parse_args() -> argparse.Namespace:
         "-b", "--baseline", required=True, type=str, help="security baseline to use"
     )
     analyze_parser.add_argument(
-        "-l", "--language", default=config.get_config("MISC", "language"), help="EN/FR (default=%s)" % (config.get_config("MISC", "language"))
+        "-l",
+        "--language",
+        default=config.get_config("MISC", "language"),
+        help="EN/FR (default=%s)" % (config.get_config("MISC", "language")),
     )
     analyze_parser.add_argument(
-        "-o", "--outdir", required=False, type=str, default=None, help="output directory"
+        "-o",
+        "--outdir",
+        required=False,
+        type=str,
+        default=None,
+        help="output directory",
     )
     analyze_parser.add_argument(
-        "--ini", required=False, type=str, default=None, help="[required dependency: asciidoctor-pdf] path to the configuration file (.ini) containing the required information to initialize the report"
+        "--ini",
+        required=False,
+        type=str,
+        default=None,
+        help="[required dependency: asciidoctor-pdf] path to the configuration file (.ini) containing the required information to initialize the report",
     )
     analyze_parser.add_argument(
-        "--template-name", required=False, type=str, default="generic", help="[required dependency: asciidoctor-pdf] template name corresponding to the folder name (template/custom/<template_name>/) (default=generic)"
+        "--template-name",
+        required=False,
+        type=str,
+        default="generic",
+        help="[required dependency: asciidoctor-pdf] template name corresponding to the folder name (template/custom/<template_name>/) (default=generic)",
     )
     analyze_parser.add_argument(
-        "--pdf-theme", required=False, type=str, default="default-theme.yml", help="[required dependency: asciidoctor-pdf] name of the stylesheet in the 'pdf-themesdir' folder to use when generating the report (default=default-theme.yml)"
+        "--pdf-theme",
+        required=False,
+        type=str,
+        default="default-theme.yml",
+        help="[required dependency: asciidoctor-pdf] name of the stylesheet in the 'pdf-themesdir' folder to use when generating the report (default=default-theme.yml)",
     )
 
     ## Baseline ##
@@ -206,7 +230,11 @@ def parse_args() -> argparse.Namespace:
         "-o", "--output", required=True, help="output file to write results"
     )
     gen_script_parser.add_argument(
-        "-u", "--utils", required=False, default=None, help="path to a file containing utils functions to be included in the generated script"
+        "-u",
+        "--utils",
+        required=False,
+        default=None,
+        help="path to a file containing utils functions to be included in the generated script",
     )
 
     translate_parser = baselines_commands.add_parser(
@@ -237,22 +265,41 @@ def parse_args() -> argparse.Namespace:
 
     ## Report ##
     report_parser = cmd.add_parser(
-        name="report", help="performs the recompilation of the report in PDF format from an adoc file"
+        name="report",
+        help="performs the recompilation of the report in PDF format from an adoc file",
     )
     report_parser.set_defaults(func=parse_report_args)
 
-    report_parser.add_argument("-i", "--input", required=True, help="Asciidoc (.adoc) report file")
     report_parser.add_argument(
-        "-l", "--language", default=config.get_config("MISC", "language"), help="EN/FR (default=%s)" % (config.get_config("MISC", "language"))
+        "-i", "--input", required=True, help="Asciidoc (.adoc) report file"
     )
     report_parser.add_argument(
-        "-o", "--outdir", required=False, type=str, default=None, help="output directory"
+        "-l",
+        "--language",
+        default=config.get_config("MISC", "language"),
+        help="EN/FR (default=%s)" % (config.get_config("MISC", "language")),
     )
     report_parser.add_argument(
-        "--template-name", required=False, type=str, default="generic", help="[required dependency: asciidoctor-pdf] template name corresponding to the folder name (template/custom/<template_name>/) (default=generic)"
+        "-o",
+        "--outdir",
+        required=False,
+        type=str,
+        default=None,
+        help="output directory",
     )
     report_parser.add_argument(
-        "--pdf-theme", required=False, type=str, default="default-theme.yml", help="[required dependency: asciidoctor-pdf] name of the stylesheet in the 'pdf-themesdir' folder to use when generating the report (default=default-theme.yml)"
+        "--template-name",
+        required=False,
+        type=str,
+        default="generic",
+        help="[required dependency: asciidoctor-pdf] template name corresponding to the folder name (template/custom/<template_name>/) (default=generic)",
+    )
+    report_parser.add_argument(
+        "--pdf-theme",
+        required=False,
+        type=str,
+        default="default-theme.yml",
+        help="[required dependency: asciidoctor-pdf] name of the stylesheet in the 'pdf-themesdir' folder to use when generating the report (default=default-theme.yml)",
     )
 
     ## Config ##
