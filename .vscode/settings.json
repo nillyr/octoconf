@@ -4,7 +4,6 @@
     "editor.wordWrap": "wordWrapColumn",
     "files.eol": "\n",
     "files.insertFinalNewline": true,
-    "python.formatting.provider": "black",
     "python.pythonPath": "venv/bin/python",
     "python.testing.pytestArgs": [],
     "python.testing.unittestEnabled": false,
@@ -28,5 +27,9 @@
         "titleBar.inactiveBackground": "#21573299",
         "titleBar.inactiveForeground": "#e7e7e799"
     },
-    "peacock.color": "#215732"
+    "peacock.color": "#215732",
+    "[python]": {
+        "editor.defaultFormatter": "ms-python.black-formatter",
+        "editor.formatOnSave": true
+      }
 }
