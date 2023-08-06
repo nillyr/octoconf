@@ -2,8 +2,78 @@
 requires = ["setuptools>=42.0", "wheel"]
 build-backend = "setuptools.build_meta"
 
+[project]
+name = "octoconf"
+authors = [
+    {name = "Nicolas GRELLETY", email = "ngy.cs@protonmail.com"},
+]
+description = "Tool dedicated to the realization of configuration audits."
+requires-python = ">=3.8"
+keywords = ["security-audit", "security-hardening", "security-tool", "compliance-check"]
+license = {text = "GPLv3+"}
+classifiers = [
+    "Development Status :: 4 - Beta",
+    "Intended Audience :: System Administrators",
+    "Natural Language :: English",
+    "Operating System :: OS Independent",
+    "Programming Language :: Python",
+    "Programming Language :: Python :: 3.8",
+    "Programming Language :: Python :: 3.9",
+    "Programming Language :: Python :: 3.10",
+    "Programming Language :: Python :: 3.11"
+]
+dependencies = [
+    "chardet>=4.0.0",
+    "configparser>=5.2.0",
+    "icecream>=2.1.1",
+    "Inject>=4.3.1",
+    "json2xml>=3.14.0",
+    "openpyxl>=3.0.7",
+    "polib>=1.1.1",
+    "pydantic>=1.8.2",
+    "PyYAML>=6.0",
+    "requests>=2.31.0",
+    "sty>=1.0.0rc1",
+    "XlsxWriter>=3.0.1"
+]
+dynamic = ["readme", "version"]
+
+[project.optional-dependencies]
+dev = [
+    "black>=21.7b0",
+    "coverage>=6.0.1",
+    "mock>=4.0.3",
+    "pytest>=6.2.5",
+    "tox>=3.24.5",
+    "wheel>=0.38.1"
+]
+
+[project.urls]
+Homepage = "https://github.com/nillyr/octoconf"
+Documentation = "https://github.com/nillyr/octoconf"
+Source = "https://github.com/nillyr/octoconf"
+
+[project.scripts]
+octoconf = "console.cli:cli"
+
 [tool.pytest.ini_options]
 addopts = "--cov=slapping"
-testpaths = [
-    "octoconf_tests",
+testpaths = ["tests"]
+
+[tool.setuptools]
+license-files = ["LICENSE"]
+include-package-data = true
+
+[tool.setuptools.dynamic]
+dependencies = {file = "requirements.txt"}
+optional-dependencies.dev = {file = "requirements-dev.txt"}
+readme = {file = "README.md", content-type = "text/markdown"}
+version = {attr = "octoconf.__version__"}
+
+[tool.setuptools.packages.find]
+where = ["."]
+
+[tool.setuptools.package-data]
+octoconf = [
+    "*.adoc", "*.png", "*.po", "*.svg", "*.yaml", "*.yml"
 ]

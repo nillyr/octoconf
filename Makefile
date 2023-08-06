@@ -1,9 +1,9 @@
 BUILD_DIR := build
 COV_DIR   := htmlcov
 DIST_DIR  := dist
-TEST_DIR  := octoconf_tests/.ignore/pytest
+TEST_DIR  := tests/.ignore/pytest
 
-default: clean test wheel sdist
+default: clean test build
 
 clean:
 	$(RM) -r $(BUILD_DIR)
@@ -15,15 +15,12 @@ clean:
 	find . -name "__pycache__" -exec rm -rf {} +
 	find . -name ".pytest_cache" -exec rm -rf {} +
 
-wheel:
+build:
 	@test ! -d $(DIST_DIR) || $(RM) -r $(DIST_DIR)
-	python setup.py bdist_wheel
-
-sdist:
-	python setup.py sdist
+	python -m build
 
 test:
-	pytest -v
+	tox -c tox.ini -e py3
 
 coverage:
 	coverage run -m pytest -v -W error::UserWarning
