@@ -5,9 +5,14 @@
 # @since 0.1.0
 
 import json
+import logging
 from os import getenv
 from pathlib import Path
 import platform
+
+from octoconf.utils.logger import *
+
+logger = logging.getLogger(__name__)
 
 
 class TranslatorCache:
@@ -34,6 +39,7 @@ class TranslatorCache:
         path.mkdir(parents=True, exist_ok=True)
 
         self._cache_filename = str(path / f"{source_lang}-{target_lang}.json")
+        logger.debug(f"Loading cache: {self._cache_filename}")
         with open(self._cache_filename, "w+") as cache_file:
             try:
                 self._cache = json.load(cache_file)
@@ -41,14 +47,17 @@ class TranslatorCache:
                 pass
 
     def write_cache_to_disk(self) -> None:
+        logger.debug(f"Updating cache: {self._cache_filename}")
         with open(self._cache_filename, "w+") as cache_file:
             json.dump(self._cache, cache_file)
 
     def populate_cache(self, key: str, value: str) -> None:
+        logger.debug(f"Adding in cache: key = {key}, value = {value}")
         if key not in self._cache.keys():
             self._cache[key] = value
 
     def retrieve_from_cache(self, key: str) -> str:
+        logger.debug(f"Get from cache: key = {key}")
         if key in self._cache.keys():
             return self._cache[key]
 

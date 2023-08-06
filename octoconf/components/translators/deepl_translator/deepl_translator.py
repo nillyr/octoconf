@@ -4,18 +4,17 @@
 # @link https://github.com/nillyr/octoconf
 # @since 0.1.0
 
-# Standard imports
-import sys
+import logging
 
-# Third party imports
-from icecream import ic
 import requests
 
-# Local imports
 from . import config as deepl_config
 from .exceptions import DeepLError
 from octoconf.interfaces.translator import ITranslator
 import octoconf.utils.config as config
+from octoconf.utils.logger import *
+
+logger = logging.getLogger(__name__)
 
 
 class DeepL(ITranslator):
@@ -66,13 +65,13 @@ class DeepL(ITranslator):
         }
 
         try:
-            response = ic(requests.post(self._url, data=data))
+            response = requests.post(self._url, data=data)
         except Exception as _err:
-            print(f"Unmanaged Error: {_err}", file=sys.stderr)
+            logger.exception(f"Unmanaged Error: {_err}")
         if response.status_code != 200:
             raise DeepLError(response.status_code, response.json()["message"])
 
-        res = ic(response.json())
+        res = response.json()
         if not res:
             return ""
 

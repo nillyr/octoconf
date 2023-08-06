@@ -4,14 +4,17 @@
 # @link https://github.com/nillyr/octoconf
 # @since 0.1.0
 
+import logging
 from pathlib import Path
 
 import chardet
-from icecream import ic
 import inject
 
 from octoconf.interfaces.archive import IArchive
 from octoconf.interfaces.baseline import IBaseline
+from octoconf.utils.logger import *
+
+logger = logging.getLogger(__name__)
 
 
 class CheckArchiveUseCase:
@@ -25,6 +28,11 @@ class CheckArchiveUseCase:
         self._archive = archive
 
     def execute(self, baseline_path: str, archive_path: str) -> list:
+        logger.info(f"Running archive analysis use case")
+        logger.debug(
+            f"Running with the following arguments: archive = {archive_path}, baseline = {baseline_path}"
+        )
+
         baseline = self._adapter.load_baseline_from_file(Path(baseline_path))
         if baseline is None:
             return []
@@ -49,4 +57,4 @@ class CheckArchiveUseCase:
                         rule, raw.decode(encoding)
                     )
                 )
-        return ic(results)
+        return results

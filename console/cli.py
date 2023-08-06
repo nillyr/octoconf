@@ -8,6 +8,7 @@
 # coding: utf-8
 
 import argparse
+import logging
 import sys
 
 import inject
@@ -34,8 +35,10 @@ from octoconf.use_cases.check_output import CheckOutputUseCase
 from octoconf.use_cases.generate_report import GenerateReportUseCase
 from octoconf.use_cases.generate_script import GenerateScriptUseCase
 import octoconf.utils.config as config
-import octoconf.utils.debug as debug
 import octoconf.utils.global_values as global_values
+from octoconf.utils.logger import *
+
+logger = logging.getLogger(__name__)
 
 
 def print_status(status) -> int:
@@ -44,6 +47,7 @@ def print_status(status) -> int:
         return status
     else:
         print(f"[x] Error! Something went wrong.", file=sys.stderr)
+        print(f"[x] See log file: {str(get_log_file())}", file=sys.stderr)
         return status
 
 
@@ -54,11 +58,10 @@ def default_parse_args(args):
 
 
 def parse_analyze_args(args):
-    if args.debug:
-        debug.set_debug(True)
+    init_logging(args.loglevel)
 
     global_values.set_localize(args.language)
-    print("[*] Launching the archive analyis...")
+    print("[*] Launching the archive analysis...")
     results = CheckArchiveUseCase().execute(args.baseline, args.archive)
     results = CheckOutputUseCase().execute(results)
     status = GenerateReportUseCase().execute(results, args)
@@ -71,8 +74,7 @@ def parse_baseline_args(args):
       - Generate script: platform
       - Translate: target_lang
     """
-    if args.debug:
-        debug.set_debug(True)
+    init_logging(args.loglevel)
 
     _ = vars(args)
     if _.get("platform"):
@@ -102,8 +104,7 @@ def parse_baseline_args(args):
 
 
 def parse_report_args(args):
-    if args.debug:
-        debug.set_debug(True)
+    init_logging(args.loglevel)
 
     global_values.set_localize(args.language)
     print("[*] Launching report generation...")
@@ -143,11 +144,10 @@ def parse_args() -> argparse.Namespace:
         action="store_true",
     )
     p.add_argument(
-        "-d",
-        "--debug",
-        default=False,
-        help="debug output (verbose)",
-        action="store_true",
+        "--loglevel",
+        choices=["DEBUG", "INFO", "WARNING", "ERROR", "CRITICAL"],
+        default="INFO",
+        help="set the log level (default: INFO)",
     )
     p.set_defaults(func=default_parse_args)
 

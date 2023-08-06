@@ -4,7 +4,7 @@
 # @link https://github.com/nillyr/octoconf
 # @since 0.1.0
 
-import sys
+import logging
 
 from octoconf.interface_adapters.generate_script.unix_bash_script import (
     UnixBashScript,
@@ -15,6 +15,9 @@ from octoconf.interface_adapters.generate_script.windows_powershell_script impor
 from octoconf.interfaces.generate_script.language_abstract_factory import (
     ILanguageFactory,
 )
+from octoconf.utils.logger import *
+
+logger = logging.getLogger(__name__)
 
 
 class LanguageFactory(ILanguageFactory):
@@ -33,5 +36,5 @@ class LanguageFactory(ILanguageFactory):
                 f"Error: no language implemented for platform {platform}"
             )
         except NotImplementedError as _err:
-            print(_err, file=sys.stderr)
+            logger.exception(f"Error in language selection: {_err}")
         return None

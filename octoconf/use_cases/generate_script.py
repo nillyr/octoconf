@@ -3,15 +3,19 @@
 # @link https://gitlab.internal.lan/octo-project/octoconf
 # @link https://github.com/nillyr/octoconf
 # @since 0.1.0
+
+import logging
 from pathlib import Path
 
-from icecream import ic
 import inject
 
 from octoconf.interfaces.baseline import IBaseline
 from octoconf.interfaces.generate_script.language_abstract_factory import (
     ILanguageFactory,
 )
+from octoconf.utils.logger import *
+
+logger = logging.getLogger(__name__)
 
 
 class GenerateScriptUseCase:
@@ -27,7 +31,11 @@ class GenerateScriptUseCase:
         self._factory = factory
 
     def execute(self, args) -> int:
-        baseline_file_path, output_file, platform, utils = ic(args.values())
+        logger.info(f"Running script generation use case")
+        baseline_file_path, output_file, platform, utils = args.values()
+        logger.debug(
+            f"Running with the following arguments: baseline = {baseline_file_path}, output = {output_file}, platform = {platform}, utils = {utils}"
+        )
         utils_content = ""
 
         baseline = self._adapter.load_baseline_from_file(Path(baseline_file_path))
@@ -38,10 +46,13 @@ class GenerateScriptUseCase:
             if Path(utils).is_file():
                 try:
                     with open(utils, "r") as utils_file:
-                        utils_content = "# Import of util file" + self._newline(platform)
+                        utils_content = "# Import of util file" + self._newline(
+                            platform
+                        )
                         utils_content += utils_file.read()
                         utils_content += "# Enf of import" + self._newline(platform)
                 except:
+                    logger.exception("Unable to read util file")
                     return 1
 
         commands = self._adapter.get_commands(baseline)
@@ -55,4 +66,5 @@ class GenerateScriptUseCase:
                 [file.write(x) for x in content]
             return 0
         except:
+            logger.exception("Unable to save script")
             return 1

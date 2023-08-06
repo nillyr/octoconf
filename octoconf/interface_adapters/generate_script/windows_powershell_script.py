@@ -6,8 +6,6 @@
 
 import re
 
-from icecream import ic
-
 from octoconf.decorators.generate_script.powershell_decorator import PowershellDecorator
 from octoconf.interfaces.generate_script.windows_script import IWindowsScript
 
@@ -35,12 +33,16 @@ class WindowsPowershellScript(IWindowsScript):
                 if not check_cmd:
                     continue
                 path = checksdir + "\\" + output_file + IWindowsScript._newline
-                cmds.append(check_cmd + IWindowsScript._powershell_pattern + path + IWindowsScript._newline)
+                cmds.append(
+                    check_cmd
+                    + IWindowsScript._powershell_pattern
+                    + path
+                    + IWindowsScript._newline
+                )
         cmds.append(
-            'Write-Output "[+] Finished compliance checks."'
-            + IWindowsScript._newline
+            'Write-Output "[+] Finished compliance checks."' + IWindowsScript._newline
         )
-        return ic(cmds)
+        return cmds
 
     @PowershellDecorator.decorator
     def write_script(self, utils_content, content, callback):

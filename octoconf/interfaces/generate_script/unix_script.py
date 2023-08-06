@@ -8,8 +8,6 @@ from abc import ABCMeta, abstractmethod
 from pathlib import PurePosixPath
 import re
 
-from icecream import ic
-
 from octoconf.interface_adapters.redirector_regex.redirector_regex import (
     RedirectorRegex,
 )
@@ -74,4 +72,4 @@ class IUnixScript(metaclass=ABCMeta):
 
             cmd_elt[index] = redirectors[index - 1] + joined_cmd_elt
 
-        return ic("".join(cmd_elt))
+        return "".join(cmd_elt)

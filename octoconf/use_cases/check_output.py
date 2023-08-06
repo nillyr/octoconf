@@ -4,14 +4,17 @@
 # @link https://github.com/nillyr/octoconf
 # @since 0.1.0
 
+import logging
 from typing import List
 
-from icecream import ic
 import inject
 
 from octoconf.entities.rule import Rule
 from octoconf.interfaces.baseline import IBaseline
 from octoconf.interfaces.checker import IChecker
+from octoconf.utils.logger import *
+
+logger = logging.getLogger(__name__)
 
 
 class CheckOutputUseCase:
@@ -34,8 +37,9 @@ class CheckOutputUseCase:
         """
         Launch the verification of the results and send to the report generator use case to ease the manual processing by the user.
         """
+        logger.info(f"Running check output use case")
         for result in results:
             result.compliant = self._check_output(
                 result.output, result.expected, result.verification_type
             )
-        return ic(results)
+        return results

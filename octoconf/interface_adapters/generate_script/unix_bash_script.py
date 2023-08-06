@@ -6,8 +6,6 @@
 
 import re
 
-from icecream import ic
-
 from octoconf.decorators.generate_script.bash_decorator import BashDecorator
 from octoconf.interfaces.generate_script.unix_script import IUnixScript
 
@@ -35,12 +33,11 @@ class UnixBashScript(IUnixScript):
                 if not check_cmd:
                     continue
                 path = '"' + checksdir + '"/' + output_file + IUnixScript._newline
-                cmds.append(check_cmd + IUnixScript._pattern + path + IUnixScript._newline)
-        cmds.append(
-            'echo "[+] Finished compliance checks."'
-            + IUnixScript._newline
-        )
-        return ic(cmds)
+                cmds.append(
+                    check_cmd + IUnixScript._pattern + path + IUnixScript._newline
+                )
+        cmds.append('echo "[+] Finished compliance checks."' + IUnixScript._newline)
+        return cmds
 
     @BashDecorator.decorator
     def write_script(self, utils_content, content, callback):

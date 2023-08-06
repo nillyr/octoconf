@@ -4,13 +4,15 @@
 # @link https://github.com/nillyr/octoconf
 # @since 0.1.0
 
+import logging
 from pathlib import Path
 import tarfile
 import zipfile
 
-from icecream import ic
-
 from octoconf.interfaces.archive import IArchive
+from octoconf.utils.logger import *
+
+logger = logging.getLogger(__name__)
 
 
 class ArchiveInterfaceAdapter(IArchive):
@@ -41,6 +43,8 @@ class ArchiveInterfaceAdapter(IArchive):
         # where to extract files
         path = path.parent
 
+        logger.debug(f"Extracting archive {archive} into {path}")
+
         try:
             if tarfile.is_tarfile(archive):
                 tar = tarfile.open(archive)
@@ -56,6 +60,7 @@ class ArchiveInterfaceAdapter(IArchive):
             else:
                 pass
         except:
+            logger.exception("Unable to extract archive")
             pass
 
-        return ic(path / "10_octoconf_checks")
+        return path / "10_octoconf_checks"
