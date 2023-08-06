@@ -12,7 +12,7 @@
   <img src="https://img.shields.io/badge/Changelog-gitmoji-brightgreen.svg">
 </p>
 
-Tool dedicated to the realization of configuration audits of various assets.
+Tool dedicated to the realization of configuration audits.
 
 | :information_source: Information |
 |:-----------------------------------------------------------|
@@ -54,54 +54,38 @@ optional arguments:
   - [asciidoctor-pdf](https://docs.asciidoctor.org/pdf-converter/latest/install/)
   - [ruby-rouge](https://docs.asciidoctor.org/asciidoctor/latest/syntax-highlighting/rouge/)
 
-## Documentation
+## Installation
 
-- TODO
-
-## Quick usage
-
-- Clone this repo:
+For regular use, download the latest version from the release page and install it:
 
 ```bash
-# Cloning from GitHub
-
-## Clone without initializing submodules
-git clone git@github.com:nillyr/octoconf.git
-cd octoconf
-
-## Update submodules URL
-bash update_gitmodules_url_for_github.sh
-
-## Init and update submodules
-git submodule update --init --recursive
+pip install octoconf-*.whl
 ```
 
-- Create a virtual environment and install requirements:
+For development purposes, see [CONTRIBUTING](CONTRIBUTING.md).
 
-```bash
-bash setup.sh
-```
+## Usage
 
-- Active the virtual environment:
+### Baseline
 
-```bash
-source venv/bin/activate
-```
+#### Baseline translatation
 
-- Generation of the script from a baseline:
+`TODO`
+
+#### Script generation
 
 ```bash
 # Generate a collection script
-python console/cli.py baseline generate_script -p linux -b /path/to/baseline.yml -o /path/to/output_script.sh
+octoconf baseline generate_script -p linux -b /path/to/baseline.yml -o /path/to/output_script.sh
 # Generate a collection script with utils functions included
-python console/cli.py baseline generate_script -p linux -b /path/to/baseline.yml -u /path/to/utils_script.sh -o /path/to/output_script.sh
+octoconf baseline generate_script -p linux -b /path/to/baseline.yml -u /path/to/utils_script.sh -o /path/to/output_script.sh
 ```
 
-- Analyze of the results:
+### Analyze and Report
 
 ```bash
 # Retrieve audit evidence and then analyze
-python console/cli.py analyze -b /path/to/baseline.yml -a [...].zip
+octoconf analyze -b /path/to/baseline.yml -a [...].zip
 ```
 
 When using [octowriter](https://gitlab.internal.lan/octo-project/octowriter) ([GitHub link](https://github.com/nillyr/octowriter)) submodule, a `.ini` file can be use to init the PDF report.
@@ -130,24 +114,33 @@ auditor_company_name = Guide Duchemin
 Analyze of the results:
 
 ```bash
-python console/cli.py analyze -b /path/to/baseline.yml -a [...].zip -o "`pwd`/reports/" --ini /path/to/ini_file.ini
+octoconf analyze -b /path/to/baseline.yml -a [...].zip -o "`pwd`/reports/" --ini /path/to/ini_file.ini
 ```
 
 In order to use a custom theme with your own images, the following command can be used:
 
 ```bash
-python console/cli.py analyze -b /path/to/baseline.yml -a [...].zip -o "`pwd`/reports/" --ini /path/to/ini_file.ini --template-name template_name --pdf-theme theme_name.yml
+octoconf analyze -b /path/to/baseline.yml -a [...].zip -o "`pwd`/reports/" --ini /path/to/ini_file.ini --template-name template_name --pdf-theme theme_name.yml
 ```
 
 In order to re-generate the PDF report, the following command can be used:
 
 ```bash
-python console/cli.py report -i "`pwd`/reports/build/adoc/header.adoc" -o "`pwd`/reports/" --template-name template_name --pdf-theme theme_name.yml
+octoconf report -i "`pwd`/reports/build/adoc/header.adoc" -o "`pwd`/reports/" --template-name template_name --pdf-theme theme_name.yml
 ```
 
 | :bulb: Tips |
 |:-----------------------------------------------------------|
 | If you only have one theme, name the file `default-theme.yml` and you will not have to add this parameter any more |
+
+### Config
+
+```bash
+# Print your config
+octoconf config print
+# Edit settings
+octoconf config edit -s <section> -o <option> -v <value>
+```
 
 ## Troubleshooting
 
@@ -156,7 +149,7 @@ python console/cli.py report -i "`pwd`/reports/build/adoc/header.adoc" -o "`pwd`
 Your API key must be configured. You can do it manually (`$HOME/.config/octoconf/octoconf.ini` & `%localappdata%\octoconf\octoconf.ini`) or with the following command:
 
 ```bash
-python console/cli.py config edit -s translator -o deepl_api_key -v your_api_key
+octoconf config edit -s translator -o deepl_api_key -v your_api_key
 ```
 
 See [Where can I find my Authentication Key?](https://support.deepl.com/hc/en-us/articles/360020695820-Authentication-Key).
@@ -175,6 +168,10 @@ If you got the following errors when opening the `*.xlsx` file, you need either 
 - The authors of this tool cannot be held responsible for the effects caused by the executed commands;
 - It is highly recommended to risk assess your commands in a test environment before using them in production;
 - It is highly recommended that the risk of service degradation be graded before any use on a system in production.
+
+## CONTRIBUTING
+
+See [CONTRIBUTING](CONTRIBUTING.md).
 
 ## Maintainer
 
