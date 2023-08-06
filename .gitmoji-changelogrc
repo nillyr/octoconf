@@ -1,7 +1,7 @@
 {
     "project": {
         "name": "octoconf",
-        "description": "Tool for semi-automatic verification of security configurations.",
-        "version": "2.0.0-beta"
+        "description": "Tool dedicated to the realization of configuration audits.",
+        "version": "2.1.0-beta"
     }
 }
