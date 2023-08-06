@@ -33,16 +33,18 @@ Tool dedicated to the realization of configuration audits.
 
 
 positional arguments:
-  {analyze,audit,baseline,report} Available Commands
+  {analyze,baseline,report,config}
+                        Available Commands
     analyze             performs an analysis on an archive based on a security baseline
     baseline            performs the interaction with the security baselines
     report              performs the recompilation of the report in PDF format from an adoc file
     config              performs octoconf configuration management
 
-optional arguments:
+options:
   -h, --help            show this help message and exit
   --version             print version and exit
-  -d, --debug           debug output (verbose)
+  --loglevel {DEBUG,INFO,WARNING,ERROR,CRITICAL}
+                        set the log level (default: INFO)
 ```
 
 ## Prerequisites
