@@ -58,7 +58,7 @@ Source = "https://github.com/nillyr/octoconf"
 octoconf-cli = "console.cli:cli"
 
 [tool.bumpver]
-current_version = "2.2.0-beta"
+current_version = "2.3.0-beta"
 version_pattern = "MAJOR.MINOR.PATCH[-TAG]"
 commit_message = ":bookmark: bump version to {new_version}"
 tag_message = "{new_version}"
