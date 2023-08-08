@@ -3,7 +3,7 @@ requires = ["setuptools>=42.0", "wheel"]
 build-backend = "setuptools.build_meta"
 
 [project]
-name = "octoconf"
+name = "octoconf-cli"
 authors = [
     {name = "Nicolas GRELLETY", email = "ngy.cs@protonmail.com"},
 ]
@@ -15,6 +15,7 @@ classifiers = [
     "Development Status :: 4 - Beta",
     "Intended Audience :: System Administrators",
     "Natural Language :: English",
+    "Environment :: Console",
     "Operating System :: OS Independent",
     "Programming Language :: Python",
     "Programming Language :: Python :: 3.8",
@@ -40,6 +41,7 @@ dynamic = ["readme", "version"]
 [project.optional-dependencies]
 dev = [
     "black>=21.7b0",
+    "bumpver>=2023.1125",
     "coverage>=6.0.1",
     "mock>=4.0.3",
     "pytest>=6.2.5",
@@ -53,7 +55,23 @@ Documentation = "https://github.com/nillyr/octoconf"
 Source = "https://github.com/nillyr/octoconf"
 
 [project.scripts]
-octoconf = "console.cli:cli"
+octoconf-cli = "console.cli:cli"
+
+[tool.bumpver]
+current_version = "2.1.0-beta"
+version_pattern = "MAJOR.MINOR.PATCH[-TAG]"
+commit_message = ":bookmark: bump version to {new_version}"
+tag_message = "{new_version}"
+tag_scope = "default"
+post_commit_hook = "scripts/update_changelog.sh"
+commit = true
+tag = true
+push = true
+
+[tool.bumpver.file_patterns]
+"octoconf/__init__.py" = ['__version__ = "{version}"']
+".gitmoji-changelogrc" = ['"version": "{version}"']
+"README.md" = ["{version}"]
 
 [tool.pytest.ini_options]
 addopts = "--cov=slapping"
@@ -73,6 +91,6 @@ version = {attr = "octoconf.__version__"}
 where = ["."]
 
 [tool.setuptools.package-data]
-octoconf = [
+"*" = [
     "*.adoc", "*.png", "*.po", "*.svg", "*.yaml", "*.yml"
 ]

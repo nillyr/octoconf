@@ -59,3 +59,9 @@ pytest -v
 # prerequisites: python3-build
 make build
 ```
+
+### Upload to PyPI
+
+```bash
+twine upload dist/*
+```

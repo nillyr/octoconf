@@ -23,7 +23,7 @@ Tool dedicated to the realization of configuration audits.
 | Read the [disclaimer](#disclaimer) carefully before use |
 
 ```text
-        ,'""`.       octoconf 2.0.0-beta
+        ,'""`.       octoconf 2.1.0-beta
        / _  _ \
        |(@)(@)|      Tool for semi-automatic verification
        )  __  (      of security configurations.
@@ -58,7 +58,7 @@ options:
 
 ## Installation
 
-For regular use, download the latest version from the release page and install it:
+For regular use, download the latest version from the release page or from [PyPI](https://pypi.org/project/octoconf-cli/) and install it:
 
 ```bash
 pip install octoconf-*.whl
@@ -78,16 +78,16 @@ For development purposes, see [CONTRIBUTING](CONTRIBUTING.md).
 
 ```bash
 # Generate a collection script
-octoconf baseline generate_script -p linux -b /path/to/baseline.yml -o /path/to/output_script.sh
+octoconf-cli baseline generate_script -p linux -b /path/to/baseline.yml -o /path/to/output_script.sh
 # Generate a collection script with utils functions included
-octoconf baseline generate_script -p linux -b /path/to/baseline.yml -u /path/to/utils_script.sh -o /path/to/output_script.sh
+octoconf-cli baseline generate_script -p linux -b /path/to/baseline.yml -u /path/to/utils_script.sh -o /path/to/output_script.sh
 ```
 
 ### Analyze and Report
 
 ```bash
 # Retrieve audit evidence and then analyze
-octoconf analyze -b /path/to/baseline.yml -a [...].zip
+octoconf-cli analyze -b /path/to/baseline.yml -a [...].zip
 ```
 
 When using [octowriter](https://gitlab.internal.lan/octo-project/octowriter) ([GitHub link](https://github.com/nillyr/octowriter)) submodule, a `.ini` file can be use to init the PDF report.
@@ -116,19 +116,19 @@ auditor_company_name = Guide Duchemin
 Analyze of the results:
 
 ```bash
-octoconf analyze -b /path/to/baseline.yml -a [...].zip -o "`pwd`/reports/" --ini /path/to/ini_file.ini
+octoconf-cli analyze -b /path/to/baseline.yml -a [...].zip -o "`pwd`/reports/" --ini /path/to/ini_file.ini
 ```
 
 In order to use a custom theme with your own images, the following command can be used:
 
 ```bash
-octoconf analyze -b /path/to/baseline.yml -a [...].zip -o "`pwd`/reports/" --ini /path/to/ini_file.ini --template-name template_name --pdf-theme theme_name.yml
+octoconf-cli analyze -b /path/to/baseline.yml -a [...].zip -o "`pwd`/reports/" --ini /path/to/ini_file.ini --template-name template_name --pdf-theme theme_name.yml
 ```
 
 In order to re-generate the PDF report, the following command can be used:
 
 ```bash
-octoconf report -i "`pwd`/reports/build/adoc/header.adoc" -o "`pwd`/reports/" --template-name template_name --pdf-theme theme_name.yml
+octoconf-cli report -i "`pwd`/reports/build/adoc/header.adoc" -o "`pwd`/reports/" --template-name template_name --pdf-theme theme_name.yml
 ```
 
 | :bulb: Tips |
@@ -139,9 +139,9 @@ octoconf report -i "`pwd`/reports/build/adoc/header.adoc" -o "`pwd`/reports/" --
 
 ```bash
 # Print your config
-octoconf config print
+octoconf-cli config print
 # Edit settings
-octoconf config edit -s <section> -o <option> -v <value>
+octoconf-cli config edit -s <section> -o <option> -v <value>
 ```
 
 ## Troubleshooting
@@ -151,7 +151,7 @@ octoconf config edit -s <section> -o <option> -v <value>
 Your API key must be configured. You can do it manually (`$HOME/.config/octoconf/octoconf.ini` & `%localappdata%\octoconf\octoconf.ini`) or with the following command:
 
 ```bash
-octoconf config edit -s translator -o deepl_api_key -v your_api_key
+octoconf-cli config edit -s translator -o deepl_api_key -v your_api_key
 ```
 
 See [Where can I find my Authentication Key?](https://support.deepl.com/hc/en-us/articles/360020695820-Authentication-Key).
