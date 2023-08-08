@@ -8,6 +8,7 @@ import json
 import logging
 from pathlib import Path
 import re
+import shutil
 from typing import List
 
 import yaml
@@ -20,6 +21,8 @@ from octoconf.entities.baseline import Baseline
 from octoconf.entities.rule import Rule
 from octoconf.interfaces.baseline import IBaseline
 from octoconf.utils.logger import *
+
+from octoconf.utils.timestamp import timestamp
 
 logger = logging.getLogger(__name__)
 
@@ -112,6 +115,19 @@ class BaselineInterfaceAdapter(IBaseline):
                         continue
 
         return available_baselines
+
+    def export_custom_baselines(self) -> str:
+        try:
+            archive_name = Path.cwd() / f"octoconf_baselines_export_{timestamp()}"
+            root_dir = Path(__file__).resolve().parent.parent.parent / "baselines"
+            base_dir = "custom"
+
+            return shutil.make_archive(
+                archive_name, "zip", root_dir=str(root_dir), base_dir=base_dir
+            )
+        except:
+            logger.exception("Unable to export custom baselines")
+            return None
 
     def map_results_in_baseline(
         self, rules: List[Rule], baseline: Baseline

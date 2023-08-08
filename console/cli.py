@@ -32,6 +32,7 @@ from octoconf.interface_adapters.generate_script.language_factory import Languag
 from octoconf.use_cases.baseline_translator import BaselineTranslatorUseCase
 from octoconf.use_cases.check_archive import CheckArchiveUseCase
 from octoconf.use_cases.check_output import CheckOutputUseCase
+from octoconf.use_cases.export_baselines import ExportBaselinesUseCase
 from octoconf.use_cases.generate_report import GenerateReportUseCase
 from octoconf.use_cases.generate_script import GenerateScriptUseCase
 from octoconf.use_cases.list_baselines import ListBaselinesUseCase
@@ -72,6 +73,13 @@ def parse_analyze_args(args):
 def parse_baseline_list_args(args):
     init_logging(args.loglevel)
     return ListBaselinesUseCase().execute()
+
+
+def parse_export_baselines_args(args):
+    init_logging(args.loglevel)
+    print("[*] Launching the export of your baselines...")
+    status = ExportBaselinesUseCase().execute()
+    return print_status(status)
 
 
 def parse_baseline_args(args):
@@ -214,6 +222,12 @@ def parse_args() -> argparse.Namespace:
     )
     baseline_parser.set_defaults(func=parse_baseline_args)
     baselines_commands = baseline_parser.add_subparsers(title="Commands")
+
+    export_parser = baselines_commands.add_parser(
+        name="export",
+        help="performs the export of custom baselines",
+    )
+    export_parser.set_defaults(func=parse_export_baselines_args)
 
     gen_script_parser = baselines_commands.add_parser(
         name="generate_script",
