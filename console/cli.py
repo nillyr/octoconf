@@ -35,6 +35,7 @@ from octoconf.use_cases.check_output import CheckOutputUseCase
 from octoconf.use_cases.export_baselines import ExportBaselinesUseCase
 from octoconf.use_cases.generate_report import GenerateReportUseCase
 from octoconf.use_cases.generate_script import GenerateScriptUseCase
+from octoconf.use_cases.import_baselines import ImportBaselinesUseCase
 from octoconf.use_cases.list_baselines import ListBaselinesUseCase
 import octoconf.utils.config as config
 import octoconf.utils.global_values as global_values
@@ -77,8 +78,15 @@ def parse_baseline_list_args(args):
 
 def parse_export_baselines_args(args):
     init_logging(args.loglevel)
-    print("[*] Launching the export of your baselines...")
+    print("[*] Launching the export of your custom baselines...")
     status = ExportBaselinesUseCase().execute()
+    return print_status(status)
+
+
+def parse_import_baselines_args(args):
+    init_logging(args.loglevel)
+    print("[*] Launching the import of your custom baselines...")
+    status = ImportBaselinesUseCase().execute(args.archive, args.action)
     return print_status(status)
 
 
@@ -255,6 +263,23 @@ def parse_args() -> argparse.Namespace:
         required=False,
         default=None,
         help="path to a file containing utils functions to be included in the generated script",
+    )
+
+    import_parser = baselines_commands.add_parser(
+        name="import",
+        help="performs the import of custom baselines",
+    )
+    import_parser.set_defaults(func=parse_import_baselines_args)
+
+    import_parser.add_argument(
+        "-a", "--archive", required=True, type=str, help="archive to use"
+    )
+    import_parser.add_argument(
+        "--action",
+        required=False,
+        default="merge",
+        choices=("merge", "replace"),
+        help="'merge' action will add the new baselines and update the existing one. 'replace' action will completely delete the existing baselines and extract the archive. (default: merge)",
     )
 
     list_parser = baselines_commands.add_parser(

@@ -10,6 +10,7 @@ from pathlib import Path
 import re
 import shutil
 from typing import List
+import zipfile
 
 import yaml
 
@@ -128,6 +129,43 @@ class BaselineInterfaceAdapter(IBaseline):
         except:
             logger.exception("Unable to export custom baselines")
             return None
+
+    def import_custom_baselines_from_archive(self, archive: str, action: str) -> Path:
+        extract_dir = Path(__file__).resolve().parent.parent.parent / "baselines"
+        # switch case 'match value: case value:' needs python 3.10
+        # the tool must work with python 3.8
+        # see: https://www.freecodecamp.org/news/python-switch-statement-switch-case-example/
+        if action.lower() == "merge":
+            try:
+                with zipfile.ZipFile(archive, "r") as zip_ref:
+                    for zip_info in zip_ref.infolist():
+                        file_path = Path(extract_dir) / zip_info.filename
+                        if zip_info.is_dir():
+                            file_path.mkdir(parents=True, exist_ok=True)
+                        else:
+                            with zip_ref.open(zip_info) as source, file_path.open(
+                                "wb"
+                            ) as target:
+                                target.write(source.read())
+            except:
+                logger.exception("Unable to extract and merge custom baselines")
+                return None
+        else:
+            try:
+                custom_baselines_dir = extract_dir / "custom"
+                if custom_baselines_dir.exists():
+                    shutil.rmtree(custom_baselines_dir)
+
+                with zipfile.ZipFile(archive, "r") as zip_ref:
+                    if not "custom" in zip_ref.infolist()[0].filename.lower():
+                        custom_baselines_dir.mkdir(parents=True)
+                        zip_ref.extractall(custom_baselines_dir)
+                    else:
+                        zip_ref.extractall(extract_dir)
+            except:
+                logger.exception("Unable to extract and replace custom baselines")
+                return None
+        return extract_dir / "custom"
 
     def map_results_in_baseline(
         self, rules: List[Rule], baseline: Baseline
