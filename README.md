@@ -70,6 +70,41 @@ For development purposes, see [CONTRIBUTING](CONTRIBUTING.md).
 
 ### Baseline
 
+#### List available baselines
+
+The following command allows the user to list available lists:
+
+```bash
+octoconf-cli baseline list
+```
+
+#### Custom baselines export
+
+The following command allows the user to export custom baselines into a ZIP archive:
+
+```bash
+octoconf-cli baseline export
+```
+
+| :information_source: Information |
+|:------------------------------------------------|
+| Only your own custom baselines will be exported |
+
+#### Custom baselines import
+
+The following command allows the user to import an archive (ZIP) with custom baselines:
+
+```bash
+# This command:
+octoconf-cli baseline import -a [...].zip
+# Is the same as this one:
+octoconf-cli baseline import -a [...].zip --action merge
+
+octoconf-cli baseline import -a [...].zip --action replace
+```
+
+The `merge` action will add the new baselines and update the existing one. The `replace` action will completely delete the existing custom baselines and extract the archive. The default value is `merge`.
+
 #### Baseline translatation
 
 `TODO`
