@@ -34,6 +34,7 @@ from octoconf.use_cases.check_archive import CheckArchiveUseCase
 from octoconf.use_cases.check_output import CheckOutputUseCase
 from octoconf.use_cases.generate_report import GenerateReportUseCase
 from octoconf.use_cases.generate_script import GenerateScriptUseCase
+from octoconf.use_cases.list_baselines import ListBaselinesUseCase
 import octoconf.utils.config as config
 import octoconf.utils.global_values as global_values
 from octoconf.utils.logger import *
@@ -66,6 +67,11 @@ def parse_analyze_args(args):
     results = CheckOutputUseCase().execute(results)
     status = GenerateReportUseCase().execute(results, args)
     return print_status(status)
+
+
+def parse_baseline_list_args(args):
+    init_logging(args.loglevel)
+    return ListBaselinesUseCase().execute()
 
 
 def parse_baseline_args(args):
@@ -236,6 +242,12 @@ def parse_args() -> argparse.Namespace:
         default=None,
         help="path to a file containing utils functions to be included in the generated script",
     )
+
+    list_parser = baselines_commands.add_parser(
+        name="list",
+        help="performs the listing of available baselines",
+    )
+    list_parser.set_defaults(func=parse_baseline_list_args)
 
     translate_parser = baselines_commands.add_parser(
         name="translate", help="performs security baseline translation"

@@ -49,7 +49,10 @@ class BaselineInterfaceAdapter(IBaseline):
             return None
 
         with open(str(baseline_file_path), "r") as checklist:
-            baseline = yaml.load(checklist, Loader=yaml.SafeLoader)
+            try:
+                baseline = yaml.load(checklist, Loader=yaml.SafeLoader)
+            except:
+                logger.exception(f"Unable to load the file '{baseline_file_path}'")
 
         cat_cpt = 0
         for category in baseline["categories"]:
@@ -70,7 +73,45 @@ class BaselineInterfaceAdapter(IBaseline):
                 baseline["categories"][cat_cpt]["rules"][rules_cpt] = rule_content
                 rules_cpt += 1
             cat_cpt += 1
+
         return Baseline(**baseline)
+
+    def list_available_baselines(self) -> list:
+        base_dir = Path(__file__).resolve().parent.parent.parent
+        baselines_dir = base_dir / "baselines"
+
+        available_baselines = []
+        regex = r"^.+(?<=\.yaml)|.+(?<=\.yml)$"
+        for _, file in enumerate(baselines_dir.glob("**/*.yaml")):
+            if re.search(regex, str(file), re.IGNORECASE | re.MULTILINE):
+                # We only need the "root" file, not the rules nor the template
+                if not "rules" in str(file) and not "template" in str(file):
+                    try:
+                        logger.debug(f"Found baseline candidate: '{file}'")
+                        baseline = self.load_baseline_from_file(file)
+                        if "custom" in str(file):
+                            available_baselines.append(
+                                {
+                                    "title": baseline.title,
+                                    "path": file,
+                                    "source": "Imported",
+                                }
+                            )
+                        else:
+                            available_baselines.append(
+                                {
+                                    "title": baseline.title,
+                                    "path": file,
+                                    "source": "Built-in",
+                                }
+                            )
+                    except:
+                        logger.exception(
+                            f"Something went wrong when listing available baselines for file '{file}'"
+                        )
+                        continue
+
+        return available_baselines
 
     def map_results_in_baseline(
         self, rules: List[Rule], baseline: Baseline
