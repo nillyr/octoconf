@@ -23,7 +23,7 @@ Tool dedicated to the realization of configuration audits.
 | Read the [disclaimer](#disclaimer) carefully before use |
 
 ```text
-        ,'""`.       octoconf 2.3.0-beta
+        ,'""`.       octoconf 2.3.1-beta
        / _  _ \
        |(@)(@)|      Tool for semi-automatic verification
        )  __  (      of security configurations.
