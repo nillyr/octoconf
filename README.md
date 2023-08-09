@@ -23,7 +23,7 @@ Tool dedicated to the realization of configuration audits.
 | Read the [disclaimer](#disclaimer) carefully before use |
 
 ```text
-        ,'""`.       octoconf 2.3.1-beta
+        ,'""`.       octoconf 2.4.0-beta
        / _  _ \
        |(@)(@)|      Tool dedicated to the realization
        )  __  (      of configuration audits.
