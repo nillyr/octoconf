@@ -16,10 +16,6 @@ unit-test:python3.8:
         - .gitlab/**
         - docs/**
         - resources/**
-        - CHANGELOG.md
-        - README.md
-        - SECURITY.md
-        - LICENSE
       when: never
     - when: always
 
@@ -38,10 +34,6 @@ unit-test:python3.9:
         - .gitlab/**
         - docs/**
         - resources/**
-        - CHANGELOG.md
-        - README.md
-        - SECURITY.md
-        - LICENSE
       when: never
     - when: always
 
@@ -60,10 +52,6 @@ unit-test:python3.10:
         - .gitlab/**
         - docs/**
         - resources/**
-        - CHANGELOG.md
-        - README.md
-        - SECURITY.md
-        - LICENSE
       when: never
     - when: always
 
@@ -82,9 +70,5 @@ unit-test:python3.11:
         - .gitlab/**
         - docs/**
         - resources/**
-        - CHANGELOG.md
-        - README.md
-        - SECURITY.md
-        - LICENSE
       when: never
     - when: always
