@@ -131,10 +131,24 @@ class BaselineInterfaceAdapter(IBaseline):
             return None
 
     def import_custom_baselines_from_archive(self, archive: str, action: str) -> Path:
+        logger.info(
+            f"Importing custom baselines from '{archive}' with action '{action}'"
+        )
         extract_dir = Path(__file__).resolve().parent.parent.parent / "baselines"
+        custom_baselines_dir = extract_dir / "custom"
+        custom_baselines_tmp_dir = extract_dir / "custom_tmp"
+
+        try:
+            if custom_baselines_tmp_dir.exists():
+                shutil.rmtree(custom_baselines_tmp_dir)
+            logger.info("Saving the original state")
+            shutil.copytree(custom_baselines_dir, custom_baselines_tmp_dir)
+        except Exception as e:
+            logger.exception(f"Catch exception {e}")
+            return None
+
         # switch case 'match value: case value:' needs python 3.10
         # the tool must work with python 3.8
-        # see: https://www.freecodecamp.org/news/python-switch-statement-switch-case-example/
         if action.lower() == "merge":
             try:
                 with zipfile.ZipFile(archive, "r") as zip_ref:
@@ -149,10 +163,14 @@ class BaselineInterfaceAdapter(IBaseline):
                                 target.write(source.read())
             except:
                 logger.exception("Unable to extract and merge custom baselines")
+                logger.info("Rollback the original state")
+                if custom_baselines_dir.exists():
+                    shutil.rmtree(custom_baselines_dir)
+
+                shutil.move(custom_baselines_tmp_dir, custom_baselines_dir)
                 return None
         else:
             try:
-                custom_baselines_dir = extract_dir / "custom"
                 if custom_baselines_dir.exists():
                     shutil.rmtree(custom_baselines_dir)
 
@@ -164,8 +182,21 @@ class BaselineInterfaceAdapter(IBaseline):
                         zip_ref.extractall(extract_dir)
             except:
                 logger.exception("Unable to extract and replace custom baselines")
+                logger.info("Rollback the original state")
+                if custom_baselines_dir.exists():
+                    shutil.rmtree(custom_baselines_dir)
+
+                shutil.move(custom_baselines_tmp_dir, custom_baselines_dir)
                 return None
-        return extract_dir / "custom"
+
+        # Everything went well, the temporary directory can be removed
+        try:
+            logger.info("Removing the temporary directory")
+            shutil.rmtree(custom_baselines_tmp_dir)
+        except:
+            logger.exception("Unable to remove temporary directory")
+        finally:
+            return extract_dir / "custom"
 
     def map_results_in_baseline(
         self, rules: List[Rule], baseline: Baseline

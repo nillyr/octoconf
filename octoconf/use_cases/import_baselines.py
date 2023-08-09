@@ -29,4 +29,6 @@ class ImportBaselinesUseCase:
         if path:
             print(f"[+] Custom baselines imported in {path}")
             return 0
+
+        print("[x] Error! Unable to import your baselines. Data remains unchanged.")
         return 1
