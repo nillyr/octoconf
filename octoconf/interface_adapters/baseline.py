@@ -58,25 +58,29 @@ class BaselineInterfaceAdapter(IBaseline):
             except:
                 logger.exception(f"Unable to load the file '{baseline_file_path}'")
 
-        cat_cpt = 0
-        for category in baseline["categories"]:
-            rules_cpt = 0
-            for rule in category["rules"]:
-                rule_file_match = rule + "{}".format(".yaml")
-                rule_file_path = Path(rules_directory, rule_file_match)
-                if not rule_file_path.exists():
-                    logger.error(
-                        f"The rule file '{rule_file_path}' has not been found or does not exists. Removing this rule from the builded baseline."
-                    )
-                    del baseline["categories"][cat_cpt]["rules"][rules_cpt]
-                    break
+        try:
+            cat_cpt = 0
+            for category in baseline["categories"]:
+                rules_cpt = 0
+                for rule in category["rules"]:
+                    rule_file_match = rule + "{}".format(".yaml")
+                    rule_file_path = Path(rules_directory, rule_file_match)
+                    if not rule_file_path.exists():
+                        logger.error(
+                            f"The rule file '{rule_file_path}' has not been found or does not exists. Removing this rule from the builded baseline."
+                        )
+                        del baseline["categories"][cat_cpt]["rules"][rules_cpt]
+                        break
 
-                with open(str(rule_file_path), "r") as r:
-                    rule_content = yaml.load(r, Loader=yaml.SafeLoader)
+                    with open(str(rule_file_path), "r") as r:
+                        rule_content = yaml.load(r, Loader=yaml.SafeLoader)
 
-                baseline["categories"][cat_cpt]["rules"][rules_cpt] = rule_content
-                rules_cpt += 1
-            cat_cpt += 1
+                    baseline["categories"][cat_cpt]["rules"][rules_cpt] = rule_content
+                    rules_cpt += 1
+                cat_cpt += 1
+        except:
+            # No log here on purpose
+            return None
 
         return Baseline(**baseline)
 
@@ -93,6 +97,9 @@ class BaselineInterfaceAdapter(IBaseline):
                     try:
                         logger.debug(f"Found baseline candidate: '{file}'")
                         baseline = self.load_baseline_from_file(file)
+                        if baseline is None:
+                            continue
+
                         if "custom" in str(file):
                             available_baselines.append(
                                 {

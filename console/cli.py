@@ -16,6 +16,7 @@ import inject
 sys.path.append("../octoconf/")
 from octoconf.__init__ import __version__
 from octoconf.components.translators.deepl_translator.deepl_translator import DeepL
+from octoconf.decorators.baseline.baseline import BaselineDecorator
 from octoconf.interfaces.archive import IArchive
 from octoconf.interfaces.baseline import IBaseline
 from octoconf.interfaces.checker import IChecker
@@ -60,6 +61,7 @@ def default_parse_args(args):
     sys.exit(0)
 
 
+@BaselineDecorator.decorator
 def parse_analyze_args(args):
     init_logging(args.loglevel)
 
@@ -90,6 +92,7 @@ def parse_import_baselines_args(args):
     return print_status(status)
 
 
+@BaselineDecorator.decorator
 def parse_baseline_args(args):
     """
     Distinguishing arguments:
