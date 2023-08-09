@@ -5,9 +5,9 @@ unit-test:python3.8:
   image: python:3.8-slim-bullseye
   stage: unit-test
   script:
-    - python3 -m venv/bin/activate
+    - python3 -m venv venv
     - source venv/bin/activate
-    - pip install --no-cache-dir -r requirements-dev.txt
+    - pip install -e .[dev]
     - tox -r -c tox.ini -e py38
   rules:
     - changes:
@@ -23,9 +23,9 @@ unit-test:python3.9:
   image: python:3.9-slim-bullseye
   stage: unit-test
   script:
-    - python3 -m venv/bin/activate
+    - python3 -m venv venv
     - source venv/bin/activate
-    - pip install --no-cache-dir -r requirements-dev.txt
+    - pip install -e .[dev]
     - tox -r -c tox.ini -e py39
   rules:
     - changes:
@@ -41,9 +41,9 @@ unit-test:python3.10:
   image: python:3.10-slim-bullseye
   stage: unit-test
   script:
-    - python3 -m venv/bin/activate
+    - python3 -m venv venv
     - source venv/bin/activate
-    - pip install --no-cache-dir -r requirements-dev.txt
+    - pip install -e .[dev]
     - tox -r -c tox.ini -e py310
   rules:
     - changes:
@@ -59,9 +59,9 @@ unit-test:python3.11:
   image: python:3.11-slim-bullseye
   stage: unit-test
   script:
-    - python3 -m venv/bin/activate
+    - python3 -m venv venv
     - source venv/bin/activate
-    - pip install --no-cache-dir -r requirements-dev.txt
+    - pip install -e .[dev]
     - tox -r -c tox.ini -e py311
   rules:
     - changes:
