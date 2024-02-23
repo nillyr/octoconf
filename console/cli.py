@@ -137,6 +137,22 @@ def parse_report_args(args):
     return print_status(status)
 
 
+def parse_template_export_args(args):
+    pass # TODO
+
+
+def parse_template_import_args(args):
+    pass # TODO
+
+
+def parse_template_list_args(args):
+    pass # TODO
+
+
+def parse_template_args(args):
+    pass # TODO
+
+
 def parse_config_args(args):
     if "value" in args:
         # Edit sub-command
@@ -318,6 +334,7 @@ def parse_args() -> argparse.Namespace:
     )
 
     ## Report ##
+    # Edit must be done here!
     report_parser = cmd.add_parser(
         name="report",
         help="performs the recompilation of the report in PDF format from an adoc file",
@@ -354,6 +371,60 @@ def parse_args() -> argparse.Namespace:
         type=str,
         default="default-theme.yml",
         help="[required dependency: asciidoctor-pdf] name of the stylesheet in the 'pdf-themesdir' folder to use when generating the report (default=default-theme.yml)",
+    )
+
+    # FIXME DOING
+    # create a report sub-command to allow the user to import, export, list reports templates
+    # create a report sub-command to allow the user to generate a report from a template
+    template_parser = cmd.add_parser(
+        name="template",
+        help="performs the interaction with the report templates",
+    )
+    template_parser.set_defaults(func=parse_template_args)
+    template_commands = template_parser.add_subparsers(title="Commands")
+    
+    template_list_parser = template_commands.add_parser(
+        name="list",
+        help="performs the listing of available report templates",
+    )
+    template_list_parser.set_defaults(func=parse_template_list_args)
+    # optional arguments are --author --title (to filter the list of templates)
+    template_list_parser.add_argument(
+        "-a",
+        "--author",
+        required=False,
+        help="author of the template",
+    )
+    template_list_parser.add_argument(
+        "-t",
+        "--title",
+        required=False,
+        help="title of the template",
+    )
+
+    template_import_parser = template_commands.add_parser(
+        name="import",
+        help="performs the import of a report templates",
+    )
+    template_import_parser.set_defaults(func=parse_template_import_args)
+    template_import_parser.add_argument(
+        "-i",
+        "--input",
+        required=True,
+        help="input archive path",
+    )
+
+    template_export_parser = template_commands.add_parser(
+        name="export",
+        help="performs the export of a report templates",
+    )
+    template_export_parser.set_defaults(func=parse_template_export_args)
+    template_export_parser.add_argument(
+        "-o",
+        "--output",
+        required=True,
+        default=".",
+        help="output archive path (default: current path)",
     )
 
     ## Config ##

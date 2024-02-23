@@ -33,7 +33,7 @@ Create a virtual environment and install all (base+dev) requirements:
 ```bash
 python3 -m venv venv
 source venv/bin/activate
-pip install -e .[dev]
+pip install -e ."[dev]"
 ```
 
 ### Develop
