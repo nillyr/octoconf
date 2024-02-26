@@ -14,13 +14,10 @@
 
 Tool dedicated to the realization of configuration audits.
 
-| :information_source: Information |
-|:-----------------------------------------------------------|
-| This repository is mirrored from a private GitLab instance |
 
 | :warning: Warning |
-|:--------------------------------------------------------|
-| Read the [disclaimer](#disclaimer) carefully before use |
+|:----------------------------------------------|
+| Read the [disclaimer](#disclaimer) before use |
 
 ```text
         ,'""`.       octoconf 2.4.0-beta
