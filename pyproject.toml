@@ -5,7 +5,7 @@ build-backend = "setuptools.build_meta"
 [project]
 name = "octoconf-cli"
 authors = [
-    {name = "Nicolas GRELLETY", email = "ngy.cs@protonmail.com"},
+    {name = "Nicolas GRELLETY", email = "ngrellety@nillyr.fr"},
 ]
 description = "Tool dedicated to the realization of configuration audits."
 requires-python = ">=3.8"
