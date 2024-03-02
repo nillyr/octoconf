@@ -38,7 +38,7 @@ class ListBaselinesUseCase:
             for baseline in available_baselines:
                 print(f"{baseline['title']: <{max_len}}{baseline['source']}")
         except:
-            print("No baseline found")
+            print("No entry found")
             pass
 
         return 0

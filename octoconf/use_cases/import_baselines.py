@@ -16,7 +16,7 @@ logger = logging.getLogger(__name__)
 
 class ImportBaselinesUseCase:
     """
-    Prints the list of available baselines.
+    Imports the custom baselines of the user.
     """
 
     @inject.autoparams("adapter")
