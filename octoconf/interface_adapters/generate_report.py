@@ -7,7 +7,9 @@
 import csv
 import logging
 from pathlib import Path
+import shutil
 from typing import Any
+import zipfile
 
 from octoconf.entities.baseline import Baseline
 from octoconf.interfaces.generate_report import IReportGenerator
@@ -94,7 +96,7 @@ class ReportGeneratorInterfaceAdapter(IReportGenerator):
                 output_directory,
                 input_file.parent,
                 header_file=input_file.name,
-                template_name=args.template_name,
+                theme_dir=args.theme_dir,
                 pdf_theme=args.pdf_theme,
             )
             return 0
@@ -125,10 +127,140 @@ class ReportGeneratorInterfaceAdapter(IReportGenerator):
                     results,
                     output_directory,
                     ini_file,
-                    args.template_name,
+                    args.theme_dir,
                     args.pdf_theme,
                 )
             return 0
         except:
             logger.exception("Catch an exception in report generation")
             return 1
+
+    def list_available_templates(self) -> list:
+        base_dir = Path(__file__).resolve().parent
+        template_dir = base_dir / "octowriter" / "template"
+
+        available_templates = []
+        allowed_extensions = { ".yaml", ".yml" }
+
+        for _, file in enumerate(template_dir.glob(r"**/*")):
+            if not file.suffix in allowed_extensions:
+                continue
+
+            # We only need the pdf themes in <theme_dir> / resources / themes
+            if not "themes" in str(file.parent):
+                continue
+
+            try:
+                logger.debug(f"Found pdf-theme candidate: '{file}'")
+            
+                theme_dir = file.parents[2].stem
+                theme = file.name
+
+                if theme_dir == "default":
+                    available_templates.append(
+                        {
+                            "theme_dir": theme_dir,
+                            "theme": theme,
+                            "path": file,
+                            "source": "Built-in"
+                        }
+                    )
+                else:
+                    available_templates.append(
+                        {
+                            "theme_dir": theme_dir,
+                            "theme": theme,
+                            "path": file,
+                            "source": "Custom"
+                        }
+                    )
+
+            except:
+                logger.exception(
+                    f"Something went wrong when listing available templates for file '{file}'"
+                )
+                continue
+
+        return available_templates
+
+    def export_custom_templates(self) -> str:
+        try:
+            archive_name = Path.cwd() / f"octoconf_templates_export_{timestamp()}"
+            root_dir = Path(__file__).resolve().parent / "octowriter" / "template"
+            base_dir = "custom"
+
+            return shutil.make_archive(
+                archive_name, "zip", root_dir=str(root_dir), base_dir=base_dir
+            )
+        except:
+            logger.exception("Unable to export custom templates")
+            return None
+
+    def import_custom_templates_from_archive(self, archive: str, action: str) -> Path:
+        logger.info(
+            f"Importing custom templates from '{archive}' with action '{action}'"
+        )
+        extract_dir = Path(__file__).resolve().parent / "octowriter" / "template"
+        custom_templates_dir = extract_dir / "custom"
+        custom_templates_tmp_dir = extract_dir / "custom_tmp"
+
+        try:
+            if custom_templates_tmp_dir.exists():
+                shutil.rmtree(custom_templates_tmp_dir)
+            logger.info("Saving the original state")
+            shutil.copytree(custom_templates_dir, custom_templates_tmp_dir)
+        except Exception as e:
+            logger.exception(f"Catch exception {e}")
+            return None
+
+        # switch case 'match value: case value:' needs python 3.10
+        # the tool must work with python 3.8
+        if action.lower() == "merge":
+            try:
+                with zipfile.ZipFile(archive, "r") as zip_ref:
+                    for zip_info in zip_ref.infolist():
+                        file_path = Path(extract_dir) / zip_info.filename
+                        if zip_info.is_dir():
+                            file_path.mkdir(parents=True, exist_ok=True)
+                        else:
+                            with zip_ref.open(zip_info) as source, file_path.open(
+                                "wb"
+                            ) as target:
+                                target.write(source.read())
+            except:
+                logger.exception("Unable to extract and merge custom templates")
+                logger.info("Rollback the original state")
+                if custom_templates_dir.exists():
+                    shutil.rmtree(custom_templates_dir)
+
+                shutil.move(custom_templates_tmp_dir, custom_templates_dir)
+                return None
+        else:
+            try:
+                if custom_templates_dir.exists():
+                    shutil.rmtree(custom_templates_dir)
+
+                with zipfile.ZipFile(archive, "r") as zip_ref:
+                    if not "custom" in zip_ref.infolist()[0].filename.lower():
+                        custom_templates_dir.mkdir(parents=True)
+                        zip_ref.extractall(custom_templates_dir)
+                    else:
+                        zip_ref.extractall(extract_dir)
+            except:
+                logger.exception("Unable to extract and replace custom templates")
+                logger.info("Rollback the original state")
+                if custom_templates_dir.exists():
+                    shutil.rmtree(custom_templates_dir)
+
+                shutil.move(custom_templates_tmp_dir, custom_templates_dir)
+                return None
+
+        # Everything went well, the temporary directory can be removed
+        try:
+            logger.info("Removing the temporary directory")
+            shutil.rmtree(custom_templates_tmp_dir)
+        except:
+            logger.exception("Unable to remove temporary directory")
+        finally:
+            return extract_dir / "custom"
+

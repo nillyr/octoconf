@@ -34,10 +34,13 @@ from octoconf.use_cases.baseline_translator import BaselineTranslatorUseCase
 from octoconf.use_cases.check_archive import CheckArchiveUseCase
 from octoconf.use_cases.check_output import CheckOutputUseCase
 from octoconf.use_cases.export_baselines import ExportBaselinesUseCase
+from octoconf.use_cases.export_templates import ExportTemplatesUseCase
 from octoconf.use_cases.generate_report import GenerateReportUseCase
 from octoconf.use_cases.generate_script import GenerateScriptUseCase
 from octoconf.use_cases.import_baselines import ImportBaselinesUseCase
+from octoconf.use_cases.import_templates import ImportTemplatesUseCase
 from octoconf.use_cases.list_baselines import ListBaselinesUseCase
+from octoconf.use_cases.list_templates import ListTemplatesUseCase
 import octoconf.utils.config as config
 import octoconf.utils.global_values as global_values
 from octoconf.utils.logger import *
@@ -138,19 +141,22 @@ def parse_report_args(args):
 
 
 def parse_template_export_args(args):
-    pass # TODO
+    init_logging(args.loglevel)
+    print("[*] Launching the export of your custom templates...")
+    status = ExportTemplatesUseCase().execute()
+    return print_status(status)
 
 
 def parse_template_import_args(args):
-    pass # TODO
+    init_logging(args.loglevel)
+    print("[*] Launching the import of your custom templates...")
+    status = ImportTemplatesUseCase().execute(args.archive, args.action)
+    return print_status(status)
 
 
 def parse_template_list_args(args):
-    pass # TODO
-
-
-def parse_template_args(args):
-    pass # TODO
+    init_logging(args.loglevel)
+    return ListTemplatesUseCase().execute()
 
 
 def parse_config_args(args):
@@ -229,18 +235,18 @@ def parse_args() -> argparse.Namespace:
         help="[required dependency: asciidoctor-pdf] path to the configuration file (.ini) containing the required information to initialize the report",
     )
     analyze_parser.add_argument(
-        "--template-name",
+        "--theme-dir",
         required=False,
         type=str,
-        default="generic",
-        help="[required dependency: asciidoctor-pdf] template name corresponding to the folder name (template/custom/<template_name>/) (default=generic)",
+        default="default",
+        help="[required dependency: asciidoctor-pdf] theme directory containing your pdf themes (default=default)",
     )
     analyze_parser.add_argument(
         "--pdf-theme",
         required=False,
         type=str,
-        default="default-theme.yml",
-        help="[required dependency: asciidoctor-pdf] name of the stylesheet in the 'pdf-themesdir' folder to use when generating the report (default=default-theme.yml)",
+        default="default.yml",
+        help="[required dependency: asciidoctor-pdf] name of the stylesheet in the 'pdf-themesdir' folder to use when generating the report (default=default.yml)",
     )
 
     ## Baseline ##
@@ -334,7 +340,6 @@ def parse_args() -> argparse.Namespace:
     )
 
     ## Report ##
-    # Edit must be done here!
     report_parser = cmd.add_parser(
         name="report",
         help="performs the recompilation of the report in PDF format from an adoc file",
@@ -359,28 +364,24 @@ def parse_args() -> argparse.Namespace:
         help="output directory",
     )
     report_parser.add_argument(
-        "--template-name",
+        "--theme-dir",
         required=False,
         type=str,
-        default="generic",
-        help="[required dependency: asciidoctor-pdf] template name corresponding to the folder name (template/custom/<template_name>/) (default=generic)",
+        default="default",
+        help="[required dependency: asciidoctor-pdf] theme directory containing your pdf themes (default=default)",
     )
     report_parser.add_argument(
         "--pdf-theme",
         required=False,
         type=str,
-        default="default-theme.yml",
-        help="[required dependency: asciidoctor-pdf] name of the stylesheet in the 'pdf-themesdir' folder to use when generating the report (default=default-theme.yml)",
+        default="default.yml",
+        help="[required dependency: asciidoctor-pdf] name of the stylesheet in the 'pdf-themesdir' folder to use when generating the report (default=default.yml)",
     )
 
-    # FIXME DOING
-    # create a report sub-command to allow the user to import, export, list reports templates
-    # create a report sub-command to allow the user to generate a report from a template
     template_parser = cmd.add_parser(
         name="template",
-        help="performs the interaction with the report templates",
+        help="performs the interaction with your custom report templates",
     )
-    template_parser.set_defaults(func=parse_template_args)
     template_commands = template_parser.add_subparsers(title="Commands")
     
     template_list_parser = template_commands.add_parser(
@@ -388,30 +389,21 @@ def parse_args() -> argparse.Namespace:
         help="performs the listing of available report templates",
     )
     template_list_parser.set_defaults(func=parse_template_list_args)
-    # optional arguments are --author --title (to filter the list of templates)
-    template_list_parser.add_argument(
-        "-a",
-        "--author",
-        required=False,
-        help="author of the template",
-    )
-    template_list_parser.add_argument(
-        "-t",
-        "--title",
-        required=False,
-        help="title of the template",
-    )
 
     template_import_parser = template_commands.add_parser(
         name="import",
-        help="performs the import of a report templates",
+        help="performs the import of report templates",
     )
     template_import_parser.set_defaults(func=parse_template_import_args)
     template_import_parser.add_argument(
-        "-i",
-        "--input",
-        required=True,
-        help="input archive path",
+        "-a", "--archive", required=True, type=str, help="archive to use"
+    )
+    template_import_parser.add_argument(
+        "--action",
+        required=False,
+        default="merge",
+        choices=("merge", "replace"),
+        help="'merge' action will add the new templates and update the existing one. 'replace' action will completely delete the existing templates and extract the archive. (default: merge)",
     )
 
     template_export_parser = template_commands.add_parser(
@@ -419,13 +411,6 @@ def parse_args() -> argparse.Namespace:
         help="performs the export of a report templates",
     )
     template_export_parser.set_defaults(func=parse_template_export_args)
-    template_export_parser.add_argument(
-        "-o",
-        "--output",
-        required=True,
-        default=".",
-        help="output archive path (default: current path)",
-    )
 
     ## Config ##
     config_parser = cmd.add_parser(
