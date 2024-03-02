@@ -35,6 +35,7 @@ positional arguments:
     analyze             performs an analysis on an archive based on a security baseline
     baseline            performs the interaction with the security baselines
     report              performs the recompilation of the report in PDF format from an adoc file
+    template            performs the interaction with your custom report templates
     config              performs octoconf configuration management
 
 options:
@@ -58,6 +59,9 @@ options:
 For regular use, download the latest version from the release page or from [PyPI](https://pypi.org/project/octoconf-cli/) and install it:
 
 ```bash
+# From PyPI
+pip install -U octoconf-cli
+# From release page
 pip install octoconf-*.whl
 ```
 
@@ -154,18 +158,18 @@ octoconf-cli analyze -b /path/to/baseline.yml -a [...].zip -o "`pwd`/reports/" -
 In order to use a custom theme with your own images, the following command can be used:
 
 ```bash
-octoconf-cli analyze -b /path/to/baseline.yml -a [...].zip -o "`pwd`/reports/" --ini /path/to/ini_file.ini --template-name template_name --pdf-theme theme_name.yml
+octoconf-cli analyze -b /path/to/baseline.yml -a [...].zip -o "`pwd`/reports/" --ini /path/to/ini_file.ini --theme-dir theme_directory --pdf-theme theme_name.yml
 ```
 
 In order to re-generate the PDF report, the following command can be used:
 
 ```bash
-octoconf-cli report -i "`pwd`/reports/build/adoc/header.adoc" -o "`pwd`/reports/" --template-name template_name --pdf-theme theme_name.yml
+octoconf-cli report -i "`pwd`/reports/build/adoc/header.adoc" -o "`pwd`/reports/" --theme-dir theme_directory --pdf-theme theme_name.yml
 ```
 
 | :bulb: Tips |
 |:-----------------------------------------------------------|
-| If you only have one theme, name the file `default-theme.yml` and you will not have to add this parameter any more |
+| If you only have one theme, name the file `default.yml` and you will not have to add this parameter any more |
 
 ### Config
 
@@ -187,13 +191,6 @@ octoconf-cli config edit -s translator -o deepl_api_key -v your_api_key
 ```
 
 See [Where can I find my Authentication Key?](https://support.deepl.com/hc/en-us/articles/360020695820-Authentication-Key).
-
-### Microsoft Excel
-
-If you got the following errors when opening the `*.xlsx` file, you need either to use `*-ms-excel-compatible.xlsx` file or use this [conversion script](https://gitlab.internal.lan/octo-project/octokonverter/-/blob/main/scripts/octoconf_xlsx_to_ms_excel.py) ([GitHub link](https://github.com/nillyr/octokonverter/blob/main/scripts/octoconf_xlsx_to_ms_excel.py)).
-
-![excel-err1](resources/non-excel-open-on-ms-excel.png)
-![excel-err2](resources/non-excel-open-on-ms-excel-2.png)
 
 ## Disclaimer
 
