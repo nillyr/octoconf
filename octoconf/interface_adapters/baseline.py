@@ -89,38 +89,41 @@ class BaselineInterfaceAdapter(IBaseline):
         baselines_dir = base_dir / "baselines"
 
         available_baselines = []
-        regex = r"^.+(?<=\.yaml)|.+(?<=\.yml)$"
-        for _, file in enumerate(baselines_dir.glob("**/*.yaml")):
-            if re.search(regex, str(file), re.IGNORECASE | re.MULTILINE):
-                # We only need the "root" file, not the rules nor the template
-                if not "rules" in str(file) and not "template" in str(file):
-                    try:
-                        logger.debug(f"Found baseline candidate: '{file}'")
-                        baseline = self.load_baseline_from_file(file)
-                        if baseline is None:
-                            continue
+        allowed_extensions = { ".yaml", ".yml" }
 
-                        if "custom" in str(file):
-                            available_baselines.append(
-                                {
-                                    "title": baseline.title,
-                                    "path": file,
-                                    "source": "Imported",
-                                }
-                            )
-                        else:
-                            available_baselines.append(
-                                {
-                                    "title": baseline.title,
-                                    "path": file,
-                                    "source": "Built-in",
-                                }
-                            )
-                    except:
-                        logger.exception(
-                            f"Something went wrong when listing available baselines for file '{file}'"
-                        )
+        for _, file in enumerate(baselines_dir.glob(r"**/*")):
+            if not file.suffix in allowed_extensions:
+                continue
+
+            # We only need the "root" file, not the rules nor the template
+            if not "rules" in str(file) and not "template" in str(file):
+                try:
+                    logger.debug(f"Found baseline candidate: '{file}'")
+                    baseline = self.load_baseline_from_file(file)
+                    if baseline is None:
                         continue
+
+                    if "custom" in str(file):
+                        available_baselines.append(
+                            {
+                                "title": baseline.title,
+                                "path": file,
+                                "source": "Imported",
+                            }
+                        )
+                    else:
+                        available_baselines.append(
+                            {
+                                "title": baseline.title,
+                                "path": file,
+                                "source": "Built-in",
+                            }
+                        )
+                except:
+                    logger.exception(
+                        f"Something went wrong when listing available baselines for file '{file}'"
+                    )
+                    continue
 
         return available_baselines
 
@@ -331,16 +334,17 @@ class BaselineInterfaceAdapter(IBaseline):
             rule_content = rule_file.read()
 
         # tab size = 2 (1 tab = 2 space, 3 tab = 6 space, etc.)
+        tab_size = 2
         # Preserve indentation otherwise yaml is not valid.
         # Category's main list sequence indentation = 2
         category_block_template = (
-            2 * " " + baseline_content[baseline_content.find("- category:") :].rstrip()
+            tab_size * " " + baseline_content[baseline_content.find("- category:") :].rstrip()
         )
 
         # Preserve indentation otherwise yaml is not valid.
         # Category's content indentation = 6
         category_rule_block_template = (
-            6 * " "
+            (tab_size * 3) * " "
             + baseline_content[
                 baseline_content.find("- MATCH_AND_REPLACE_RULE") :
             ].rstrip()
@@ -354,7 +358,7 @@ class BaselineInterfaceAdapter(IBaseline):
         ].rstrip()
 
         reference_block_template = (
-            2 * " "
+            tab_size * " "
             + rule_content[
                 rule_content.find("- MATCH_AND_REPLACE_REFERENCES") :
             ].rstrip()
@@ -383,7 +387,7 @@ class BaselineInterfaceAdapter(IBaseline):
             # Category's content indentation = 6
             category_block = category_block.replace(
                 "MATCH_AND_REPLACE_DESCRIPTION",
-                category.description.rstrip().replace("\n", "\n" + 6 * " "),
+                category.description.rstrip().replace("\n", "\n" + (tab_size * 3) * " "),
             )
 
             for rule in category.rules:
@@ -400,19 +404,19 @@ class BaselineInterfaceAdapter(IBaseline):
                 # Rule's content indentation = 2
                 rule_block = rule_block.replace(
                     "MATCH_AND_REPLACE_DESCRIPTION",
-                    rule.description.rstrip().replace("\n", "\n" + 2 * " "),
+                    rule.description.rstrip().replace("\n", "\n" + tab_size * " "),
                 )
                 # Preserve indentation otherwise yaml is not valid.
                 # Rule's content indentation = 2
                 rule_block = rule_block.replace(
                     "MATCH_AND_REPLACE_COLLECTION_CMD",
-                    rule.collection_cmd.rstrip().replace("\n", "\n" + 2 * " "),
+                    rule.collection_cmd.rstrip().replace("\n", "\n" + tab_size * " "),
                 )
                 # Preserve indentation otherwise yaml is not valid.
                 # Rule's content indentation = 2
                 rule_block = rule_block.replace(
                     "MATCH_AND_REPLACE_CHECK",
-                    rule.check.rstrip().replace("\n", "\n" + 2 * " "),
+                    rule.check.rstrip().replace("\n", "\n" + tab_size * " "),
                 )
                 rule_block = rule_block.replace(
                     "MATCH_AND_REPLACE_VERIFICATION_TYPE", rule.verification_type
@@ -424,7 +428,7 @@ class BaselineInterfaceAdapter(IBaseline):
                 # Rule's content indentation = 2
                 rule_block = rule_block.replace(
                     "MATCH_AND_REPLACE_RECOMMENDATION",
-                    rule.recommendation.rstrip().replace("\n", "\n" + 2 * " "),
+                    rule.recommendation.rstrip().replace("\n", "\n" + tab_size * " "),
                 )
                 rule_block = rule_block.replace("MATCH_AND_REPLACE_LEVEL", rule.level)
 
