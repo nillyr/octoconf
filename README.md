@@ -133,6 +133,7 @@ Create the following file with your own values:
 ```ini
 [DEFAULT]
 auditee_name = Tricatel
+auditee_logo_path = /full/path/to/the/auditee/logo.png 
 auditee_contact_full_name = Jacques Tricatel
 auditee_contact_email = Jacques.Tricatel@tricatel.fr
 

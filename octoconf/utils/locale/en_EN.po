@@ -130,6 +130,9 @@ msgstr "Auditee"
 msgid "auditee_name"
 msgstr "Auditee name"
 
+msgid "auditee_logo_path"
+msgstr "Absolute path of the auditee's logo (press enter for none)"
+
 msgid "auditee_contact_full_name"
 msgstr "Full names of the auditee's contacts (separated by a ';')"
 

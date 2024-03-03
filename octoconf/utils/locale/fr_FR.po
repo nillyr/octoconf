@@ -130,6 +130,9 @@ msgstr "Audité"
 msgid "auditee_name"
 msgstr "Nom de l'audité"
 
+msgid "auditee_logo_path"
+msgstr "Chemin absolu vers le logo de l'audité (appuyez sur entrer pour laisser vide)"
+
 msgid "auditee_contact_full_name"
 msgstr "Noms complets des contacts de l'audité (séparés par un ';')"
 
