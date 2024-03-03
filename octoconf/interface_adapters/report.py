@@ -12,7 +12,7 @@ from typing import Any
 import zipfile
 
 from octoconf.entities.baseline import Baseline
-from octoconf.interfaces.generate_report import IReportGenerator
+from octoconf.interfaces.report import IReport
 import octoconf.utils.global_values as global_values
 from octoconf.utils.logger import *
 from octoconf.utils.timestamp import timestamp
@@ -29,7 +29,7 @@ except ImportError:
 logger = logging.getLogger(__name__)
 
 
-class ReportGeneratorInterfaceAdapter(IReportGenerator):
+class ReportInterfaceAdapter(IReport):
     def __init__(self) -> None:
         super().__init__()
 

@@ -20,16 +20,16 @@ from octoconf.decorators.baseline.baseline import BaselineDecorator
 from octoconf.interfaces.archive import IArchive
 from octoconf.interfaces.baseline import IBaseline
 from octoconf.interfaces.checker import IChecker
-from octoconf.interfaces.generate_report import IReportGenerator
 from octoconf.interfaces.generate_script.language_abstract_factory import (
     ILanguageFactory,
 )
+from octoconf.interfaces.report import IReport
 from octoconf.interfaces.translator import ITranslator
 from octoconf.interface_adapters.archive import ArchiveInterfaceAdapter
 from octoconf.interface_adapters.baseline import BaselineInterfaceAdapter
 from octoconf.interface_adapters.checker import CheckerInterfaceAdapter
-from octoconf.interface_adapters.generate_report import ReportGeneratorInterfaceAdapter
 from octoconf.interface_adapters.generate_script.language_factory import LanguageFactory
+from octoconf.interface_adapters.report import ReportInterfaceAdapter
 from octoconf.use_cases.baseline_translator import BaselineTranslatorUseCase
 from octoconf.use_cases.check_archive import CheckArchiveUseCase
 from octoconf.use_cases.check_output import CheckOutputUseCase
@@ -463,7 +463,7 @@ def dependency_injection_configuration(binder):
     binder.bind(IChecker, CheckerInterfaceAdapter())
     binder.bind(IBaseline, BaselineInterfaceAdapter())
     binder.bind(ILanguageFactory, LanguageFactory())
-    binder.bind(IReportGenerator, ReportGeneratorInterfaceAdapter())
+    binder.bind(IReport, ReportInterfaceAdapter())
     binder.bind(ITranslator, DeepL())
 
 

@@ -8,7 +8,7 @@ import logging
 
 import inject
 
-from octoconf.interfaces.generate_report import IReportGenerator
+from octoconf.interfaces.report import IReport
 from octoconf.utils.logger import *
 
 logger = logging.getLogger(__name__)
@@ -20,7 +20,7 @@ class ListTemplatesUseCase:
     """
 
     @inject.autoparams("adapter")
-    def __init__(self, adapter: IReportGenerator) -> None:
+    def __init__(self, adapter: IReport) -> None:
         self._adapter = adapter
 
     def execute(self) -> int:

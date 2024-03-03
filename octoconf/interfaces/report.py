@@ -7,7 +7,7 @@
 from abc import ABC, abstractmethod
 
 
-class IReportGenerator(ABC):
+class IReport(ABC):
     @abstractmethod
     def generate_report(self) -> None:
         pass

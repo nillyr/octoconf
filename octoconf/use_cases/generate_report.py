@@ -11,7 +11,7 @@ from typing import Any
 import inject
 
 from octoconf.interfaces.baseline import IBaseline
-from octoconf.interfaces.generate_report import IReportGenerator
+from octoconf.interfaces.report import IReport
 from octoconf.utils.logger import *
 
 logger = logging.getLogger(__name__)
@@ -22,12 +22,12 @@ class GenerateReportUseCase:
     This use case will allow to call the report generator facilitating the manual processing of the audit results.
     """
 
-    @inject.autoparams("baseline_adapter", "report_generator")
+    @inject.autoparams("baseline_adapter", "report_adapter")
     def __init__(
-        self, baseline_adapter: IBaseline, report_generator: IReportGenerator
+        self, baseline_adapter: IBaseline, report_adapter: IReport
     ) -> None:
         self._baseline_adapter = baseline_adapter
-        self._report_generator = report_generator
+        self._report_adapter = report_adapter
 
     def execute(self, data_input: Any, args: Any, recompile: bool = False) -> int:
         logger.info(f"Running report generation use case")
@@ -36,7 +36,7 @@ class GenerateReportUseCase:
         )
         if recompile:
             if Path(data_input).is_file():
-                return self._report_generator.regenerate_report(Path(data_input), args)
+                return self._report_adapter.regenerate_report(Path(data_input), args)
             else:
                 return 1
         else:
@@ -46,7 +46,7 @@ class GenerateReportUseCase:
             if baseline is None:
                 return 1
 
-            return self._report_generator.generate_report(
+            return self._report_adapter.generate_report(
                 self._baseline_adapter.remove_ignore_translate_tags(
                     self._baseline_adapter.map_results_in_baseline(data_input, baseline)
                 ),
