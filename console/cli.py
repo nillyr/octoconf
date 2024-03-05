@@ -323,7 +323,7 @@ def parse_args() -> argparse.Namespace:
         help="security baseline",
     )
     translate_parser.add_argument(
-        "-o", "--output", required=True, help="output file to write results"
+        "-o", "--output", required=True, help="output directory"
     )
     translate_parser.add_argument(
         "-s",
