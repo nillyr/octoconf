@@ -193,9 +193,9 @@ octoconf-cli template list
 Sample output:
 
 ```text
-Themes directory        Themes                  Source
------------------------ ----------------------- -----------
-default                 default.yml             Built-in
+Themes directory     Themes          Source
+-------------------- --------------- -----------
+default              default.yml     Built-in
 ```
 
 ### Import a report template

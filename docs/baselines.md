@@ -176,7 +176,7 @@ If the cutomization need to be done on a built-in baseline, head to [octobaselin
 
 | :information_source: Information |
 |:---------------------------------|
-| Because baselines must be unique, you will have to change the baseline's title. See [List available baselines](#list-available-baselines). |
+| Each baseline must be unique. You will have to change the baseline's title or the baseline's filename. See [List available baselines](#list-available-baselines). |
 
 ## Package your baseline for import
 
@@ -244,12 +244,12 @@ Sample output:
 No entry found
 
 # When baselines are available (either Built-in or Custom)
-Title                                             Source
-------------------------------------------------- ------
-Audit de sécurité d'un serveur GNU/Linux          Built-in
+Title                                        Filename                      Source
+-------------------------------------------- ----------------------------- -----------
+Audit de sécurité d'un serveur GNU/Linux     generic_linux_server.yaml     Built-in
 ```
 
-To use available baselines, you do not have to use the baseline's path. You can use the baseline's title. The tool will automatically find the baseline. This is true for `generate_script` and `analyze` commands.
+To use available baselines, you do not have to use the baseline's path. You can use either the baseline's title or the baseline's filename. The tool will automatically find the baseline. This is true for `generate_script` and `analyze` commands.
 
 Exemple:
 
