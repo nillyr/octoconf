@@ -63,9 +63,12 @@ class BaselineInterfaceAdapter(IBaseline):
             for category in baseline["categories"]:
                 rules_cpt = 0
                 for rule in category["rules"]:
-                    rule_file_match = rule + "{}".format(".yaml")
-                    rule_file_path = Path(rules_directory, rule_file_match)
-                    if not rule_file_path.exists():
+                    rule_file_path = Path(rules_directory, rule)
+                    existing_rule_files = (rule_file_path.with_suffix(ext) for ext in ['.yml', '.yaml'] if rule_file_path.with_suffix(ext).exists())
+                    # Note: if there are multiple files with the same name but different extensions, only the first one will be used
+                    rule_file_path = next(existing_rule_files, None)
+
+                    if not rule_file_path:
                         logger.error(
                             f"The rule file '{rule_file_path}' has not been found or does not exists. Removing this rule from the builded baseline."
                         )
