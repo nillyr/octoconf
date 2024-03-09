@@ -7,6 +7,8 @@
 - [Report initialization](#report-initialization)
 - [Introduction to report templates](#introduction-to-report-templates)
 - [Create your own templates](#create-your-own-templates)
+    - [Template](#template)
+    - [Themes](#themes)
 - [Audit the audit evidence and generate the reports with a template](#audit-the-audit-evidence-and-generate-the-reports-with-a-template)
 - [Regenerate the report in PDF format](#regenerate-the-report-in-pdf-format)
 - [MISC commands](#misc-commands)
@@ -74,7 +76,7 @@ Scope: `octowriter` submodule (PDF report only)
 
 | :information_source: Information |
 |:---------------------------------|
-| The word "template" is used. However, it's more a "theme" than a "template". Yet, it's possible to extend the `PDFGenerator` class in order to create a real template that perfectly suits your needs. |
+| The word "template" is used. However, it's more a "theme" than a "template". Yet, it's possible to create a new `PDFGenerator` that implements the `IPDFGenerator` abstract class in order to create a real template that perfectly suits your needs. |
 
 | :information_source: Information |
 |:---------------------------------|
@@ -105,17 +107,38 @@ The last section introduce the `auditee_logo_path` parameter. This parameter is 
 |:---------------------------------|
 | The `default.yml` theme **does not** use this paramater. Even if it's set, no images will be added to the report. |
 
-## Create your own templates
+## Create your own templates and themes
 
-| :information_source: Information |
-|:---------------------------------|
-| If you want to create a new template and not just custom the theme, you will have to extend the `PDFGenerator` class. The rest of this section presents theme customization. |
+### Template
 
-TODO: ADD_DOCUMENTATION
+If you want to create a new template and not just custom the theme, you will have create your own `PDFGenerator` class that implements the `IPDFGenerator` abstract class. The following snippet gives you the base structure of the class:
+
+```python
+import configparser
+
+from octoconf.interfaces.generate_pdf import IPDFGenerator
+
+class PDFGenerator(IPDFGenerator):
+    def __init__(self, ...) -> None:
+        # Your code here
+        pass
+
+    def build_pdf(self, ...) -> None:
+        # Your code here
+        pass
+
+    def generate_pdf(self, ...) -> None:
+        # Your code here
+        pass
+```
+
+### Themes
+
+The theme of the PDF can be customized following the [Asciidoctor PDF Theming documentation](https://docs.asciidoctor.org/pdf-converter/latest/theme/).
 
 | :bulb: Tips |
-|:-----------------------------------------------------------|
-| If you only have one theme, name the file `default.yml` and you will not have to add this parameter any more |
+|:------------|
+| If you only have one theme, name the file `default.yml` and you will not have to add this parameter anymore. |
 
 ## Audit the audit evidence and generate the reports with a template 
 

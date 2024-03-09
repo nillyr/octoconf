@@ -10,7 +10,7 @@
 
 The `config` command allows the user to manage the configuration of octoconf. Most of the parameters are used for the `XLSX` (language, colors and classification) and `PDF` (language only) reports generation.
 
-The configuration file is located at `~/.config/octoconf/octoconf.ini` on GNU/Linux and at `C:\Users\<user>\AppData\Local\octoconf\octoconf.ini` on Windows.
+The configuration file is located at `$HOME/.config/octoconf/octoconf.ini` on GNU/Linux and macOS and at `C:\Users\<user>\AppData\Local\octoconf\octoconf.ini` on Windows.
 
 ## Print the current configuration
 

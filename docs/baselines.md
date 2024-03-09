@@ -76,6 +76,17 @@ description: |
 # The collection_cmd is used to collect proofs in order to manually check the result later, if necessary
 # The syntax is the following:
 # <command> <redirector> <output_file> [; <command> <redirector> <output_file>]
+# You can also have one command per line:
+# <command> <redirectort> <output_file>
+
+# IMPORTANT: do not specify the output directory because this one is automatically added by the tool 
+# cmd > file.txt becomes cmd > basedir/category/file.txt
+
+# Note: the available redirectors are listed in the following files:
+# - octoconf/interface_adapters/redirector_regex/unix_output_redirector_regex_concrete_builder.py
+# - octoconf/interface_adapters/redirector_regex/windows_output_redirector_regex_concrete_builder.py
+
+# If your redirector is not matched by the regex, open an issue or create a PR.
 collection_cmd: |
   arch > arch_output.txt
 
@@ -142,9 +153,9 @@ recommendation: |
 # The level of the rule (default: minimal)
 # The possible values are:
 # - minimal       -> Basic recommendation to be implemented systematically on all systems
-# - intermediary  -> To be implemented as soon as possible on most systems, as soon as the previous recommendations are applied
-# - enhanced      -> For use on systems with high security requirements, or where several applications applications to be isolated from each other on the same system.
-# - high          -> To be implemented only if in-house resources have the skills and time required to maintain them on a regular basis. These can, however, bring a significant security gain.
+# - intermediary  -> To be implemented as soon as possible on most systems
+# - enhanced      -> For use on systems with high security requirements, or where several applications applications to be isolated from each other on the same system
+# - high          -> To be implemented if and only if in-house resources have the skills and time required to maintain them on a regular basis. These can, however, bring a significant security gain.
 level: minimal 
 
 # Any references that can be used to justify the rule (CIS, NIST, ANSSI, etc.)
@@ -161,12 +172,26 @@ references:
 - Scoping: edit the `baseline_name.yaml` to comment security controls that are not applicable.
 - Tailoring: edit the rules in the `rules` directory.
 
+If the cutomization need to be done on a built-in baseline, head to [octobaselines](https://github.com/nillyr/octobaselines) repository and download the baseline you need. Then, follow the instructions in the [Package your baseline for import](#package-your-baseline-for-import) section.
+
+| :information_source: Information |
+|:---------------------------------|
+| Because baselines must be unique, you will have to change the baseline's title. See [List available baselines](#list-available-baselines). |
+
 ## Package your baseline for import
 
 To import your custom baselines, you must package them into a ZIP file. The ZIP file must have the following structure:
 
 ```text
-TODO: ADD_DOCUMENTATION
+custom
+└── your_baselines_collection       # You can collapse in one directory level this directory
+    └── your_baseline_shortname     # And this one
+        ├── your_baseline.yaml
+        └── rules
+            ├── your_rule_id_1.yaml
+            ├── your_rule_id_2.yaml
+            ├── ... 
+            └── your_rule_id_n.yaml
 ```
 
 Now jump to the [Import your baselines](#import-your-baselines) section to see how to import your custom baselines.
@@ -194,6 +219,12 @@ octoconf-cli baseline generate_script \
     -o /path/to/output_script.sh
 ```
 
+When using utils script and `bash` language, the script must not containt the `#!/bin/bash` line. If you use [shellcheck](https://github.com/koalaman/shellcheck), add the following line at the beginning of the script:
+
+```bash
+# shellcheck shell=bash
+```
+
 ## MISC commands
 
 The commands below are not part of the standard usage of the tool. They are used to manage the baselines.
@@ -208,12 +239,25 @@ octoconf-cli baseline list
 
 Sample output: 
 
-```bash
+```text
 # When no baselines are available
 No entry found
 
 # When baselines are available (either Built-in or Custom)
-TODO: ADD_DOCUMENTATION
+Title                                             Source
+------------------------------------------------- ------
+Audit de sécurité d'un serveur GNU/Linux          Built-in
+```
+
+To use available baselines, you do not have to use the baseline's path. You can use the baseline's title. The tool will automatically find the baseline. This is true for `generate_script` and `analyze` commands.
+
+Exemple:
+
+```bash
+octoconf-cli baseline generate_script \
+    -p linux \
+    -b "Audit de sécurité d'un serveur GNU/Linux" \
+    -o /path/to/output_script.sh
 ```
 
 ### Import your baselines
@@ -254,6 +298,14 @@ octoconf-cli baseline translate \
     -s <source_lang> \
     -t <target_language>
 ```
+
+| :information_source: Information |
+|:---------------------------------|
+| To reduce API usage, translations are cached (located at `$HOME/.cache/octoconf/` for GNU/Linux and macOS and at `C:\Users\<user>\AppData\Local\octoconf\cache\` for Windows). So when the message to be translated is cached, the stored value is used directly, without going through the API. |
+
+| :bulb: Tips |
+|:------------|
+| Modify cached translated values to customize your translations. |
 
 | :information_source: Information |
 |:---------------------------------|
