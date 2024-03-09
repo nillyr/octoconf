@@ -30,15 +30,19 @@ Directory: baselines/{baselines,custom}/<baseline_name>/
 .
 ├── baseline_name.yaml              # This is the baseline you will use to generate the collection script
 └── rules                           # This directory contains the rules (1 control = 1 file)
-    ├── rule_file_name.yaml
-    ├── rule_file_name.yaml
+    ├── rule_file_name_1.yaml
+    ├── rule_file_name_2.yaml
     ├── ...
-    └── rule_file_name.yaml
+    └── rule_file_name_n.yaml
 ```
 
 | :information_source: Information |
 |:---------------------------------|
-| There are no requirements on file names. Only the extension must be `.yaml` (the `.yml` extension is not recognized (yet)). |
+| There are no requirements on file names. Moreover, both `.yaml` and `.yml` extensions can be used. |
+
+| :warning: Warning |
+|:---------------------------------|
+| If the same file exists with the extensions `.yaml` and `.yml`, only the first file found will be used. |
 
 ### Baseline content
 
@@ -55,15 +59,15 @@ categories:
     # The rules are listed in the order they will appear in the report
     # The rule_file_name is the name of the file without the extension
     rules:
-      - rule_file_name
-      - rule_file_name
+      - rule_file_name_1
+      - rule_file_name_2
       - ...
-      - rule_file_name
+      - rule_file_name_n
 ```
 
 ### Rule content
 
-The rule is a YAML file in the `rules` directory that contains the following fields (example: 64-bit architecture):
+The rule is a YAML file in the `rules` directory that contains the following fields:
 
 ```yaml
 # The rule ID must be the same as the file name but without the extension
@@ -254,9 +258,16 @@ To use available baselines, you do not have to use the baseline's path. You can 
 Exemple:
 
 ```bash
+# Use the baseline's title
 octoconf-cli baseline generate_script \
     -p linux \
     -b "Audit de sécurité d'un serveur GNU/Linux" \
+    -o /path/to/output_script.sh
+
+# Use the baseline's filename 
+octoconf-cli baseline generate_script \
+    -p linux \
+    -b generic_linux_server.yaml \
     -o /path/to/output_script.sh
 ```
 
