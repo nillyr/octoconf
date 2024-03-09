@@ -108,6 +108,7 @@ class BaselineInterfaceAdapter(IBaseline):
                             {
                                 "title": baseline.title,
                                 "path": file,
+                                "filename": file.name,
                                 "source": "Imported",
                             }
                         )
@@ -116,6 +117,7 @@ class BaselineInterfaceAdapter(IBaseline):
                             {
                                 "title": baseline.title,
                                 "path": file,
+                                "filename": file.name,
                                 "source": "Built-in",
                             }
                         )

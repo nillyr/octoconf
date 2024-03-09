@@ -31,7 +31,7 @@ class BaselineDecorator(Decorator):
         def inner(*args, **kwargs):
             def get_path_of_baseline(l, f) -> Path:
                 for d in l:
-                    if f(d["title"]):
+                    if f(d["title"]) or f(d["filename"]):
                         return d["path"]
                 return None
 
