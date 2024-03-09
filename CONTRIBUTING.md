@@ -20,7 +20,7 @@ cd octoconf
 # Update submodules URL
 ## from: ssh://git@gitlab.internal.lan:2222/octo-project/<repo>.git
 ## to: ssh://git@github.com:nillyr/<repo>.git
-bash update_gitmodules_url_for_github.sh
+bash scripts/update_gitmodules_url_for_github.sh
 
 # Init and update submodules
 git submodule update --init --recursive
