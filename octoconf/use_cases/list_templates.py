@@ -10,6 +10,7 @@ import inject
 
 from octoconf.interfaces.report import IReport
 from octoconf.utils.logger import *
+from octoconf.utils.utils import get_max_len_for_key
 
 logger = logging.getLogger(__name__)
 
@@ -26,19 +27,17 @@ class ListTemplatesUseCase:
     def execute(self) -> int:
         available_templates = self._adapter.list_available_templates()
         try:
-            # Arbitrary values (24 & 5)
-            max_len = 24
-            max_len = [max(max_len, len(d["theme_dir"]) + 5) for d in available_templates][
-                0
-            ]
-            max_theme_len = 24
-            max_theme_len = [max(max_theme_len, len(d["theme"]) + 5) for d in available_templates][0]
-
             headers = ["Themes directory", "Themes", "Source"]
-            print(f"{headers[0]: <{max_len}}{headers[1]: <{max_theme_len}}{headers[2]}")
-            print("-" * (max_len - 1) + " " + "-" * (max_theme_len - 1) + " " + "-" * (len(headers[2]) + 5) )
+            max_theme_dir_len = get_max_len_for_key(available_templates, "theme_dir")
+            max_theme_dir_len = max(len(headers[0]), max_theme_dir_len) + 5
+
+            max_theme_len = get_max_len_for_key(available_templates, "theme")
+            max_theme_len = max(len(headers[1]), max_theme_len) + 5
+
+            print(f"{headers[0]: <{max_theme_dir_len}}{headers[1]: <{max_theme_len}}{headers[2]}")
+            print("-" * (max_theme_dir_len - 1) + " " + "-" * (max_theme_len - 1) + " " + "-" * (len(headers[2]) + 5))
             for template in available_templates:
-                print(f"{template['theme_dir']: <{max_len}}{template['theme']: <{max_theme_len}}{template['source']}")
+                print(f"{template['theme_dir']: <{max_theme_dir_len}}{template['theme']: <{max_theme_len}}{template['source']}")
         except:
             print("No entry found")
             pass

@@ -10,6 +10,7 @@ import inject
 
 from octoconf.interfaces.baseline import IBaseline
 from octoconf.utils.logger import *
+from octoconf.utils.utils import get_max_len_for_key
 
 logger = logging.getLogger(__name__)
 
@@ -26,18 +27,19 @@ class ListBaselinesUseCase:
     def execute(self) -> int:
         available_baselines = self._adapter.list_available_baselines()
         try:
-            # Arbitrary values (50 & 5)
-            max_len = 50
-            max_len = [max(max_len, len(d["title"]) + 5) for d in available_baselines][
-                0
-            ]
+            headers = ["Title", "Filename", "Source"]
+            max_title_len = get_max_len_for_key(available_baselines, "title")
+            max_title_len = max(len(headers[0]), max_title_len) + 5
 
-            headers = ["Title", "Source"]
-            print(f"{headers[0]: <{max_len}}{headers[1]}")
-            print("-" * (max_len - 1) + " " + "-" * len(headers[1]))
+            max_filename_len = get_max_len_for_key(available_baselines, "filename")
+            max_filename_len = max(len(headers[1]), max_filename_len) + 5
+
+            print(f"{headers[0]: <{max_title_len}}{headers[1]: <{max_filename_len}}{headers[2]}")
+            print("-" * (max_title_len - 1) + " " + "-" * (max_filename_len - 1) + " " + "-" * (len(headers[2]) + 5))
             for baseline in available_baselines:
-                print(f"{baseline['title']: <{max_len}}{baseline['source']}")
-        except:
+                print(f"{baseline['title']: <{max_title_len}}{baseline['filename']: <{max_filename_len}}{baseline['source']}")
+        except Exception as e:
+            logger.exception(e)
             print("No entry found")
             pass
 
