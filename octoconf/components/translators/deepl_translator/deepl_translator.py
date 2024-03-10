@@ -37,7 +37,7 @@ class DeepL(ITranslator):
             ]
         )
 
-    def translate(self, text, source_lang, target_lang):
+    def translate(self, text, source_lang, target_lang) -> str:
         """
         Method to send a request to the deepl API.
 
@@ -68,6 +68,8 @@ class DeepL(ITranslator):
             response = requests.post(self._url, data=data)
         except Exception as _err:
             logger.exception(f"Unmanaged Error: {_err}")
+            return ""
+        
         if response.status_code != 200:
             raise DeepLError(response.status_code, response.json()["message"])
 

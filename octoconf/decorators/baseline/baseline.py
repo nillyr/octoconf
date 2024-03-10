@@ -6,6 +6,7 @@
 
 import logging
 from pathlib import Path
+from typing import Any, Optional
 
 import inject
 
@@ -27,9 +28,9 @@ class BaselineDecorator(Decorator):
     def __init__(self) -> None:
         pass
 
-    def decorator(func):
+    def decorator(func) -> Any:
         def inner(*args, **kwargs):
-            def get_path_of_baseline(l, f) -> Path:
+            def get_path_of_baseline(l, f) -> Optional[Path]:
                 for d in l:
                     if f(d["title"]) or f(d["filename"]):
                         return d["path"]

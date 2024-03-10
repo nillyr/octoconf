@@ -7,6 +7,7 @@
 import logging
 from pathlib import Path
 import tarfile
+from typing import Generator, Optional
 import zipfile
 
 from octoconf.interfaces.archive import IArchive
@@ -16,29 +17,18 @@ logger = logging.getLogger(__name__)
 
 
 class ArchiveInterfaceAdapter(IArchive):
-    """
-    Class allowing to manipulate the archives containing the results of the collection script.
-    """
-
     def __init__(self) -> None:
         pass
 
-    def checks_files_only(self, members):
-        """
-        Generator method indicating the files to be extracted only (for tar.gz archives).
-        """
+    def checks_files_only(self, members) -> Generator:
         for tarinfo in members:
             if "10_octoconf_checks" in str(Path(tarinfo.name).parent).lower():
                 yield tarinfo
 
-    def extract(self, archive) -> Path:
-        """
-        Performs archive extraction.
-        To date, only zip and tar.gz archives are supported.
-        """
+    def extract(self, archive) -> Optional[Path]:
         path = Path(archive)
         if not path.exists():
-            return
+            return None
 
         # where to extract files
         path = path.parent
@@ -58,9 +48,9 @@ class ArchiveInterfaceAdapter(IArchive):
                             zip_file.extract(file, path)
                 zip_file.close()
             else:
-                pass
+                return None
         except:
             logger.exception("Unable to extract archive")
-            pass
+            return None
 
         return path / "10_octoconf_checks"

@@ -4,6 +4,8 @@
 # @link https://github.com/nillyr/octoconf
 # @since 0.1.0
 
+from typing import Any
+
 from octoconf.decorators.decorator import Decorator
 
 
@@ -12,7 +14,7 @@ class BashDecorator(Decorator):
     It allows to add instructions before and after the execution of the commands. Among these instructions are the verification of the user's privileges, the creation of the working folder and the creation of the archive.
     """
 
-    def decorator(func):
+    def decorator(func) -> Any:
         def inner(*args, **kwargs):
             content = []
             prolog = """#!/bin/bash

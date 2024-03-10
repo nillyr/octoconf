@@ -8,7 +8,7 @@ import csv
 import logging
 from pathlib import Path
 import shutil
-from typing import Any
+from typing import Any, Optional
 import zipfile
 
 from octoconf.entities.baseline import Baseline
@@ -183,20 +183,20 @@ class ReportInterfaceAdapter(IReport):
 
         return available_templates
 
-    def export_custom_templates(self) -> str:
+    def export_custom_templates(self) -> Optional[str]:
         try:
             archive_name = Path.cwd() / f"octoconf_templates_export_{timestamp()}"
             root_dir = Path(__file__).resolve().parent / "octowriter" / "template"
             base_dir = "custom"
 
             return shutil.make_archive(
-                archive_name, "zip", root_dir=str(root_dir), base_dir=base_dir
+                str(archive_name), "zip", root_dir=str(root_dir), base_dir=base_dir
             )
         except:
             logger.exception("Unable to export custom templates")
             return None
 
-    def import_custom_templates_from_archive(self, archive: str, action: str) -> Path:
+    def import_custom_templates_from_archive(self, archive: str, action: str) -> Optional[Path]:
         logger.info(
             f"Importing custom templates from '{archive}' with action '{action}'"
         )

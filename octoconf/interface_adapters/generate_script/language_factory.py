@@ -21,12 +21,8 @@ logger = logging.getLogger(__name__)
 
 
 class LanguageFactory(ILanguageFactory):
-    """
-    Allows to return the correct factory according to the language desired by the user.
-    """
-
     @staticmethod
-    def get_language(platform):
+    def get_language(platform: str):
         try:
             if platform.lower() in ("linux", "mac"):
                 return UnixBashScript()

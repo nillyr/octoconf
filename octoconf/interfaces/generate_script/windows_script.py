@@ -27,7 +27,7 @@ class IWindowsScript(metaclass=ABCMeta):
         pass
 
     @abstractmethod
-    def write_script(self, utils_content, content, platform, callback):
+    def write_script(self, utils_content, content, callback):
         pass
 
     @staticmethod

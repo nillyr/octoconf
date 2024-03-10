@@ -9,7 +9,7 @@ import logging
 from pathlib import Path
 import re
 import shutil
-from typing import List
+from typing import List, Optional
 import zipfile
 
 import yaml
@@ -41,7 +41,7 @@ class BaselineInterfaceAdapter(IBaseline):
             cls._instance = super(IBaseline, cls).__new__(cls)
         return cls._instance
 
-    def load_baseline_from_file(self, baseline_file_path: Path) -> Baseline:
+    def load_baseline_from_file(self, baseline_file_path: Path) -> Optional[Baseline]:
         logger.debug(f"Load baseline from {baseline_file_path}")
         base_folder = baseline_file_path.parents[0]
         rules_directory = Path(base_folder, "rules")
@@ -57,6 +57,7 @@ class BaselineInterfaceAdapter(IBaseline):
                 baseline = yaml.load(checklist, Loader=yaml.SafeLoader)
             except:
                 logger.exception(f"Unable to load the file '{baseline_file_path}'")
+                return None
 
         try:
             cat_cpt = 0
@@ -87,7 +88,7 @@ class BaselineInterfaceAdapter(IBaseline):
 
         return Baseline(**baseline)
 
-    def list_available_baselines(self) -> list:
+    def list_available_baselines(self) -> List:
         base_dir = Path(__file__).resolve().parent.parent.parent
         baselines_dir = base_dir / "baselines"
 
@@ -132,20 +133,20 @@ class BaselineInterfaceAdapter(IBaseline):
 
         return available_baselines
 
-    def export_custom_baselines(self) -> str:
+    def export_custom_baselines(self) -> Optional[str]:
         try:
             archive_name = Path.cwd() / f"octoconf_baselines_export_{timestamp()}"
             root_dir = Path(__file__).resolve().parent.parent.parent / "baselines"
             base_dir = "custom"
 
             return shutil.make_archive(
-                archive_name, "zip", root_dir=str(root_dir), base_dir=base_dir
+                str(archive_name), "zip", root_dir=str(root_dir), base_dir=base_dir
             )
         except:
             logger.exception("Unable to export custom baselines")
             return None
 
-    def import_custom_baselines_from_archive(self, archive: str, action: str) -> Path:
+    def import_custom_baselines_from_archive(self, archive: str, action: str) -> Optional[Path]:
         logger.info(
             f"Importing custom baselines from '{archive}' with action '{action}'"
         )
@@ -254,7 +255,7 @@ class BaselineInterfaceAdapter(IBaseline):
             )
         return commands
 
-    def get_check(self, baseline: Baseline, rule_filename: str) -> Rule:
+    def get_check(self, baseline: Baseline, rule_filename: str) -> Optional[Rule]:
         for category in baseline.categories:
             for rule in category.rules:
                 if rule.id == rule_filename:

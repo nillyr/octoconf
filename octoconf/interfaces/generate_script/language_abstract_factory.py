@@ -13,5 +13,5 @@ class ILanguageFactory(metaclass=ABCMeta):
     """
 
     @abstractstaticmethod
-    def get_language(language_name):
+    def get_language(platform: str):
         pass

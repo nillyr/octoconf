@@ -5,9 +5,9 @@
 # @since 0.1.0
 
 from abc import ABC, abstractmethod
-
+from typing import Any
 
 class Decorator(ABC):
     @abstractmethod
-    def decorator(func):
+    def decorator(func) -> Any:
         pass

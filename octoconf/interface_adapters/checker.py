@@ -14,10 +14,6 @@ logger = logging.getLogger(__name__)
 
 
 class CheckerInterfaceAdapter(IChecker):
-    """
-    Implementation of the different verification types.
-    """
-
     def __init__(self) -> None:
         pass
 

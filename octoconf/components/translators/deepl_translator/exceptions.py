@@ -70,3 +70,4 @@ class DeepLError(BaseException):
             + ")"
         )
         super(DeepLError, self).__init__(error_code, error_message)
+

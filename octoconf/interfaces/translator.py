@@ -9,5 +9,8 @@ from abc import ABC, abstractmethod
 
 class ITranslator(ABC):
     @abstractmethod
-    def translate(self) -> None:
+    def translate(self, text, source_lang, target_lang) -> str:
+        """
+        Translate a text from a source language to a target language.
+        """
         pass
