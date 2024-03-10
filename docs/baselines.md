@@ -77,13 +77,13 @@ description: |
   A description of the rule.
   What is the benefit of this configuration? What is the risk if the configuration is not applied?
 
-# The collection_cmd is used to collect proofs in order to manually check the result later, if necessary
+# The collection_cmd is used to collect some evidence in order to manually check the result later.
 # The syntax is the following:
 # <command> <redirector> <output_file> [; <command> <redirector> <output_file>]
 # You can also have one command per line:
 # <command> <redirectort> <output_file>
 
-# IMPORTANT: do not specify the output directory because this one is automatically added by the tool 
+# IMPORTANT: do not specify the output directory because this one is automatically added by the tool.
 # cmd > file.txt becomes cmd > basedir/category/file.txt
 
 # Note: the available redirectors are listed in the following files:
@@ -94,8 +94,8 @@ description: |
 collection_cmd: |
   arch > arch_output.txt
 
-# This section contains the commands to be used to check that the configuration is compliant.
-# The following example checks if the architecture is 64-bit
+# This section contains the commands to be used to automatically check that the configuration is compliant.
+# The following example checks if the architecture is 64-bit:
 check: |
   # The full line of '#' is not needed, it is just to separate the different parts of the script
   ################################################################################
@@ -162,7 +162,7 @@ recommendation: |
 # - high          -> To be implemented if and only if in-house resources have the skills and time required to maintain them on a regular basis. These can, however, bring a significant security gain.
 level: minimal 
 
-# Any references that can be used to justify the rule (CIS, NIST, ANSSI, etc.)
+# Any references that can be used to justify the rule (CIS, NIST, ANSSI, etc.).
 references:
   - a_reference_or_a_link
 ```
