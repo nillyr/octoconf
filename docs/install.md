@@ -20,6 +20,10 @@
 
 ### Regular usage
 
+| :warning: Warning |
+|:------------------|
+| The tool has not been uploaded to PyPI (yet), use the [CONTRIBUTING](../CONTRIBUTING.md) documentation for now. |
+
 Install the latest version from [PyPI](https://pypi.org/project/octoconf-cli/) (recommended) or from the release page.
 
 ```bash
