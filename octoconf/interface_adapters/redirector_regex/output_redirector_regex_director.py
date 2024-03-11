@@ -33,7 +33,7 @@ class OutputRedirectorRegexDirector:
     def builder(self, builder: IOutputRedirectorRegexBuilder) -> None:
         self._builder = builder
 
-    def build_regex_patern(self) -> None:
+    def build_regex_pattern(self) -> None:
         """
         Construction step to create the regex containing all the supported redirections.
         """

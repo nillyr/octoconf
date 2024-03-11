@@ -34,7 +34,10 @@ class RedirectorRegex:
             builder = UnixOutputRedirectorRegexCB()
         elif platform == "Windows":
             builder = WindowsOutputRedirectorRegexCB()
+        else:
+            return ""
 
         director.builder = builder
-        director.build_regex_patern()
+        director.build_regex_pattern()
         return builder.product.get_redirector_regex()
+

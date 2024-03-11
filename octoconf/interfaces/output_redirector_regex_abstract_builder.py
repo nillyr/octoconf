@@ -10,7 +10,7 @@ from abc import ABCMeta, abstractmethod
 class IOutputRedirectorRegexBuilder(metaclass=ABCMeta):
     @property
     @abstractmethod
-    def product(self) -> None:
+    def product(self):
         pass
 
     @abstractmethod

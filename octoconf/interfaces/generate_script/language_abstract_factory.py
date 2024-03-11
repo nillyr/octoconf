@@ -4,7 +4,7 @@
 # @link https://github.com/nillyr/octoconf
 # @since 0.1.0
 
-from abc import ABCMeta, abstractstaticmethod
+from abc import ABCMeta, abstractmethod
 
 
 class ILanguageFactory(metaclass=ABCMeta):
@@ -12,6 +12,7 @@ class ILanguageFactory(metaclass=ABCMeta):
     The use of this design pattern makes it possible to define many systems without having to modify a large part of the source code of the use cases.
     """
 
-    @abstractstaticmethod
+    @staticmethod
+    @abstractmethod
     def get_language(platform: str):
         pass
