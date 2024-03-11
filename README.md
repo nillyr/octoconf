@@ -29,6 +29,7 @@ positional arguments:
                         Available Commands
     analyze             performs an analysis on an archive based on a security baseline
     baseline            performs the interaction with the security baselines
+    util                performs the interaction with the utility scripts
     report              performs the recompilation of the report in PDF format from an adoc file
     template            performs the interaction with your custom report templates
     config              performs octoconf configuration management
