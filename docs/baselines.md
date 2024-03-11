@@ -15,6 +15,9 @@
     - [Import your baselines](#import-your-baselines)
     - [Export your baselines](#export-your-baselines)
     - [Translate a baseline](#translate-a-baseline)
+    - [List available utililty scripts](#list-available-utililty-scripts)
+    - [Import your utility scripts](#import-your-utility-scripts)
+    - [Export your utility scripts](#export-your-utility-scripts)
 
 ## Introduction
 
@@ -228,7 +231,7 @@ octoconf-cli baseline generate_script \
 octoconf-cli baseline generate_script \
     -p linux \
     -b /path/to/baseline.yaml \
-    -u /path/to/utils_script.sh \
+    -u /path/to/util_script.sh \
     -o /path/to/output_script.sh
 ```
 
@@ -330,4 +333,62 @@ octoconf-cli baseline translate \
 | :information_source: Information |
 |:---------------------------------|
 | Some language pairs are not supported by DeepL. See [Supported Language Pairs](https://www.deepl.com/docs-api/glossaries/list-glossary-languages) |
+
+### List available utililty scripts
+
+The following command allows the user to list available utility scripts:
+
+```bash
+octoconf-cli util list
+```
+
+Sample output: 
+
+```text
+# When no utility scripts are available 
+No entry found
+
+# When utility scripts are available
+Utility script     Source
+------------------ -----------
+built_in.ps1       Built-in
+built_in.sh        Built-in
+```
+
+To use available utility scripts, you do not have to use the utility script's path. You can use the utility script's filename. The tool will automatically find the utility script.
+
+Exemple:
+
+```bash
+octoconf-cli baseline generate_script \
+    -p linux \
+    -b generic_linux_server.yaml \
+    -u built_in.sh \
+    -o /path/to/output_script.sh
+```
+
+### Import your utility scripts
+
+The following command allows the user to import an archive (ZIP) with custom utility scripts. The `--action` option is used to specify the action to perform. The default action is `merge`.
+
+The `merge` action will add the new utility scripts and update the existing one. The `replace` action will **completely delete** the existing custom utility scripts and extract the archive. The default value is `merge`.
+
+```bash 
+# Default action: merge
+## This command:
+octoconf-cli util import -a /path/to/archive.zip 
+## Is the same as this one:
+octoconf-cli util import -a /path/to/archive.zip --action merge 
+
+# Overwrite existing utility scripts
+octoconf-cli util import -a /path/to/archive.zip --action replace
+```
+
+### Export your utility scripts
+
+The following command allows the user to export **only your custom utility scripts** into an archive (ZIP). The archive is created in the current working directory.
+
+```bash 
+octoconf-cli util export
+```
 
