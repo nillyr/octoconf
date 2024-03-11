@@ -204,6 +204,14 @@ class ReportInterfaceAdapter(IReport):
         custom_templates_dir = extract_dir / "custom"
         custom_templates_tmp_dir = extract_dir / "custom_tmp"
 
+        # Ensure the default path exists and create it if not 
+        try:
+            if not custom_templates_dir.exists():
+                custom_templates_dir.mkdir(parents=True)
+        except:
+            logger.exception("Unable to create the default directory")
+            return None
+
         try:
             if custom_templates_tmp_dir.exists():
                 shutil.rmtree(custom_templates_tmp_dir)
