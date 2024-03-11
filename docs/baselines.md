@@ -162,6 +162,15 @@ recommendation: |
 # - high          -> To be implemented if and only if in-house resources have the skills and time required to maintain them on a regular basis. These can, however, bring a significant security gain.
 level: minimal 
 
+# The severity of the rule (default: low)
+# The possible values are:
+# - low
+# - medium
+# - high
+
+# Note: no check is performed on the severity value. It is up to the user to define the severity of the rule.
+severity: low
+
 # Any references that can be used to justify the rule (CIS, NIST, ANSSI, etc.).
 references:
   - a_reference_or_a_link
