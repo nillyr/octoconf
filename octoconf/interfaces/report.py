@@ -12,7 +12,7 @@ from octoconf.entities.baseline import Baseline
 
 class IReport(ABC):
     @abstractmethod 
-    def generate_csv(self, filename: str, results: Baseline, output_dir: Any) -> int:
+    def generate_csv(self, filename: str, results: Baseline, output_dir: Any) -> None:
         """
         Generate a CSV report from the results of the baseline.
         """
