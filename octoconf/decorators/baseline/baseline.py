@@ -36,12 +36,25 @@ class BaselineDecorator(Decorator):
                         return d["path"]
                 return None
 
+            def get_path_of_util_script(l, f) -> Optional[Path]:
+                for d in l:
+                    if f(d["filename"]):
+                        return d["path"]
+                return None
+
             baseline_path = get_path_of_baseline(
                 BaselineDecorator().adapter.list_available_baselines(),
                 lambda v: v == args[0].baseline,
             )
             if baseline_path:
                 args[0].baseline = baseline_path
+
+            utility_script_path = get_path_of_util_script(
+                BaselineDecorator().adapter.list_available_utils_scripts(),
+                lambda v: v == args[0].utils,
+            )
+            if utility_script_path:
+                args[0].utils = utility_script_path
 
             return func(*args, **kwargs)
 

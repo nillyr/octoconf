@@ -154,6 +154,14 @@ class BaselineInterfaceAdapter(IBaseline):
         custom_baselines_dir = extract_dir / "custom"
         custom_baselines_tmp_dir = extract_dir / "custom_tmp"
 
+        # Ensure the default path exists and create it if not 
+        try:
+            if not custom_baselines_dir.exists():
+                custom_baselines_dir.mkdir(parents=True)
+        except:
+            logger.exception("Unable to create the default directory")
+            return None
+
         try:
             if custom_baselines_tmp_dir.exists():
                 shutil.rmtree(custom_baselines_tmp_dir)
@@ -209,6 +217,127 @@ class BaselineInterfaceAdapter(IBaseline):
         try:
             logger.info("Removing the temporary directory")
             shutil.rmtree(custom_baselines_tmp_dir)
+        except:
+            logger.exception("Unable to remove temporary directory")
+        finally:
+            return extract_dir / "custom"
+
+    def list_available_utils_scripts(self) -> List:
+        base_dir = Path(__file__).resolve().parent.parent.parent
+        util_scripts_dir = base_dir / "baselines" / "utils" 
+
+        available_util_scripts = []
+        allowed_extensions = { ".sh", ".ps1" }
+
+        for _, file in enumerate(util_scripts_dir.glob(r"**/*")):
+            if not file.suffix in allowed_extensions:
+                continue 
+
+            logger.debug(f"Found utility script: '{file}'")
+            if "custom" in str(file):
+                available_util_scripts.append(
+                    {
+                        "path": file,
+                        "filename": file.name,
+                        "source": "Imported",
+                    }
+                )
+            else:
+                available_util_scripts.append(
+                    {
+                        "path": file,
+                        "filename": file.name,
+                        "source": "Built-in",
+                    }
+                )
+
+        return available_util_scripts
+
+    def export_custom_utils_scripts(self) -> Optional[str]:
+        try:
+            archive_name = Path.cwd() / f"octoconf_utils_export_{timestamp()}"
+            root_dir = Path(__file__).resolve().parent.parent.parent / "baselines" / "utils"
+            base_dir = "custom"
+
+            return shutil.make_archive(
+                str(archive_name), "zip", root_dir=str(root_dir), base_dir=base_dir
+            )
+        except:
+            logger.exception("Unable to export custom utility scripts")
+            return None
+
+
+    def import_custom_utils_scripts_from_archive(self, archive: str, action: str) -> Optional[Path]:
+        logger.info(
+            f"Importing custom utility scripts from '{archive}' with action '{action}'"
+        )
+        extract_dir = Path(__file__).resolve().parent.parent.parent / "baselines" / "utils"
+        custom_util_scripts_dir = extract_dir / "custom"
+        custom_util_scripts_tmp_dir = extract_dir / "custom_tmp"
+
+        # Ensure the default path exists and create it if not 
+        try:
+            if not custom_util_scripts_dir.exists():
+                custom_util_scripts_dir.mkdir(parents=True)
+        except:
+            logger.exception("Unable to create the default directory")
+            return None
+
+        try:
+            if custom_util_scripts_tmp_dir.exists():
+                shutil.rmtree(custom_util_scripts_tmp_dir)
+            logger.info("Saving the original state")
+            shutil.copytree(custom_util_scripts_dir, custom_util_scripts_tmp_dir)
+        except Exception as e:
+            logger.exception(f"Catch exception {e}")
+            return None
+
+        # switch case 'match value: case value:' needs python 3.10
+        # the tool must work with python 3.8
+        if action.lower() == "merge":
+            try:
+                with zipfile.ZipFile(archive, "r") as zip_ref:
+                    for zip_info in zip_ref.infolist():
+                        file_path = Path(extract_dir) / zip_info.filename
+                        if zip_info.is_dir():
+                            file_path.mkdir(parents=True, exist_ok=True)
+                        else:
+                            with zip_ref.open(zip_info) as source, file_path.open(
+                                "wb"
+                            ) as target:
+                                target.write(source.read())
+            except:
+                logger.exception("Unable to extract and merge custom utility scripts")
+                logger.info("Rollback the original state")
+                if custom_util_scripts_dir.exists():
+                    shutil.rmtree(custom_util_scripts_dir)
+
+                shutil.move(custom_util_scripts_tmp_dir, custom_util_scripts_dir)
+                return None
+        else:
+            try:
+                if custom_util_scripts_dir.exists():
+                    shutil.rmtree(custom_util_scripts_dir)
+
+                with zipfile.ZipFile(archive, "r") as zip_ref:
+                    if not "custom" in zip_ref.infolist()[0].filename.lower():
+                        custom_util_scripts_dir.mkdir(parents=True)
+                        zip_ref.extractall(custom_util_scripts_dir)
+                    else:
+                        zip_ref.extractall(extract_dir)
+            except:
+                logger.exception("Unable to extract and replace custom utility scripts")
+                logger.info("Rollback the original state")
+                if custom_util_scripts_dir.exists():
+                    shutil.rmtree(custom_util_scripts_dir)
+
+                shutil.move(custom_util_scripts_tmp_dir, custom_util_scripts_dir)
+                return None
+
+        # Everything went well, the temporary directory can be removed
+        try:
+            logger.info("Removing the temporary directory")
+            shutil.rmtree(custom_util_scripts_tmp_dir)
         except:
             logger.exception("Unable to remove temporary directory")
         finally:

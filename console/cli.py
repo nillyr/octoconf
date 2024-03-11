@@ -35,12 +35,15 @@ from octoconf.use_cases.check_archive import CheckArchiveUseCase
 from octoconf.use_cases.check_output import CheckOutputUseCase
 from octoconf.use_cases.export_baselines import ExportBaselinesUseCase
 from octoconf.use_cases.export_templates import ExportTemplatesUseCase
+from octoconf.use_cases.export_utils import ExportUtilsUseCase
 from octoconf.use_cases.generate_report import GenerateReportUseCase
 from octoconf.use_cases.generate_script import GenerateScriptUseCase
 from octoconf.use_cases.import_baselines import ImportBaselinesUseCase
 from octoconf.use_cases.import_templates import ImportTemplatesUseCase
+from octoconf.use_cases.import_utils import ImportUtilsUseCase
 from octoconf.use_cases.list_baselines import ListBaselinesUseCase
 from octoconf.use_cases.list_templates import ListTemplatesUseCase
+from octoconf.use_cases.list_utils import ListUtilsUseCase
 import octoconf.utils.config as config
 import octoconf.utils.global_values as global_values
 from octoconf.utils.logger import *
@@ -95,40 +98,51 @@ def parse_import_baselines_args(args):
     return print_status(status)
 
 
-@BaselineDecorator.decorator
-def parse_baseline_args(args):
-    """
-    Distinguishing arguments:
-      - Generate script: platform
-      - Translate: target_lang
-    """
+@BaselineDecorator.decorator 
+def parse_generate_script_args(args):
     init_logging(args.loglevel)
+    opts = {
+        "baseline": args.baseline,
+        "output": args.output,
+        "platform": args.platform,
+        "utils": args.utils,
+    }
+    print("[*] Launching the script generation...")
+    status = GenerateScriptUseCase().execute(opts)
+    return print_status(status)
 
-    _ = vars(args)
-    if _.get("platform"):
-        # generate_script command
-        opts = {
-            "baseline": args.baseline,
-            "output": args.output,
-            "platform": args.platform,
-            "utils": args.utils,
-        }
-        print("[*] Launching the script generation...")
-        status = GenerateScriptUseCase().execute(opts)
-        return print_status(status)
-    elif _.get("target_lang"):
-        # translate command
-        opts = {
-            "baseline": args.baseline,
-            "output_directory": args.output,
-            "source_lang": args.source_lang,
-            "target_lang": args.target_lang,
-        }
-        print("[*] Launching the translation of the baseline...")
-        status = BaselineTranslatorUseCase().execute(opts)
-        return print_status(status)
-    else:
-        raise NotImplementedError("[x] Error! No suitable use case found.")
+
+@BaselineDecorator.decorator 
+def parse_translate_args(args):
+    init_logging(args.loglevel)
+    opts = {
+        "baseline": args.baseline,
+        "output_directory": args.output,
+        "source_lang": args.source_lang,
+        "target_lang": args.target_lang,
+    }
+    print("[*] Launching the translation of the baseline...")
+    status = BaselineTranslatorUseCase().execute(opts)
+    return print_status(status)
+
+
+def parse_util_list_args(args):
+    init_logging(args.loglevel)
+    return ListUtilsUseCase().execute()
+
+
+def parse_util_import_args(args):
+    init_logging(args.loglevel) 
+    print("[*] Launching the import of your custom utility scripts...")
+    status = ImportUtilsUseCase().execute(args.archive, args.action)
+    return print_status(status)
+
+
+def parse_util_export_args(args):
+    init_logging(args.loglevel)
+    print("[*] Launching the export of your custom utility scripts...")
+    status = ExportUtilsUseCase().execute()
+    return print_status(status)
 
 
 def parse_report_args(args):
@@ -253,7 +267,6 @@ def parse_args() -> argparse.Namespace:
     baseline_parser = cmd.add_parser(
         name="baseline", help="performs the interaction with the security baselines"
     )
-    baseline_parser.set_defaults(func=parse_baseline_args)
     baselines_commands = baseline_parser.add_subparsers(title="Commands")
 
     export_parser = baselines_commands.add_parser(
@@ -266,6 +279,7 @@ def parse_args() -> argparse.Namespace:
         name="generate_script",
         help="performs the generation of collection scripts based on a security baseline",
     )
+    gen_script_parser.set_defaults(func=parse_generate_script_args)
     gen_script_parser.add_argument(
         "-b",
         "--baseline",
@@ -316,6 +330,7 @@ def parse_args() -> argparse.Namespace:
     translate_parser = baselines_commands.add_parser(
         name="translate", help="performs security baseline translation"
     )
+    translate_parser.set_defaults(func=parse_translate_args)
     translate_parser.add_argument(
         "-b",
         "--baseline",
@@ -338,6 +353,41 @@ def parse_args() -> argparse.Namespace:
         required=True,
         help="iso code of the target language (ex.: FR, EN, etc.)",
     )
+
+    ## Utils script ##
+    util_parser = cmd.add_parser(
+        name="util",
+        help="performs the interaction with the utility scripts"
+    )
+    util_commands = util_parser.add_subparsers(title="Commands")
+
+    list_util_parser = util_commands.add_parser(
+        name="list",
+        help="performs the listing of available utility scripts",
+    )
+    list_util_parser.set_defaults(func=parse_util_list_args)
+
+    import_util_parser = util_commands.add_parser(
+        name="import",
+        help="performs the import of utility scripts",
+    )
+    import_util_parser.set_defaults(func=parse_util_import_args)
+    import_util_parser.add_argument(
+        "-a", "--archive", required=True, type=str, help="archive to use"
+    )
+    import_util_parser.add_argument(
+        "--action",
+        required=False,
+        default="merge",
+        choices=("merge", "replace"),
+        help="'merge' action will add the new utility scripts and update the existing one. 'replace' action will completely delete the existing utility scripts and extract the archive. (default: merge)",
+    )
+
+    export_util_parser = util_commands.add_parser(
+        name="export",
+        help="performs the export of utility scripts",
+    )
+    export_util_parser.set_defaults(func=parse_util_export_args)
 
     ## Report ##
     report_parser = cmd.add_parser(
