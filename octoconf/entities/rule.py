@@ -19,7 +19,7 @@ class Rule(BaseModel):
     expected: str = ""
     recommendation: str
     level: str = "minimal"
-    severity: str = "unknown"
+    severity: str = "low"
     references: List[str] = []
     # The following attributes are used when using the "analyze" command
     output: str = ""
