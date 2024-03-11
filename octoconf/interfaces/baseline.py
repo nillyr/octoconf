@@ -40,6 +40,27 @@ class IBaseline(ABC):
         """
         pass
 
+    @abstractmethod 
+    def list_available_utils_scripts(self) -> List:
+        """
+        This method returns a list of available utility scripts
+        """
+        pass
+
+    @abstractmethod 
+    def export_custom_utils_scripts(self) -> Optional[str]:
+        """
+        This method allows to export the custom utility scripts to an archive.
+        """
+        pass
+
+    @abstractmethod 
+    def import_custom_utils_scripts_from_archive(self, archive: str, action: str) -> Optional[Path]:
+        """
+        This method allows to import the custom utility scripts from an archive.
+        """
+        pass
+
     @abstractmethod
     def map_results_in_baseline(self, rules: List[Rule], baseline: Baseline) -> Baseline:
         """
