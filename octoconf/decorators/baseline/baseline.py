@@ -49,12 +49,17 @@ class BaselineDecorator(Decorator):
             if baseline_path:
                 args[0].baseline = baseline_path
 
-            utility_script_path = get_path_of_util_script(
-                BaselineDecorator().adapter.list_available_utils_scripts(),
-                lambda v: v == args[0].utils,
-            )
-            if utility_script_path:
-                args[0].utils = utility_script_path
+            # When running the analyze, utility scripts are not used.
+            # It's safe to fail here.
+            try:
+                utility_script_path = get_path_of_util_script(
+                    BaselineDecorator().adapter.list_available_utils_scripts(),
+                    lambda v: v == args[0].utils,
+                )
+                if utility_script_path:
+                    args[0].utils = utility_script_path
+            except:
+                pass
 
             return func(*args, **kwargs)
 
