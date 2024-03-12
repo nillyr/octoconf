@@ -71,7 +71,6 @@ class BaselineInterfaceAdapter(IBaseline):
                     existing_rule_files = (rule_file_path.with_suffix(rule_file_path.suffix + ext) for ext in ['.yml', '.yaml'] if rule_file_path.with_suffix(rule_file_path.suffix + ext).exists())
                     # Note: if there are multiple files with the same name but different extensions, only the first one will be used
                     rule_file_path = next(existing_rule_files, None)
-                    print(f"rule_file_path: {rule_file_path}")
 
                     if not rule_file_path:
                         logger.error(
