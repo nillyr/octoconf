@@ -65,9 +65,13 @@ class BaselineInterfaceAdapter(IBaseline):
                 rules_cpt = 0
                 for rule in category["rules"]:
                     rule_file_path = Path(rules_directory, rule)
-                    existing_rule_files = (rule_file_path.with_suffix(ext) for ext in ['.yml', '.yaml'] if rule_file_path.with_suffix(ext).exists())
+                    # using rule_file_path.suffix in case where the rule's filename is foo.x.y.z
+                    # with_suffix: If the original path doesn’t have a suffix, the new suffix is appended instead.
+                    # If the suffix is an empty string, the original suffix is removed
+                    existing_rule_files = (rule_file_path.with_suffix(rule_file_path.suffix + ext) for ext in ['.yml', '.yaml'] if rule_file_path.with_suffix(rule_file_path.suffix + ext).exists())
                     # Note: if there are multiple files with the same name but different extensions, only the first one will be used
                     rule_file_path = next(existing_rule_files, None)
+                    print(f"rule_file_path: {rule_file_path}")
 
                     if not rule_file_path:
                         logger.error(
