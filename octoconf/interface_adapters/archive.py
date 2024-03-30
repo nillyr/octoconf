@@ -17,12 +17,14 @@ logger = logging.getLogger(__name__)
 
 
 class ArchiveInterfaceAdapter(IArchive):
+    _results_dir = "10_octoconf_checks"
+
     def __init__(self) -> None:
         pass
 
     def checks_files_only(self, members) -> Generator:
         for tarinfo in members:
-            if "10_octoconf_checks" in str(Path(tarinfo.name).parent).lower():
+            if self._results_dir in str(Path(tarinfo.name).parent).lower():
                 yield tarinfo
 
     def extract(self, archive) -> Optional[Path]:
@@ -30,7 +32,11 @@ class ArchiveInterfaceAdapter(IArchive):
         if not path.exists():
             return None
 
-        # where to extract files
+        if path.stem == self._results_dir:
+            # Archive already extracted
+            return path
+
+        # Where to extract files
         path = path.parent
 
         logger.debug(f"Extracting archive {archive} into {path}")
@@ -44,7 +50,7 @@ class ArchiveInterfaceAdapter(IArchive):
                 with zipfile.ZipFile(archive, "r") as zip_file:
                     files = zip_file.namelist()
                     for file in files:
-                        if "10_octoconf_checks" in file.lower():
+                        if self._results_dir in file.lower():
                             zip_file.extract(file, path)
                 zip_file.close()
             else:
@@ -53,4 +59,4 @@ class ArchiveInterfaceAdapter(IArchive):
             logger.exception("Unable to extract archive")
             return None
 
-        return path / "10_octoconf_checks"
+        return path / self._results_dir

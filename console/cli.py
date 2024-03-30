@@ -74,6 +74,8 @@ def parse_analyze_args(args):
     global_values.set_localize(args.language)
     print("[*] Launching the archive analysis...")
     results = CheckArchiveUseCase().execute(args.baseline, args.archive)
+    if not results:
+        return print_status(1)
     results = CheckOutputUseCase().execute(results)
     status = GenerateReportUseCase().execute(results, args)
     return print_status(status)
