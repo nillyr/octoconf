@@ -187,6 +187,9 @@ msgstr "Summary of non-conformities"
 msgid "see_also"
 msgstr "See also:"
 
+msgid "references"
+msgstr "References"
+
 msgid "check_command"
 msgstr "Check command"
 
