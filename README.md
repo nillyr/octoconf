@@ -84,5 +84,4 @@ This software is licensed under GNU GPLv3 license. See `LICENSE` file in the roo
 
 The information used in the "report information" configuration file come from the movie "[L'Aile ou la Cuisse](https://www.allocine.fr/film/fichefilm_gen_cfilm=47573.html)".
 
-Icons made by [Freepik](https://www.flaticon.com/authors/freepik "Freepik") from [www.flaticon.com](https://www.flaticon.com/ "Flaticon")
-
+The logo has been generated with the help of the [DALL-E 3](https://openai.com/dall-e-3).
