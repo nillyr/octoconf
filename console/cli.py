@@ -194,7 +194,7 @@ def parse_args() -> argparse.Namespace:
        )  __  (      of configuration audits.
       /,'))((`.\\
      (( ((  )) ))    /** @nillyr **/
-   hh `\ `)(' /'
+   hh `\\ `)(' /'
   """.format(
             __version__
         ),
