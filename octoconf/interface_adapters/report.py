@@ -227,7 +227,14 @@ class ReportInterfaceAdapter(IReport):
             try:
                 with zipfile.ZipFile(archive, "r") as zip_ref:
                     for zip_info in zip_ref.infolist():
-                        file_path = Path(extract_dir) / zip_info.filename
+                        # if the root directory of the archive is "custom/", then remove it from the path
+                        # it should not be extracted as template/custom/custom/<something>
+                        if zip_info.filename == "custom/":
+                            continue
+                        elif zip_info.filename.startswith("custom/"):
+                            zip_info.filename = zip_info.filename[7:]
+
+                        file_path = Path(custom_templates_dir) / zip_info.filename
                         if zip_info.is_dir():
                             file_path.mkdir(parents=True, exist_ok=True)
                         else:
